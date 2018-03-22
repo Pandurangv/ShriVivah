@@ -1,0 +1,45 @@
+﻿@model ShriVivah.Models.Entities.tblCity
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmCity" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>City Details</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>Country Name</span>
+                @Html.DropDownList("CountryId",ViewBag.CountryId as SelectList)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>State Name</span>
+                @Html.DropDownList("StateId", ViewBag.StateId as SelectList)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>City Name</span>
+                @Html.EditorFor(model => model.CityName)
+                @Html.ValidationMessageFor(model => model.CityName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>Pincode</span>
+                @Html.EditorFor(model => model.Pincode)
+                @Html.ValidationMessageFor(model => model.Pincode)
+            </div>
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

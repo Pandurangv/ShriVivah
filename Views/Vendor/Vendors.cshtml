@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Vendors";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
+@Scripts.Render("~/Scripts/Main/VendorListController.js")
+<script type="text/javascript">
+    $(function() {
+        var availableTags = [];
+        
+        var lst = JSON.parse($("#hdnVendorType").val());
+        for (var i = 0; i < lst.length; i++) {
+            availableTags.push(lst[i].VendorType);
+        }
+
+        $("#txtSearchVendor").autocomplete({
+            source: availableTags
+        });
+    });
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function removeURLParameter(url, parameter) {
+        //prefer to use l.search if you have a location/link object
+        var urlparts = url.split('?');
+        if (urlparts.length >= 2) {
+
+            var prefix = encodeURIComponent(parameter) + '=';
+            var pars = urlparts[1].split(/[&;]/g);
+
+            //reverse iteration as may be destructive
+            for (var i = pars.length; i-- > 0;) {
+                //idiom for string.startsWith
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                    pars.splice(i, 1);
+                }
+            }
+
+            url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+            return url;
+        } else {
+            return url;
+        }
+    }
+
+    function LoadMoreVendors()
+    {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
+        $.ajax({
+            cache: false,
+            type: "GET",
+            async: false,
+            url: '@Url.Action("LoadMoreVendors", "Vendor")',
+            dataType: "json",
+            success: function (students) {
+                if (students.length == 0) {
+                    var objShowCustomAlert = new ShowCustomAlert({
+                        Title: "",
+                        Message: "आणखी माहिती उपलब्ध नाही.",
+                        Type: "alert",
+                    });
+                    objShowCustomAlert.ShowCustomAlertBox();
+                }
+                else {
+                    BindVendorInfo(students);
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            },
+            error: function (data)
+            {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "आणखी माहिती उपलब्ध नाही.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                document.getElementById("contentdiv").removeChild(spinner.el);
+            }
+        });
+    }
+    function BindVendorInfo(data) {
+        $("#datatbody").html();
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+            var str = JSON.stringify(item);
+            html += "<tr><td><input id='" + item.VendorId + "' value='" + str + "' type='hidden'><div class='col-md-3'>";
+
+            //html += '<div class="region-grid" id="' + data[i].VendorId + '"><div class="state-name">';
+            if (item.LogoImage != null) {
+                html += '<img src="~/' + item.LogoImage + '" class="profileImg" />';
+            }
+            if (item.ProfileImage != null && item.LogoImage == null) {
+                html += '<img src="~/' + item.ProfileImage + '" class="profileImg" />';
+            }
+            if (item.ProfileImage == null && item.LogoImage == null) {
+                html += '<img src="../Content/FrontUI/images/Shake_hand.jpg" class="profileImg" />';
+            }
+            html += '</div></td><td><div class="col-md-6 text-left">';
+            html += item.VendorName + ',' + item.OwnerName + '<br />';
+            html += item.Address + ',' + item.City + ',<br /></div></td><td><div class="col-md-3">';
+            if (item.IsActive) {
+                html += '<div class="btn btn-primary" data-toggle="modal" data-target="#myVendors" onclick="DisplayVendorProfile(' + item.VendorId + ')">प्रोफाइल पहा</div>';
+            }
+            html += '</div></td></tr>';
+        }
+        $("#datatbody").html(html);
+    }
+    function DisplayVendorProfile(vendorId)
+    {
+        var vendorInfo=JSON.parse($("#" + vendorId).val());
+        $("#divvendorInfo").html("");
+        $("#myModalLabel").html(vendorInfo.VendorName);
+        var html="";
+        if (vendorInfo.LogoImage!=null) {
+            html ="<div class='col-md-12'><div class='col-md-6'><img src=/"+ vendorInfo.LogoImage +" class='bigprofileImg' /></div>";
+        }
+        if (vendorInfo.LogoImage==null && vendorInfo.ProfileImage!=null) {
+            html = "<div class='col-md-12'><div class='col-md-6'><img src=/" + vendorInfo.ProfileImage + " class='bigprofileImg' /></div>";
+        }
+        if (vendorInfo.LogoImage==null && vendorInfo.ProfileImage==null) {
+            html = "<div class='col-md-12'><div class='col-md-6'><img src='../../Content/FrontUI/images/Shake_hand.jpg' class='profileImg' /></div>";
+        }
+        html += "<div class='col-md-6'>";
+        if (vendorInfo.OwnerName!=null) {
+            html += "<div class='vendorInfoLabel'>नाव :" + vendorInfo.OwnerName + "</div><br/>";
+        }
+        if (vendorInfo.Address!=null) {
+            html += "<div class='vendorInfoLabel'>पत्ता :" + vendorInfo.Address + "</div><br/>";
+        }
+        if (vendorInfo.City!=null) {
+            html += "<div class='vendorInfoLabel'>शहर :" + vendorInfo.City + "</div><br/>";
+        }
+        if (vendorInfo.ContactNo!=null) {
+            html += "<div class='vendorInfoLabel'>मोबाईल नंबर :" + vendorInfo.ContactNo + "</div><br/>";
+        }
+        if (vendorInfo.BusinessDescription!=null) {
+            html += "<div class='vendorInfoLabel'>माहिती :" + vendorInfo.BusinessDescription + "</div><br/>";
+        }
+        
+        html += "</div></div>";
+
+        $("#divvendorInfo").html(html);
+    }
+</script>
+<input type="hidden" id="chkIsLogin" value="@ViewBag.IsLogin" />
+<input type="hidden" id="requeststatus" />
+<input type="hidden" id="pagename" value="vedndorsearch" />
+<div class="col-md-12 innerDiv" id="contentdiv" data-ng-app="VarmalaVivahApp" data-ng-controller="VendorListController">
+    
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="text" data-ng-model="prefix" class="col-sm-12 form-control" style="width:50% !important" /><span> Total Vendors : {{VendorList.length}}</span>
+            </div>
+            <div class="col-sm-12" style="width:90%;">
+                <div class="col-sm-2">
+                    <select class="form-control pull-left">
+                        <option>---Select---</option>
+                        <option>Pune</option>
+                        <option>Sangli</option>
+                    </select>
+                </div>
+                
+            </div>
+            <div class="col-sm-12" data-ng-repeat="item in VendorList | filter:prefix">
+                <div class="col-sm-12"><h1 class="pull-left" style="color:#460f0f;font-weight:bold"><u>{{item.VendorName.toUpperCase()}}</u></h1></div>
+                <div class="col-sm-1">
+                    <span>{{item.District}}</span>
+                    <img src="@Url.Content("~/Content/FrontUI/images/Shake_hand.jpg")"  class="img-responsive" style="width:100%" alt="Image">
+                </div>
+                <div class="col-sm-9">
+                    <span>{{item.VendorType}}</span>
+                    <h5 style="color:#460f0f;font-weight:bold"> Address {{item.Address}}</h5>
+                </div>
+                <div class="col-sm-2">
+                    <h5 style="color:#460f0f;font-weight:bold" data-ng-click="ShowModel(item)" data-toggle="modal" data-target="#myVendors">View Contact</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-12" style="margin-bottom:20px;">
+        <input type="button" value="आणखी पहा.." onclick="LoadMoreVendors();" class="btn btn-primary" />
+    </div>*@
+    <div class="modal fade in" id="myVendors" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title pull-left" style="color:#460f0f;font-weight:bold" id="myModalLabel">{{SelectedVendor.VendorName.toUpperCase()}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="divvendorInfo">
+                        <div class="col-sm-12">
+                            <span class="pull-left">Address : {{SelectedVendor.Address}}</span><br />
+                            <span class="pull-left">Info : {{SelectedVendor.BusinessDescription}}</span><br />
+                            <span class="pull-left">Contact No : {{SelectedVendor.ContactNo}}</span><br />
+                            <span class="pull-left">Email Id : {{SelectedVendor.EmailId}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

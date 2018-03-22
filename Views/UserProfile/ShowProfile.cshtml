@@ -1,0 +1,282 @@
+﻿@model ShriVivah.Models.Entities.STP_GetUserDetail
+@{
+    ViewBag.Title = "ShowProfile";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+@Scripts.Render("~/bundles/UserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        var lstRelative = JSON.parse($("#relativeinfo").val());
+        var uniqueNames = [];
+        for (i = 0; i < lstRelative.length; i++) {
+            if (uniqueNames.indexOf(lstRelative[i].Relation) === -1) {
+                uniqueNames.push(lstRelative[i].Relation);
+            }
+        }
+        var html = "";
+        for (var i = 0; i < uniqueNames.length; i++) {
+            html += "<li><h4>" + uniqueNames[i] + "</h4></li>";
+            for (var j = 0; j < lstRelative.length; j++) {
+                if (uniqueNames[i]==lstRelative[j].Relation) {
+                    html += "<li style='height:40px'><div class='text-success pull-right'>श्री " + lstRelative[j].RelativeName + "</div></li>";
+                    html += "<li style='height:40px'><div class='text-success pull-right'>" + lstRelative[j].RelativeAddress + "</div></li>";
+                }
+            }
+        }
+        $("#divrelative").html("");
+        $("#divrelative").html(html);
+
+    })
+    function Rotate()
+    {
+        var currunt = parseInt($("#Img1").attr("data"));
+        if (currunt==360) {
+            currunt = 0;
+        }
+        currunt=currunt+90;
+        $("#Img1").css({
+            "-webkit-transform": "rotate(" + currunt + "deg)",
+            "-moz-transform": "rotate(" + currunt + "deg)",
+            "transform": "rotate(" + currunt + "deg)" /* For modern browsers(CSS3)  */
+        });
+        $("#profileImage").css({
+            "-webkit-transform": "rotate(" + currunt + "deg)",
+            "-moz-transform": "rotate(" + currunt + "deg)",
+            "transform": "rotate(" + currunt + "deg)" /* For modern browsers(CSS3)  */
+        });
+        $("#Img1").attr("data", currunt);
+        $("#profileImage").attr("data", currunt);
+    }
+</script>
+@Scripts.Render("~/Scripts/HelperJs/UserProfileHelper.js")
+<h2>उमेदवाराची माहिती</h2>
+<div class="widget_4">
+    <div class="col-md-12 widget_1_box1">
+        <div class="coffee">
+            <div class="coffee-top">
+                <a href="#">
+                    @if (!string.IsNullOrEmpty(Model.Img1))
+                    {
+                        <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                    }
+                    else
+                    {
+                        if (Model.Gender == "M")
+                        {
+                            <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_male.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                        }
+                        else
+                        {
+                            <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                        }
+                    }                   
+                </a>
+                <button type="button" class="glyphicon glyphicon-refresh" onclick="Rotate()"></button>
+                @if (ViewBag.IsAdmin)
+                {
+                    <input type="file" id="fileprofileImage" class="form-control1" required="required" />
+                            <button type="button" class="btn btn-default" onclick="Upload(@Model.UserId)">दाखल करा</button>
+                            
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 noPadding">
+        <div class="follow">
+            <div class="col-xs-6 two religiondiv">
+                <span>@Model.ReligionName</span>-
+                <span>@Model.CastName</span>
+            </div>
+            <div class="clearfix"> </div>
+            <button type="button" class="btn btn-default" onclick="SendMessage(@Model.UserId)">संदेश पाठवा</button>
+            <button type="button" class="btn btn-default" onclick="window.location='@Url.Action("Index", "UserProfile")'">शोध</button>
+            @if (ViewBag.IsAdmin)
+            {
+                if (@Model.IsActive.Value == true)
+                {
+                    <button type="button" class="btn btn-default" onclick="ApproveUser(@Model.UserId,false)">बंद करा</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-default" onclick="ApproveUser(@Model.UserId,true)">सक्रिय करा</button>
+                }
+                <button type="button" class="btn btn-default" onclick="RemoveUser(@Model.UserId)">काढून टाका</button>
+                <button type="button" class="btn btn-default" onclick="EditUser(@Model.UserId)">माहिती बदल</button>
+            }
+        </div>
+
+    </div>
+    <div class="col-md-4 stats-info stats-info1">
+        <div class="panel-heading">
+            <h4 class="panel-title">वैयक्तिक माहिती</h4>
+        </div>
+        <div class="panel-body panel-body2">
+            <ul class="list-unstyled">
+                @if (!string.IsNullOrEmpty(Model.Gender))
+                {
+                    if (Model.Gender == "M")
+                    {
+                        <li>नाव<div class="text-success pull-right"><h4>चि. @Model.FirstName @Model.LName</h4></div></li>
+                    }
+                    else
+                    {
+                        <li>नाव<div class="text-success pull-right"><h4>कु. @Model.FirstName @Model.LName</h4></div></li>
+                    }
+                }
+                else
+                {
+                    <li>नाव<div class="text-success pull-right"><h4>@Model.FirstName @Model.LName</h4></div></li>
+                }
+                @switch (Model.MarritalStatus)
+                {
+                    case 1:
+                        <li>वैवाहिक स्थिती<div class="text-success pull-right"><h4>अविवाहित</h4></div></li>
+                        break;
+                    case 2:
+                        <li>वैवाहिक स्थिती<div class="text-success pull-right"><h4>विधवा/विधुर</h4></div></li>
+                        break;
+                    case 3:
+                        <li>वैवाहिक स्थिती<div class="text-success pull-right"><h4>घटस्फोटित</h4></div></li>
+                        break;
+                    case 4:
+                        <li>वैवाहिक स्थिती<div class="text-success pull-right"><h4>वेगळे</h4></div></li>
+                        break;
+                }
+                @if (@Model.DateOfBirth != null)
+                {
+                    <li>जन्म तारीख<div class="text-success pull-right">@string.Format("{0:dd-MM-yyyy}", Model.DateOfBirth.Value)</div></li>
+                }
+                
+                <li>जन्म वेळ<div class="text-success pull-right">@Model.TimeofBirth</div></li>
+                <li>जन्मस्थान<div class="text-success pull-right">@Model.PlaceofBirth</div></li>
+                <li>रास<div class="text-success pull-right">@Model.OrasName</div></li>
+                <li>गोत्र<div class="text-success pull-right">@Model.Gotra</div></li>
+                <li>जन्म नाव<div class="text-success pull-right">@Model.BirthName</div></li>
+                <li>शिक्षण <div class="text-success pull-right">@Model.Qualification</div></li>
+                <li>उंची<div class="text-success pull-right">@Model.Height</div></li>
+                <li>वजन<div class="text-success pull-right">@Model.Weight</div></li>
+                <li>रक्त गट<div class="text-success pull-right">@Model.BloodGroupName</div></li>
+                <li>शरीर प्रकार<div class="text-success pull-right">@Model.BodyType</div></li>
+                @if (Model.Color == "0")
+                {
+                    <li>वर्ण<div class="text-success pull-right">--</div></li>
+                }
+                else
+                {
+                    <li>वर्ण<div class="text-success pull-right">@Model.Color</div></li>
+                }
+                @if (Model.IsJobOrBusiness != null && Model.IsJobOrBusiness == true)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right">नोकरी</div></li>
+                }
+                else if(Model.IsJobOrBusiness != null &&  Model.IsJobOrBusiness == false)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right">व्यवसाय</div></li>
+                }
+                else if (Model.IsJobOrBusiness == null)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right">--</div></li>
+                }
+                <li>नोकरी/व्यवसाय ठिकाण<div class="text-success pull-right">@Model.JobLocation</div></li>
+                <li>नोकरी/व्यवसाय माहिती<div class="text-success pull-right">@Model.CompanyName</div></li>
+                <li>वार्षिक उत्पन्न<div class="text-success pull-right">@Model.Income</div></li>
+                
+                <li>मोबाईल नंबर<div class="text-success pull-right">@Model.MobileNo</div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4 stats-info stats-info1">
+        <div class="panel-heading">
+            <h4 class="panel-title">कौटुंबिक माहिती</h4>
+        </div>
+        <div class="panel-body panel-body2">
+            <ul class="list-unstyled">
+                @if (!string.IsNullOrEmpty(Model.FathersName))
+                {
+                    <li>वडिलांचे नाव<div class="text-success pull-right">श्री @Model.FathersName</div></li>
+                }
+                else
+                {
+                    <li>वडिलांचे नाव<div class="text-success pull-right">--</div></li>
+                }
+                @if (!string.IsNullOrEmpty(Model.MothersName))
+                {
+                    <li>आईचे नाव<div class="text-success pull-right">@Model.MothersName</div></li>
+                }
+                else
+                {
+                    <li>आईचे नाव<div class="text-success pull-right">--</div></li>
+                }
+                @*@if (Model.IsJob != null && Model.IsJob == true)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right">नोकरी</div></li>
+                }
+                else if (Model.IsJob != null && Model.IsJob == false)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right">व्यवसाय</div></li>
+                }
+                else if (Model.IsJob == null)
+                {
+                    <li>नोकरी/व्यवसाय<div class="text-success pull-right"></div></li>
+                }*@
+                <li>वडिलांचे वार्षिक उत्पन्न<div class="text-success pull-right">@Model.FathersIncome</div></li>
+                <li>भाऊ<div class="text-success pull-right">@Model.BotherInfo</div></li>
+                <li>बहीण<div class="text-success pull-right">@Model.SisterInfo</div></li>
+                <li>पत्ता<div class="text-success pull-right">@Model.Address</div></li>
+                <li>शहर/गाव<div class="text-success pull-right">@Model.City</div></li>
+                <li>तालुका<div class="text-success pull-right">@Model.Taluka</div></li>
+                <li>जिल्हा<div class="text-success pull-right">@Model.District</div></li>
+                <li>मोबाईल नंबर<div class="text-success pull-right">@Model.Expr2</div></li>
+                <li>अपेक्षा<div class="text-success pull-right">@Model.Expectation</div></li>
+                <li>छंद<div class="text-success pull-right">@Model.Hobbies</div></li>
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div class="col-md-4 stats-info stats-info1">
+        <div class="panel-heading">
+            <h4 class="panel-title">नातेवाईकांची माहिती</h4>
+        </div>
+        <div class="panel-body panel-body2">
+            <input type="hidden" id="relativeinfo" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RelativeDetails)" />
+            <ul class="list-unstyled" id="divrelative"></ul>
+        </div>
+    </div>
+    <div class="clearfix"> </div>
+</div>
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel" >×</button>
+                <h2 class="modal-title">उमेदवाराचा फोटो</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    @if (!string.IsNullOrEmpty(Model.Img1))
+                    {
+                        <img class="img-responsive" id="Img1" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" data="0">
+                    }
+                    else
+                    {
+                        if (Model.Gender == "M")
+                        {
+                            <img class="media-object" src="@Url.Content("~/Content/Images/User_male.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                        }
+                        else
+                        {
+                            <img class="media-object" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                        }
+                        
+                    }    
+                </p>
+            </div>
+            <div class="modal-footer">
+                <span class="glyphicon glyphicon-refresh" onclick="Rotate()"></span>
+            </div>
+        </div>
+    </div>
+</div>

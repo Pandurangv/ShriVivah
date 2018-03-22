@@ -1,0 +1,76 @@
+﻿@model IQueryable<ShriVivah.Models.ContextModel.VendorModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+@Scripts.Render("~/bundles/HelperJs/VendorHelper")
+<div class="span_3" id="divMain">
+    <div class="span_3">
+        <input type="hidden" id="pagename" value="vendor" />
+        <input type="text" id="txtSearch" />
+        <input type="button" value="शोध" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="   स्थिर  " class="btn btn-default" id="btnReset" />
+        <input type="button" value="   नवीन" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th style="display:none">अ. क्र.</th>
+                    <th>व्यवसायाचे नाव</th>
+                    <th>पत्ता</th>
+                    <th>शहर/गाव</th>
+                    <th>मोबाईल नंबर</th>
+                    <th>नोंदणी तारीख </th>
+                    <th>समाप्ती तारीख</th>
+                    <th>बदल करा</th>
+                    <th>सक्रिय</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td style="display:none">@item.VendorId</td>
+                        <td>@item.VendorName</td>
+                        <td>@item.Address</td>
+                        <td>@item.City</td>
+                        <td>@item.ContactNo</td>
+                        <td>@string.Format("{0:dd-MM-yyyy}",item.RegistrationDate)</td>
+                        <td>@string.Format("{0:dd-MM-yyyy}", item.ExpiryDate)</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="बदल करा" onclick="EditVendor(@item.VendorId);" />
+                        </td>
+                        @if (@item.IsActive)
+                        {
+                            <td>
+                                <input type="button" class="btn-success btn" value="रद्द करा" onclick="ActiveDeactiveVendor(@item.VendorId , this);" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <input type="button" class="btn-success btn" value="सक्रिय करा" onclick="ActiveDeactiveVendor(@item.VendorId ,this);" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="createDiv" class="span_3" style="display:none">
+    @Html.Partial("_AddVendor", new ShriVivah.Models.ContextModel.VendorModel())
+</div>
+

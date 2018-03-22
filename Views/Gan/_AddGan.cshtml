@@ -1,0 +1,25 @@
+﻿@model ShriVivah.Models.Entities.tblGan
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmGan" })) 
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Gan Details</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.HiddenFor(m=>m.GanId)
+            <span>Gan Name</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GanName)
+                @Html.ValidationMessageFor(model => model.GanName)
+            </div>
+        </div>
+        <div class="span_3">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}
+

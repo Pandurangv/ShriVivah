@@ -1,0 +1,1209 @@
+﻿{
+     "menuprefix": 
+     [
+        {
+            "id": "1",
+            "Alias": "लगीनघाई",
+            "MenuType": "mnulaginghai",
+            "Lan": "mar"
+        },
+        {
+            "id": "2",
+            "Alias": "शोध",
+            "MenuType": "mnusearch",
+            "Lan": "mar"
+        },
+        {
+            "id": "3",
+            "Alias": "लॉग इन",
+            "MenuType": "mnulogin",
+            "Lan": "mar"
+        },
+        {
+            "id": "4",
+            "Alias": "आडनाव",
+            "MenuType": "mnusurname",
+            "Lan": "mar"
+        },
+		{
+            "id": "5",
+            "Alias": "नाव",
+            "MenuType": "mnuname",
+            "Lan": "mar"
+        },
+		{
+            "id": "6",
+            "Alias": "लिंग",
+            "MenuType": "mnugender",
+            "Lan": "mar"
+        },
+		{
+            "id": "7",
+            "Alias": "अविवाहित",
+            "MenuType": "mnusingle",
+            "Lan": "mar"
+        },
+        {
+            "id": "8",
+            "Alias": "विवाहित",
+            "MenuType": "mnumarried",
+            "Lan": "mar"
+        },
+        {
+            "id": "9",
+            "Alias": "पत्ता",
+            "MenuType": "mnuaddress",
+            "Lan": "mar"
+        },
+        {
+            "id": "10",
+            "Alias": "राज्य",
+            "MenuType": "mnustate",
+            "Lan": "mar"
+        },
+		{
+            "id": "11",
+            "Alias": "देश",
+            "MenuType": "mnucountry",
+            "Lan": "mar"
+        },
+		{
+            "id": "12",
+            "Alias": "मूळ ठिकाण",
+            "MenuType": "mnupermanentplace",
+            "Lan": "mar"
+        },
+		{
+            "id": "13",
+            "Alias": "जिल्हा",
+            "MenuType": "mnudistrict",
+            "Lan": "mar"
+        },
+        {
+            "id": "14",
+            "Alias": "आईचे नाव",
+            "MenuType": "mnumothername",
+            "Lan": "mar"
+        },
+        {
+            "id": "15",
+            "Alias": "वडिलांचे नाव",
+            "MenuType": "mnufatername",
+            "Lan": "mar"
+        },
+        {
+            "id": "16",
+            "Alias": "भाऊ",
+            "MenuType": "mnubrother",
+            "Lan": "mar"
+        },
+		{
+            "id": "17",
+            "Alias": "बहीण",
+            "MenuType": "mnusister",
+            "Lan": "mar"
+        },
+		{
+            "id": "18",
+            "Alias": "नातेवाईक नाव",
+            "MenuType": "mnurelativename",
+            "Lan": "mar"
+        },
+		{
+            "id": "19",
+            "Alias": "वय",
+            "MenuType": "mnuage",
+            "Lan": "mar"
+        },
+        {
+            "id": "20",
+            "Alias": "अपेक्षा",
+            "MenuType": "mnuexpectation",
+            "Lan": "mar"
+        },
+		{
+            "id": "21",
+            "Alias": "सवय",
+            "MenuType": "mnuhabbit",
+            "Lan": "mar"
+        },
+        {
+            "id": "22",
+            "Alias": "केटरर्स/आचारी",
+            "MenuType": "mnuketerars",
+            "Lan": "mar"
+        },
+        {
+            "id": "23",
+            "Alias": "संदर्भ",
+            "MenuType": "mnuref",
+            "Lan": "mar"
+        },
+        {
+            "id": "24",
+            "Alias": "पासवर्ड विसरलात?",
+            "MenuType": "mnuforgetpwd",
+            "Lan": "mar"
+        },
+		{
+            "id": "25",
+            "Alias": "फोटो",
+            "MenuType": "mnuphoto",
+            "Lan": "mar"
+        },
+		{
+            "id": "26",
+            "Alias": "धर्म",
+            "MenuType": "mnureligion",
+            "Lan": "mar"
+        },
+		{
+            "id": "27",
+            "Alias": "जात",
+            "MenuType": "mnucaste",
+            "Lan": "mar"
+        },
+        {
+            "id": "28",
+            "Alias": "उपजात",
+            "MenuType": "mnusubcaste",
+            "Lan": "mar"
+        },
+        {
+            "id": "29",
+            "Alias": "ई-मेल",
+            "MenuType": "mnuemail",
+            "Lan": "mar"
+        },
+        {
+            "id": "30",
+            "Alias": "पासवर्ड",
+            "MenuType": "mnupassword",
+            "Lan": "mar"
+        },
+		{
+            "id": "31",
+            "Alias": "पासवर्ड पुन्हा प्रविष्ट करा",
+            "MenuType": "mnupwdreenter",
+            "Lan": "mar"
+        },
+        {
+            "id": "32",
+            "Alias": "संपर्क",
+            "MenuType": "mnucontact",
+            "Lan": "mar"
+        },
+        {
+            "id": "33",
+            "Alias": "उमेदवाराचे नाव",
+            "MenuType": "mnuname",
+            "Lan": "mar"
+        },
+        {
+            "id": "34",
+            "Alias": "मदत",
+            "MenuType": "mnuhelp",
+            "Lan": "mar"
+        },
+		{
+            "id": "35",
+            "Alias": "मासिक उत्पन्न",
+            "MenuType": "mnuannualincome",
+            "Lan": "mar"
+        },
+		{
+            "id": "36",
+            "Alias": "शिक्षण",
+            "MenuType": "mnueducation",
+            "Lan": "mar"
+        },
+		{
+            "id": "37",
+            "Alias": "व्यवसाय",
+            "MenuType": "mnuoccupation",
+            "Lan": "mar"
+        },
+        {
+            "id": "38",
+            "Alias": "नोकरी",
+            "MenuType": "mnuservice",
+            "Lan": "mar"
+        },
+        {
+            "id": "39",
+            "Alias": "मोबाईल क्रमांक",
+            "MenuType": "mnumobnumber",
+            "Lan": "mar"
+        },
+        {
+            "id": "40",
+            "Alias": "फोन क्रमांक",
+            "MenuType": "mnuphonenumber",
+            "Lan": "mar"
+        },
+		{
+            "id": "41",
+            "Alias": "लँडलाईन क्रमांक",
+            "MenuType": "mnulandnumber",
+            "Lan": "mar"
+        },
+        {
+            "id": "42",
+            "Alias": "जन्मस्थान",
+            "MenuType": "mnubirthplace",
+            "Lan": "mar"
+        },
+        {
+            "id": "43",
+            "Alias": "जन्म वेळ",
+            "MenuType": "mnutimeofbirth",
+            "Lan": "mar"
+        },
+        {
+            "id": "44",
+            "Alias": "रक्तगट",
+            "MenuType": "mnubloodgroup",
+            "Lan": "mar"
+        },
+		{
+            "id": "45",
+            "Alias": "रास",
+            "MenuType": "mnuras",
+            "Lan": "mar"
+        },
+		{
+            "id": "46",
+            "Alias": "उंची",
+            "MenuType": "mnuheight",
+            "Lan": "mar"
+        },
+		{
+            "id": "47",
+            "Alias": "वजन",
+            "MenuType": "mnuweight",
+            "Lan": "mar"
+        },
+        {
+            "id": "48",
+            "Alias": "वर्ण",
+            "MenuType": "mnucomplesion",
+            "Lan": "mar"
+        },
+        {
+            "id": "49",
+            "Alias": "गोरा",
+            "MenuType": "mnuflai",
+            "Lan": "mar"
+        },
+        {
+            "id": "50",
+            "Alias": "गव्हाळ",
+            "MenuType": "mnuwhitish",
+            "Lan": "mar"
+        },
+		{
+            "id": "51",
+            "Alias": "निमगोरा",
+            "MenuType": "mnuwhitishbrown",
+            "Lan": "mar"
+        },
+        {
+            "id": "52",
+            "Alias": "शारीरिक स्थिती",
+            "MenuType": "mnuphysicalstatus",
+            "Lan": "mar"
+        },
+        {
+            "id": "53",
+            "Alias": "सामान्य",
+            "MenuType": "mnufit",
+            "Lan": "mar"
+        },
+        {
+            "id": "54",
+            "Alias": "शारीरिक व्यंग",
+            "MenuType": "mnuhandycap",
+            "Lan": "mar"
+        },
+		{
+            "id": "55",
+            "Alias": "शरीर प्रकार",
+            "MenuType": "mnubodytype",
+            "Lan": "mar"
+        },
+		{
+            "id": "56",
+            "Alias": "सरासरी",
+            "MenuType": "mnuaverage",
+            "Lan": "mar"
+        },
+		{
+            "id": "57",
+            "Alias": "सडपातळ",
+            "MenuType": "mnu",
+            "Lan": "mar"
+        },
+        {
+            "id": "58",
+            "Alias": "विधवा",
+            "MenuType": "mnuwidow",
+            "Lan": "mar"
+        },
+        {
+            "id": "59",
+            "Alias": "विधुर",
+            "MenuType": "mnuwidower",
+            "Lan": "mar"
+        },
+        {
+            "id": "60",
+            "Alias": "घटस्फोटीत",
+            "MenuType": "mnudivorse",
+            "Lan": "mar"
+        },
+		{
+            "id": "61",
+            "Alias": "मेहंदी/ब्युटी पार्लर",
+            "MenuType": "mnumehandi",
+            "Lan": "mar"
+        },
+        {
+            "id": "62",
+            "Alias": "नोंदणी",
+            "MenuType": "mnuregister",
+            "Lan": "mar"
+        },
+        {
+            "id": "63",
+            "Alias": "वधू",
+            "MenuType": "mnubride",
+            "Lan": "mar"
+        },
+        {
+            "id": "64",
+            "Alias": "वर",
+            "MenuType": "mnugroom",
+            "Lan": "mar"
+        },
+		{
+            "id": "65",
+            "Alias": "डेकोरेशन",
+            "MenuType": "mnudecoration",
+            "Lan": "mar"
+        },
+		{
+            "id": "66",
+            "Alias": "नियम व अटी",
+            "MenuType": "mnuterm",
+            "Lan": "mar"
+        },
+		{
+            "id": "67",
+            "Alias": "गोपनीयता धोरण",
+            "MenuType": "mnupolicy",
+            "Lan": "mar"
+        },
+        {
+            "id": "68",
+            "Alias": "संगीत",
+            "MenuType": "mnumusic",
+            "Lan": "mar"
+        },
+        {
+            "id": "69",
+            "Alias": "ट्रान्सपोर्ट",
+            "MenuType": "mnutransport",
+            "Lan": "mar"
+        },
+        {
+            "id": "70",
+            "Alias": "लग्नपत्रिका",
+            "MenuType": "mnumarriagecard",
+            "Lan": "mar"
+        },
+		{
+            "id": "71",
+            "Alias": "वडिलांचा व्यवसाय",
+            "MenuType": "fatheroccupation",
+            "Lan": "mar"
+        },
+        {
+            "id": "72",
+            "Alias": "मधले नाव",
+            "MenuType": "mnumiddlename",
+            "Lan": "mar"
+        },
+        {
+            "id": "73",
+            "Alias": "लॉग इन नाव",
+            "MenuType": "mnuloginname",
+            "Lan": "mar"
+        },
+        {
+            "id": "74",
+            "Alias": "भटजी",
+            "MenuType": "mnubhataji",
+            "Lan": "mar"
+        },
+		{
+            "id": "75",
+            "Alias": "स्वतंत्र",
+            "MenuType": "mnuseperate",
+            "Lan": "mar"
+        },
+		{
+            "id": "76",
+            "Alias": "गोत्र",
+            "MenuType": "mnugotra",
+            "Lan": "mar"
+        },
+		{
+            "id": "77",
+            "Alias": "माझ्या सोबत",
+            "MenuType": "mnuwithme",
+            "Lan": "mar"
+        },
+        {
+            "id": "78",
+            "Alias": "छंद",
+            "MenuType": "mnuhabbit",
+            "Lan": "mar"
+        },
+        {
+            "id": "79",
+            "Alias": "धंदा",
+            "MenuType": "mnubusiness",
+            "Lan": "mar"
+        },
+        {
+            "id": "80",
+            "Alias": "शारीरिक तपशील",
+            "MenuType": "mnuphysicaldtls",
+            "Lan": "mar"
+        },
+		{
+            "id": "81",
+            "Alias": "वैयक्तिक माहिती ",
+            "MenuType": "mnupersonaldetails",
+            "Lan": "mar"
+        },
+        {
+            "id": "82",
+            "Alias": "कंपनी नाव",
+            "MenuType": "mnucompanyname",
+            "Lan": "mar"
+        },
+        {
+            "id": "83",
+            "Alias": "पासपोर्ट फोटो",
+            "MenuType": "mnupassportphoto",
+            "Lan": "mar"
+        },
+        {
+            "id": "84",
+            "Alias": "कौटुंबिक माहिती",
+            "MenuType": "mnufamilydtls",
+            "Lan": "mar"
+        },
+		{
+            "id": "85",
+            "Alias": "कुंडली फोटो",
+            "MenuType": "mnukundali",
+            "Lan": "mar"
+        },
+		{
+            "id": "86",
+            "Alias": "व्यवसाय ठिकाण",
+            "MenuType": "mnubusinessplace",
+			"Lan": "mar"
+        },
+		{
+            "id": "87",
+            "Alias": "मुख्य फोटो",
+            "MenuType": "mnumainphoto",
+            "Lan": "mar"
+        },
+        {
+            "id": "88",
+            "Alias": "फटाके",
+            "MenuType": "mnucrackers",
+            "Lan": "mar"
+        },
+		{
+            "id": "89",
+            "Alias": "फोटोग्राफर/व्हिडिओ",
+            "MenuType": "mnuphotovideo",
+			"Lan": "mar"
+        },
+		{
+            "id": "90",
+            "Alias": "मंगल कार्यालय/लॉन्स",
+            "MenuType": "mnumarriagehall",
+            "Lan": "mar"
+        },
+		{
+            "id": "91",
+            "Alias": "प्रतिक्रिया",
+            "MenuType": "mnufeedback",
+            "Lan": "mar"
+        },
+        {
+            "id": "92",
+            "Alias": "सोनार",
+            "MenuType": "mnujweller",
+            "Lan": "mar"
+        },
+        {
+            "id": "93",
+            "Alias": "फेटेवाला",
+            "MenuType": "mnupheta",
+            "Lan": "mar"
+        },
+        {
+            "id": "94",
+            "Alias": "गुरव/गोंधळी",
+            "MenuType": "mnugurav",
+            "Lan": "mar"
+        },
+		{
+            "id": "95",
+            "Alias": "कासार",
+            "MenuType": "mnukasar",
+            "Lan": "mar"
+        },
+		{
+            "id": "96",
+            "Alias": "हार/पुष्पगुच्छ",
+            "MenuType": "mnubouque",
+			"Lan": "mar"
+        },
+		{
+            "id": "97",
+            "Alias": "घोडेवाला",
+            "MenuType": "mnughodewala",
+            "Lan": "mar"
+        },
+        {
+            "id": "98",
+            "Alias": "रुखवंत",
+            "MenuType": "mnukundali",
+            "Lan": "mar"
+        },
+		{
+            "id": "99",
+            "Alias": "उखाणे",
+            "MenuType": "mnubusinessplace",
+			"Lan": "mar"
+        },
+		{
+            "id": "100",
+            "Alias": "पूजा साहित्य",
+            "MenuType": "mnumainphoto",
+            "Lan": "mar"
+        },
+		{
+            "id": "101",
+            "Alias": "LaginGhai",
+            "MenuType": "mnulaginghai",
+            "Lan": "en"
+        },
+        {
+            "id": "102",
+            "Alias": "Search",
+            "MenuType": "mnusearch",
+            "Lan": "en"
+        },
+        {
+            "id": "103",
+            "Alias": "Login",
+            "MenuType": "mnulogin",
+            "Lan": "en"
+        },
+        {
+            "id": "104",
+            "Alias": "विवाह ठिकाण",
+            "MenuType": "mnumarriagehall",
+            "Lan": "en"
+        },
+		{
+            "id": "105",
+            "Alias": "First Name",
+            "MenuType": "mnuname",
+            "Lan": "en"
+        },
+		{
+            "id": "106",
+            "Alias": "Gender",
+            "MenuType": "mnugender",
+            "Lan": "en"
+        },
+		{
+            "id": "107",
+            "Alias": "Unmarried",
+            "MenuType": "mnusingle",
+            "Lan": "en"
+        },
+        {
+            "id": "108",
+            "Alias": "Married",
+            "MenuType": "mnumarried",
+            "Lan": "en"
+        },
+        {
+            "id": "109",
+            "Alias": "Address",
+            "MenuType": "mnuaddress",
+            "Lan": "en"
+        },
+        {
+            "id": "110",
+            "Alias": "State",
+            "MenuType": "mnustate",
+            "Lan": "en"
+        },
+		{
+            "id": "111",
+            "Alias": "Country",
+            "MenuType": "mnucountry",
+            "Lan": "en"
+        },
+		{
+            "id": "112",
+            "Alias": "Permanant Place",
+            "MenuType": "mnupermanentplace",
+            "Lan": "en"
+        },
+		{
+            "id": "113",
+            "Alias": "District",
+            "MenuType": "mnudistrict",
+            "Lan": "en"
+        },
+        {
+            "id": "114",
+            "Alias": "Mother Name",
+            "MenuType": "mnumothername",
+            "Lan": "en"
+        },
+        {
+            "id": "115",
+            "Alias": "Father Name",
+            "MenuType": "mnufatername",
+            "Lan": "en"
+        },
+        {
+            "id": "116",
+            "Alias": "Brother",
+            "MenuType": "mnubrother",
+            "Lan": "en"
+        },
+		{
+            "id": "117",
+            "Alias": "Sister",
+            "MenuType": "mnusister",
+            "Lan": "en"
+        },
+		{
+            "id": "118",
+            "Alias": "Relative Name",
+            "MenuType": "mnurelativename",
+            "Lan": "en"
+        },
+		{
+            "id": "119",
+            "Alias": "Age",
+            "MenuType": "mnuage",
+            "Lan": "en"
+        },
+        {
+            "id": "120",
+            "Alias": "Expectation",
+            "MenuType": "mnuexpectation",
+            "Lan": "en"
+        },
+		{
+            "id": "121",
+            "Alias": "Habbit",
+            "MenuType": "mnuhabbit",
+            "Lan": "en"
+        },
+        {
+            "id": "122",
+            "Alias": "Ketarars",
+            "MenuType": "mnuketarars",
+            "Lan": "en"
+        },
+        {
+            "id": "123",
+            "Alias": "Referance",
+            "MenuType": "mnuref",
+            "Lan": "en"
+        },
+        {
+            "id": "124",
+            "Alias": "Forget Password?",
+            "MenuType": "mnuforgetpwd",
+            "Lan": "en"
+        },
+		{
+            "id": "125",
+            "Alias": "Photo",
+            "MenuType": "mnuphoto",
+            "Lan": "en"
+        },
+		{
+            "id": "126",
+            "Alias": "Religion",
+            "MenuType": "mnureligion",
+            "Lan": "en"
+        },
+		{
+            "id": "127",
+            "Alias": "Caste",
+            "MenuType": "mnucaste",
+            "Lan": "en"
+        },
+        {
+            "id": "128",
+            "Alias": "Sub Caste",
+            "MenuType": "mnusubcaste",
+            "Lan": "en"
+        },
+        {
+            "id": "129",
+            "Alias": "Email ID",
+            "MenuType": "mnuemail",
+            "Lan": "en"
+        },
+        {
+            "id": "130",
+            "Alias": "Password",
+            "MenuType": "mnupassword",
+            "Lan": "en"
+        },
+		{
+            "id": "131",
+            "Alias": "Reenter Password",
+            "MenuType": "mnupwdreenter",
+            "Lan": "en"
+        },
+        {
+            "id": "132",
+            "Alias": "Contact Us",
+            "MenuType": "mnucontact",
+            "Lan": "en"
+        },
+        {
+            "id": "133",
+            "Alias": "Member",
+            "MenuType": "mnuname",
+            "Lan": "en"
+        },
+        {
+            "id": "134",
+            "Alias": "Help",
+            "MenuType": "mnuhelp",
+            "Lan": "en"
+        },
+		{
+            "id": "135",
+            "Alias": "Monthly Income",
+            "MenuType": "mnumonthlyincome",
+            "Lan": "en"
+        },
+		{
+            "id": "136",
+            "Alias": "Education",
+            "MenuType": "mnueducation",
+            "Lan": "en"
+        },
+		{
+            "id": "137",
+            "Alias": "Occupation",
+            "MenuType": "mnuoccupation",
+            "Lan": "en"
+        },
+        {
+            "id": "138",
+            "Alias": "Service",
+            "MenuType": "mnuservice",
+            "Lan": "en"
+        },
+        {
+            "id": "139",
+            "Alias": "Mobile No",
+            "MenuType": "mnumobnumber",
+            "Lan": "en"
+        },
+        {
+            "id": "140",
+            "Alias": "Phone No",
+            "MenuType": "mnuphonenumber",
+            "Lan": "en"
+        },
+		{
+            "id": "141",
+            "Alias": "Landline No",
+            "MenuType": "mnulandnumber",
+            "Lan": "en"
+        },
+        {
+            "id": "142",
+            "Alias": "Place of Birth",
+            "MenuType": "mnubirthplace",
+            "Lan": "en"
+        },
+        {
+            "id": "143",
+            "Alias": "Time of Birth",
+            "MenuType": "mnutimeofbirth",
+            "Lan": "en"
+        },
+        {
+            "id": "144",
+            "Alias": "Blood Group",
+            "MenuType": "mnubloodgroup",
+            "Lan": "en"
+        },
+		{
+            "id": "145",
+            "Alias": "Moonsign",
+            "MenuType": "mnuras",
+            "Lan": "en"
+        },
+		{
+            "id": "146",
+            "Alias": "Height",
+            "MenuType": "mnuheight",
+            "Lan": "en"
+        },
+		{
+            "id": "147",
+            "Alias": "Weight",
+            "MenuType": "mnuweight",
+            "Lan": "en"
+        },
+        {
+            "id": "148",
+            "Alias": "Complexion",
+            "MenuType": "mnucomplesion",
+            "Lan": "en"
+        },
+        {
+            "id": "149",
+            "Alias": "Fair",
+            "MenuType": "mnuflai",
+            "Lan": "en"
+        },
+        {
+            "id": "150",
+            "Alias": "Whitish",
+            "MenuType": "mnuwhitish",
+            "Lan": "en"
+        },
+		{
+            "id": "151",
+            "Alias": "Whitish Brown",
+            "MenuType": "mnuwhitishbrown",
+            "Lan": "en"
+        },
+        {
+            "id": "152",
+			   "Alias": "Physical Status",
+            "MenuType": "mnuphysicalstatus",
+            "Lan": "en"
+        },
+        {
+            "id": "153",
+            "Alias": "Normal",
+            "MenuType": "mnufit",
+            "Lan": "en"
+        },
+        {
+            "id": "154",
+            "Alias": "Physical Handicap",
+            "MenuType": "mnuhandycap",
+            "Lan": "en"
+        },
+		{
+            "id": "155",
+            "Alias": "Body Type",
+            "MenuType": "mnubodytype",
+            "Lan": "en"
+        },
+		{
+            "id": "156",
+            "Alias": "Average",
+            "MenuType": "mnuaverage",
+            "Lan": "en"
+        },
+		{
+            "id": "157",
+            "Alias": "Slip",
+            "MenuType": "mnu",
+            "Lan": "en"
+        },
+        {
+            "id": "158",
+            "Alias": "Widow",
+            "MenuType": "mnuwidow",
+            "Lan": "en"
+        },
+        {
+            "id": "159",
+            "Alias": "Widower",
+            "MenuType": "mnuwidower",
+            "Lan": "en"
+        },
+        {
+            "id": "160",
+            "Alias": "Divorse",
+            "MenuType": "mnudivorse",
+            "Lan": "en"
+        },
+		{
+            "id": "161",
+            "Alias": "Mehandi/Beauty Parlour",
+            "MenuType": "mnumehandi",
+            "Lan": "en"
+        },
+        {
+            "id": "162",
+            "Alias": "Register",
+            "MenuType": "mnuregister",
+            "Lan": "en"
+        },
+        {
+            "id": "163",
+            "Alias": "Bride",
+            "MenuType": "mnubride",
+            "Lan": "en"
+        },
+        {
+            "id": "164",
+            "Alias": "Groom",
+            "MenuType": "mnugroom",
+            "Lan": "en"
+        },
+		{
+            "id": "165",
+            "Alias": "Decoration",
+            "MenuType": "mnudecoration",
+            "Lan": "en"
+        },
+		{
+            "id": "166",
+            "Alias": "Terms and Condition",
+            "MenuType": "mnuterm",
+            "Lan": "en"
+        },
+		{
+            "id": "167",
+            "Alias": "Privacy Policy",
+            "MenuType": "mnupolicy",
+            "Lan": "en"
+        },
+        {
+            "id": "168",
+            "Alias": "Music",
+            "MenuType": "mnumusic",
+            "Lan": "en"
+        },
+        {
+            "id": "169",
+            "Alias": "Transport",
+            "MenuType": "mnutransport",
+            "Lan": "en"
+        },
+        {
+            "id": "170",
+            "Alias": "Invitation Card",
+            "MenuType": "mnumarriagecard",
+            "Lan": "en"
+        },
+		{
+            "id": "171",
+            "Alias": "Father's Occupation",
+            "MenuType": "fatheroccupation",
+            "Lan": "en"
+        },
+        {
+            "id": "172",
+            "Alias": "Middle Name",
+            "MenuType": "mnumiddlename",
+            "Lan": "en"
+        },
+        {
+            "id": "173",
+            "Alias": "Login Name",
+            "MenuType": "mnuloginname",
+            "Lan": "en"
+        },
+        {
+            "id": "174",
+            "Alias": "Bhataji",
+            "MenuType": "mnubhataji",
+            "Lan": "en"
+        },
+		{
+            "id": "175",
+            "Alias": "Seperated",
+            "MenuType": "mnuseperate",
+            "Lan": "en"
+        },
+		{
+            "id": "176",
+            "Alias": "Gotra",
+            "MenuType": "mnugotra",
+            "Lan": "en"
+        },
+		{
+            "id": "177",
+            "Alias": "With Me",
+            "MenuType": "mnuwithme",
+            "Lan": "en"
+        },
+        {
+            "id": "178",
+            "Alias": "Habbit",
+            "MenuType": "mnuhabbit",
+            "Lan": "en"
+        },
+        {
+            "id": "179",
+            "Alias": "Business",
+            "MenuType": "mnubusiness",
+            "Lan": "en"
+        },
+        {
+            "id": "180",
+            "Alias": "Physical Details",
+            "MenuType": "mnuphysicaldtls",
+            "Lan": "en"
+        },
+		{
+            "id": "181",
+            "Alias": "Personal Details",
+            "MenuType": "mnupersonaldetails",
+            "Lan": "en"
+        },
+        {
+            "id": "182",
+            "Alias": "Company Name",
+            "MenuType": "mnucompanyname",
+            "Lan": "en"
+        },
+        {
+            "id": "183",
+            "Alias": "Passport Photo",
+            "MenuType": "mnupassportphoto",
+            "Lan": "en"
+        },
+        {
+            "id": "184",
+            "Alias": "Family Details",
+            "MenuType": "mnufamilydtls",
+            "Lan": "en"
+        },
+		{
+            "id": "185",
+            "Alias": "Kundali Image",
+            "MenuType": "mnukundali",
+            "Lan": "en"
+        },
+		{
+            "id": "186",
+            "Alias": "Place of Business",
+            "MenuType": "mnubusinessplace",
+			"Lan": "en"
+        },
+		{
+            "id": "187",
+            "Alias": "Main Photo",
+            "MenuType": "mnumainphoto",
+            "Lan": "en"
+        },
+        {
+            "id": "188",
+            "Alias": "Crackers",
+            "MenuType": "mnucrackers",
+            "Lan": "en"
+        },
+		{
+            "id": "189",
+            "Alias": "Photo/Video",
+            "MenuType": "mnuphotovideo",
+			"Lan": "en"
+        },
+		{
+            "id": "190",
+            "Alias": "Marriage Hall/Lance",
+            "MenuType": "mnumarriagehall",
+            "Lan": "en"
+        },
+		{
+            "id": "191",
+            "Alias": "Feedback",
+            "MenuType": "mnufeeback",
+            "Lan": "en"
+        },
+        {
+            "id": "192",
+            "Alias": "Jweller",
+            "MenuType": "mnujweller",
+            "Lan": "en"
+        },
+        {
+            "id": "193",
+            "Alias": "Pagote",
+            "MenuType": "mnupheta",
+            "Lan": "en"
+        },
+        {
+            "id": "194",
+            "Alias": "Gurav",
+            "MenuType": "mnugurav",
+            "Lan": "en"
+        },
+		{
+            "id": "195",
+            "Alias": "Kasar",
+            "MenuType": "mnukasar",
+            "Lan": "en"
+        },
+		{
+            "id": "196",
+            "Alias": "Varmala",
+            "MenuType": "mnuvarmala",
+			"Lan": "en"
+        },
+		{
+            "id": "197",
+            "Alias": "Horse",
+            "MenuType": "mnuhorse",
+            "Lan": "en"
+        },
+        {
+            "id": "198",
+            "Alias": "Rukhawant",
+            "MenuType": "mnurukhawant",
+            "Lan": "en"
+        },
+		{
+            "id": "199",
+            "Alias": "Ukhane",
+            "MenuType": "mnuukhane",
+			"Lan": "en"
+        },
+		{
+            "id": "200",
+            "Alias": "Pooja Sahitya",
+            "MenuType": "mnupoojasahitya",
+            "Lan": "en"
+        }
+
+
+		
+    ]
+}
+

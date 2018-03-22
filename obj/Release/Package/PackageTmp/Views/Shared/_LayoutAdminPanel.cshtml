@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>वरमाला विवाह</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript">
+        addEventListener("load", function() 
+            { 
+                setTimeout(hideURLbar, 0); 
+            }, false); 
+        function hideURLbar(){ 
+            window.scrollTo(0,1); 
+        }
+    </script>
+    @Styles.Render("~/Content/Admincss")
+    @Scripts.Render("~/bundles/Adminjqueryindex")
+    @Scripts.Render("~/bundles/common")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ReadMessgesByUser();
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">वरमाला विवाह</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-nav navbar-right">
+                <li style="margin-top:20px;color:white">
+                    <span>
+                        स्वागत- @ViewBag.UserName
+                    </span>
+                </li>
+                <li class="dropdown" style="display:none">
+                    <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-envelope" style="font-size:50px !important;"></span>
+                    </a>
+                    <ul class="dropdown-menu" id="inmsg">
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                        @if (ViewBag.Gender == "M")
+                        {
+                            <img src="@Url.Content("~/Content/AdminPanel/images/male3.png")">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Content/AdminPanel/images/female1.png")">
+                        }
+                        <span class="badge"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-menu-header text-center"><strong>Account</strong></li>
+                        <li class="m_2" id="lilogout" onclick="Logout();"><a href="#"><i class="fa fa-lock"></i>लॉग आउट</a></li>
+                        <li class="m_2" id="lilogout" onclick="window.location='@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })'"><a href="#"><i class="fa fa-lock"></i>माझी माहिती</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="@Url.Action("Index", "UserProfile")"><i class="fa fa-dashboard fa-fw nav_icon"></i>डॅशबोर्ड</a>
+                        </li>
+                        @if (ViewBag.IsAdmin)
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-laptop nav_icon"></i>नोंदवही<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("Index","Religion")">धर्म</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Country")">देश </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "State")">राज्य</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Cast")">जात</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Gan")">गण</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","BloodGroup")">रक्तगट</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Qualification")">शिक्षण</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Oras")"> राशी</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","VendorType")">व्यवसाय प्रकार</a>
+                                    </li>
+                                    
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-indent nav_icon"></i>नोंदणी<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("Index", "UserProfile")">उमेदवार नोंदणी</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("NewUsers","UserProfile")">नवीन उमेदवार</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Vendor")">व्यवसाय नोंदणी</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Agent")">प्रतिनिधी</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })">माझी माहिती</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Feedback")">Feedback</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","PendingUsers")">Pending Users</a>
+                                    </li>
+                                    <li onclick="Logout();"><a href="#">लॉग आउट</a></li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-laptop nav_icon"></i>उमेदवाराची माहिती<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("EditProfile", "UserProfile")">माहिती बदल करा</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("UploadPhotos", "UserProfile")">फोटो दाखल करा</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "UserProfile")">जोडीदाराचा शोध</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Visitors", "UserProfile")">भेट देणारे</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })">माझी माहिती</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ChangePassword","UserProfile")">पासवर्ड बदल</a>
+                                    </li>
+                                    <li onclick="Logout();"><a href="#">लॉग आउट</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="graphs">
+                <div class="col_3">
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa groomicon icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.BridesCount</strong></h5>
+                                <span>वधू</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa brideicon icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.GroomCount</strong></h5>
+                                <span>वर</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa fa-users user1 icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.VisitorCount</strong></h5>
+                                <span><a href="@Url.Action("Visitors", "UserProfile")">भेट देणारा</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.TotalUsers</strong></h5>
+                                <span>नोंदणीकृत उमेदवार</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="content_bottom" id="contentdiv">
+                    @RenderBody()
+                    <div class="col-md-4 span_4">
+                        <div class="popup-box chat-popup" id="qnimate">
+                            <div class="popup-head" id="touserid">
+                                <div class="popup-head-left pull-left">
+                                    <span id="chatuser">User Name</span>
+                                </div>
+                                <div class="popup-head-right pull-right">
+                                    <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+                                        <i class="glyphicon glyphicon-off"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="popup-messages">
+                                <div class="direct-chat-messages" id="msguser">
+                                </div>
+                            </div>
+                            <div class="popup-messages-footer">
+                                <input id="status_message" type="text" placeholder="Type a message..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="copy">
+                    <p>Shree Soft Solutions-Pune.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/Scripts/AdminPanel/bootstrap.min.js")
+    <script type="text/javascript">
+        $(function () {
+            $("#addClass").click(function () {
+                $('#qnimate').addClass('popup-box-on');
+            });
+            $("#removeClass").click(function () {
+                $('#qnimate').removeClass('popup-box-on');
+            });
+        })
+    </script>
+</body>
+</html>

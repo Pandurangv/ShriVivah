@@ -1,0 +1,34 @@
+﻿@model ShriVivah.Models.Entities.tblState
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmState" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>राज्याची माहिती</h4>
+        @Html.HiddenFor(m=>m.StateId)
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>देशाचे नाव</span>
+                @Html.DropDownList("CountryId", ViewBag.CountryId as SelectList)
+                @Html.ValidationMessageFor(model => model.CountryId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>राज्याचे नाव</span>
+                @Html.EditorFor(model => model.StateName)
+                @Html.ValidationMessageFor(model => model.StateName)
+            </div>
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="सेव करा" class="btn btn-default" id="btnSave" />
+            <input type="button" value="बदल करा" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

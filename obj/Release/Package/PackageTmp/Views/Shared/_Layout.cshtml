@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>वरमाला विवाह</title>
+    @Styles.Render("~/Content/css")
+
+    <link href='http://varmalavivah.com/content/frontui/fonts/MANGAL.ttf' rel='stylesheet' type='text/css'>
+    @Scripts.Render("~/Scripts/FrontUI/jquery.min.js")
+    @Scripts.Render("~/bundles/jquery")
+    <script type="application/x-javascript">
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
+    </script>
+    @Scripts.Render("~/bundles/jquerymenus")
+    <script>$(document).ready(function () { $(".megamenu").megamenu(); });</script>
+    @Scripts.Render("~/bundles/jquerymodel")
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#horizontalTab').easyResponsiveTabs({
+            type: 'default', //Types: default, vertical, accordion
+            width: 'auto', //auto or any width like 600px
+            fit: true   // 100% fit in a container jqueryother
+        });
+    });
+    </script>
+    @Scripts.Render("~/bundles/jqueryother")
+    <script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1200);
+        });
+    });
+    </script>
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/jqueryindex")
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+        $('.popup-with-zoom-anim').magnificPopup({
+            type: 'inline',
+            fixedContentPos: false,
+            fixedBgPos: true,
+            overflowY: 'auto',
+            closeBtnInside: true,
+            preloader: false,
+            midClick: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
+        //ShowHideLogin();
+    });
+    
+    
+    </script>
+</head>
+<body>
+    <!-- header-section-starts -->
+    <div class="container">
+        <input type="hidden" id="loginStatus" value="@ViewBag.IsLogin"/>
+        <input type="hidden" id="hdnVendorType" value="@ViewBag.VendorTypes" />
+        <div class="main-content">
+            <div class="header">
+                <div class="logo">
+                    <a href="@Url.Action("Index","Home")"><h1>वरमाला विवाह</h1></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="bootstrap_container">
+                <nav class="navbar navbar-default w3_megamenu" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" data-toggle="collapse" data-target="#defaultmenu" class="navbar-toggle">
+                            <span class="icon-bar"></span><span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button><a href="@Url.Action("Index","Home")" class="navbar-brand"><i class="fa fa-home"></i></a>
+                    </div><!-- end navbar-header -->
+
+                    <div id="defaultmenu" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li id="lihome" class="active"><a href="@Url.Action("Index","Home")">होम</a></li>
+                            <li id="lireg"><a href="@Url.Action("Register","Account")">नोंदणी</a></li>
+                            <li id="liSearch"><a href="@Url.Action("Search", "Home")">शोध</a></li>
+                            <li id="liOther" class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">लगीनघाई<b class="caret"></b></a>
+                                <ul class="dropdown-menu" id="liOtherMenus">
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li id="liProfile" style="display:none"><a href="#">My Profile</a></li>
+                            <li id="liLogout" style="display:none" onclick="Logout();"><a href="#">लॉग आउट</a></li>
+                            <li id="licontact"><a href="@Url.Action("Contact", "Home")">संपर्क</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            <div class="main-banner">
+                <div class="banner col-md-8">
+                    <section class="slider">
+                        <div class="flexslider">
+                            <ul class="slides">
+                                <li>
+                                    <img src="@Url.Content("~/Content/FrontUI/images/pic1.jpg")" class="img-responsive" alt="" />
+                                </li>
+                                <li>
+                                    <img src="@Url.Content("~/Content/FrontUI/images/pic2.jpg")" class="img-responsive" alt="" />
+                                </li>
+                                <li>
+                                    <img src="@Url.Content("~/Content/FrontUI/images/pic3.jpg")" class="img-responsive" alt="" />
+                                </li>
+                                <li>
+                                    <img src="@Url.Content("~/Content/FrontUI/images/pic4.jpg")" class="img-responsive" alt="" />
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </section>
+                    <!-- FlexSlider -->
+                    @Scripts.Render("~/Scripts/FrontUI/jquery.flexslider.js")
+                    @Styles.Render("~/Content/FrontUI/flexslider.css")
+                    <script type="text/javascript">
+                        $(window).load(function () {
+                            $('.flexslider').flexslider({
+                                animation: "slide",
+                                start: function (slider) {
+                                    $('body').removeClass('loading');
+                                }
+                            });
+                            var lst = $("#hdnVendorType").val();
+                            lst = JSON.parse(lst);
+                            var url = GetVirtualDirectory();
+                            var html = "";
+                            $("#liOtherMenus").html(html);
+                            
+                            $.each(lst, function (i, item) {
+                                html += "<li><a href='@Url.Action("Vendors","Vendor")'>"+ item.VendorType +"</a></li>";
+                            });
+                            $("#liOtherMenus").html(html);
+                        });
+
+                    </script>
+                </div>
+                <div class="col-md-4 banner-right">
+                    <div class="grid_3 grid_5">
+                        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab" class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active" id="lisearch1">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home"
+                                       aria-expanded="true">लॉग-इन</a>
+                                </li>
+                                <li role="presentation"  id="lisearch2">
+                                    <a href="#fpassword" id="home-tab" role="tab" data-toggle="tab" aria-controls="fpassword-tab"
+                                       aria-expanded="true">पासवर्ड विसरला?</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <input type="text" id="usernammelogin" class="form-control" placeholder="लॉग-इन नाव" />
+                                    <br />
+                                    <input type="password" id="userpassword" class="form-control" placeholder="पासवर्ड" />
+                                    <hr />
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnLogin">लॉग-इन</button>
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Register","Account")">नवीन उमेदवार?</a>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="fpassword" aria-labelledby="fpassword-tab">
+                                    <input type="text" id="usernammeflogin" class="form-control" placeholder="लॉग-इन नाव" />
+                                    <br />
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnfPassword">दाखल करा</button>
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Register","Account")">नवीन उमेदवार?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="review-slider" id="contentdiv">
+                @RenderBody()
+            </div>
+                <div class="footer-top-grid">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="col-md-3 footer-left">
+                    <div class="f-mov-list">
+                        <h4>महत्वाच्या नोंदी</h4>
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">होम</a></li>
+                            <li><a href="@Url.Action("Contact","Home")">संपर्क</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 footer-left">
+                    <div class="f-mov-list">
+                        <ul>
+                            <li><a href="@Url.Action("Search", "Home")">शोध</a></li>
+                            <li><a href="@Url.Action("Register","Account")">नोंदणी</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 footer-left">
+                    <div class="f-mov-list">
+                        <ul>
+                            <li><a href="@Url.Action("Terms","Home")">नियम व अटी</a></li>
+                            <li><a href="@Url.Action("PrivacyPolicy","Home")">गोपनीयता धोरण</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="copy-rights text-center">
+                    <p>© 2015 All Rights Reserved | Design & Developed by <a href="#">Shree Soft Solutions-Pune</a></p>
+                </div>
+            </div>
+    <a href="#home" class="scroll" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+    
+</body>
+</html>

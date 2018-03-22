@@ -1,0 +1,24 @@
+﻿@model ShriVivah.Models.Entities.tblOras
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmOras" })) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=>m.OrasId)
+    <div class="form-horizontal">
+        <h4>राशीची माहिती</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>राशीचे नाव</span>
+                @Html.EditorFor(model => model.OrasName)
+                @Html.ValidationMessageFor(model => model.OrasName)
+            </div>
+        </div>
+        <div class="span_3">
+            <input type="button" value="सेव करा" class="btn btn-default" id="btnSave" />
+            <input type="button" value="बदल करा" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

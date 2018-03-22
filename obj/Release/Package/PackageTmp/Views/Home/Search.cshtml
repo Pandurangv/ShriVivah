@@ -1,0 +1,92 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Scripts.Render("~/Scripts/HelperJs/IndexHelper.js")
+<script type="text/javascript">
+    $(document).ready(function () {
+        SetActiveTab("search");
+    });
+
+    function RequestToUser(UserId) {
+        var islogin = $("#loginStatus").val().toLowerCase();
+        if (islogin == "true") {
+            SendProfileRequest(UserId);
+        }
+        else {
+            $("#lnklogin").trigger("click");
+        }
+    }
+</script>
+<div class="col-md-12 innerDiv">
+    <div class="regions">
+        <input type="hidden" id="pagename" value="true" />
+        <h3>उमेदवार माहिती</h3>
+        <input type="hidden" id="chkIsLogin" value="@ViewBag.IsLogin" />
+        @*<input type="hidden" id="UsersList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model)" />*@
+        <div class="clearfix"></div>
+        <input type="hidden" id="requeststatus" />
+        <div id="Container" class="col-lg-12">
+            @foreach (var item in Model)
+            {
+                if (!string.IsNullOrEmpty(item.Gender) 
+                    && !string.IsNullOrEmpty(item.ReligionName) 
+                    && !string.IsNullOrEmpty(item.CastName) 
+                    && !string.IsNullOrEmpty(item.DegreeName) 
+                    && !string.IsNullOrEmpty(item.Height))
+                {
+                    <div class="row" style="margin-top:10px;margin-bottom:10px;">
+                        <div class="col-md-2" id="@item.UserId" data="@item.Gender">
+                            @if (@item.Gender == "M")
+                            {
+                                <img src="@Url.Content("~/Content/Images/user_male.png")" />
+                            }
+                            else
+                            {
+                                <img src="@Url.Content("~/Content/Images/user_female.png")" />
+                            }
+                            
+                        </div>
+                        <div class="col-md-6 text-left">
+                            @if (ViewBag.IsLogin)
+                            {
+                                @item.FirstName  @item.LName
+                            }
+                            @item.ReligionName, @item.CastName,
+                            @item.DegreeName,
+                            @switch (item.MarritalStatus)
+                            {
+                                case 1:
+                                    <span>अविवाहित</span>
+                                    break;
+                                case 2:
+                                    <span>विधवा/विधुर</span>
+                                    break;
+                                case 3:
+                                    <span>घटस्फोटित</span>
+                                    break;
+                                case 4:
+                                    <span>वेगळे</span>
+                                    break;
+                            }
+                            वय: @item.Age
+                            उंची: @item.Height
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn btn-primary" onclick="RequestToUser(@item.UserId);" data="@item.UserId">
+                                प्रोफाइल पहा
+                            </div>
+                        </div>
+                    </div>
+                    
+                }
+            }
+        </div>
+        <div class="col-sm-12" style="margin-bottom:20px;">
+            <input type="button" value="आणखी पहा.." id="btnLoadMore" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+
+

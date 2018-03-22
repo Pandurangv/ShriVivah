@@ -1,0 +1,90 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Scripts.Render("~/Scripts/Main/SearchController.js")
+<script type="text/javascript">
+    $(document).ready(function () {
+        SetActiveTab("search");
+    });
+
+    function RequestToUser(UserId) {
+        var islogin = $("#loginStatus").val().toLowerCase();
+        if (islogin == "true") {
+            SendProfileRequest(UserId);
+        }
+        else {
+            $("#lnklogin").trigger("click");
+        }
+    }
+</script>
+
+<div class="col-md-12 innerDiv" data-ng-app="VarmalaVivahApp" data-ng-controller="SearchController">
+    <div class="regions">
+        <input type="hidden" id="pagename" value="true" />
+        <h3>उमेदवार माहिती</h3>
+        <input type="hidden" id="chkIsLogin" value="@ViewBag.IsLogin" />
+        @*<input type="hidden" id="UsersList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model)" />*@
+        <div class="clearfix"></div>
+        <input type="hidden" id="requeststatus" />
+        <div class="col-md-12" align="left">
+            <input type="text" data-ng-model="Prefix" placeholder="जोडीदाराचा शोध. नाव, जात, गोत्र ..." data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+            <input type="number" min="18" max="45" data-ng-model="MinAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+            <input type="number" min="18" max="45" data-ng-model="MaxAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+            <select style="width:100px;height:28px;" data-ng-model="SelectedQualification"
+                    data-ng-options="qualification.DegreeName for qualification in Qualifications"
+                    data-ng-change="FliterQualification(SelectedQualification)"></select>
+            <select style="width:100px;height:28px;" id="ddlCast"
+                    data-ng-click="FliterCaste()"></select>
+            <select style="width:100px;height:28px;" data-ng-click="FilterMarriage()" id="MarritalStatus">
+                <option value="0">--वैवाहिक स्थिती--</option>
+                <option value="1">अविवाहित</option>
+                <option value="2">विभक्त</option>
+                <option value="3">विधवा / विधुर</option>
+                <option value="4">घटस्फोटित</option>
+            </select>
+            <select style="width:100px;height:28px;" data-ng-click="FilterGender()">
+                <option value="0">--निवडा--</option>
+                <option value="M">वर</option>
+                <option value="M">वधू</option>
+            </select>
+            <span>
+                Result Count {{UserList.length}}
+            </span>
+            <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CasteId)" id="castelist" />
+            <input type="button" value="शोध" class="btn btn-default" data-ng-click="FilterList()" />
+            <input type="button" value="सुरवातीपासून" class="btn btn-default" data-ng-click="GetUserData()" />
+        </div>
+        <div id="Container" class="col-lg-12" data-ng-repeat="item in SearchUserList">
+            <div class="row">
+                <div class="col-md-1">
+                    <img src="@Url.Content("~/Content/Images/user_male.png")" data-ng-show="item.Gender=='M'" class="homeUserIcon"/>
+                    <img src="@Url.Content("~/Content/Images/user_female.png")" data-ng-show="item.Gender=='F'"  class="homeUserIcon"/>
+                </div>
+                <div class="col-md-11 text-left textcenteralign">
+                    <span data-ng-show="IsLogin">{{item.FirstName}} {{item.LName}} </span>
+                    {{item.ReligionName}}  {{item.CastName}}
+                    {{item.DegreeName}}
+                    वय:  {{item.Age}}
+                    उंची: {{item.Height}}
+                    <div class="btn btn-primary pull-right" onclick="RequestToUser(item);">
+                        प्रोफाइल पहा
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" style="margin-bottom:20px;">
+            <nav>
+                <ul class="pagination">
+                    <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+

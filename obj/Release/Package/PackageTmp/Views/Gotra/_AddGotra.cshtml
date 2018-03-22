@@ -1,0 +1,26 @@
+﻿@model ShriVivah.Models.Entities.tblGotra
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmGotra" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.HiddenFor(m=>m.GotraId)
+        <h4>Gotra Details</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>Gotra Name</span>
+                @Html.EditorFor(model => model.GotraName)
+                @Html.ValidationMessageFor(model => model.GotraName)
+            </div>
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}
+

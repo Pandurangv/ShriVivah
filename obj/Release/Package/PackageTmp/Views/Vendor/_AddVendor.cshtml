@@ -1,0 +1,142 @@
+﻿@model ShriVivah.Models.ContextModel.VendorModel
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmVendor" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            <h4>व्यावसायिकाची माहिती</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.VendorId)
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">व्यवसायाचे नाव:</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.VendorName, new { @class="form-control1"})
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">शहर/गाव :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">तालुका :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.Taluka, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">जिल्हा :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.District, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">राज्य :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.State, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">देश :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.Country, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">मोबाईल नंबर :</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">व्यवसायाची माहिती :</label>
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.BusinessDescription, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">नोंदणी तारीख :</label>
+                <div class="col-sm-8">
+                    <input type="date" id="RegistrationDate" required="required" class="form-control1" name="bday" format="dd/MM/yyyy" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">समाप्ती तारीख :</label>
+                <div class="col-sm-8">
+                    <input type="date" id="ExpiryDate" required="required" class="form-control1" name="bday" format="dd/MM/yyyy" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">व्यासायीकाचे नाव :</label>
+                <div class="col-sm-8">
+                    <input type="text" id="OwnerName" required="required" class="form-control1" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">ई-मेल :</label>
+                <div class="col-sm-8">
+                    <input type="email" id="EmailId" required="required" class="form-control1" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">पिनकोड :</label>
+                <div class="col-sm-8">
+                    <input type="number" id="Pincode" required="required" class="form-control1" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">प्रतिनिधीचे नाव :</label>
+                <div class="col-sm-8">
+                    @Html.DropDownList("AgentId", ViewBag.AgentId as SelectList, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">व्यवसायाचा प्रकार :</label>
+                <div class="col-sm-8">
+                    @Html.DropDownList("VendorTypeId", ViewBag.VendorTypeId as SelectList, new { @class = "form-control1" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">लोगो इमेज:</label>
+                <div class="col-sm-8">
+                    <input type="file" id="logoImage" class="form-control1" />
+                    <input type="hidden" id="logoImagehidden" />
+                    <input type="button" value="Upload" class="btn btn-default" onclick="Upload('LP')" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">मुख्य इमेज :</label>
+                <div class="col-sm-8">
+                    <input type="file" id="ProfileImage" class="form-control1" />
+                    <input type="hidden" id="ProfileImagehidden" />
+                    <input type="button" value="Upload" class="btn btn-default" onclick="Upload('DP')" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">उत्पादनाची(Product) इमेज :</label>
+                <div class="col-sm-8">
+                    <input type="file" id="productImage" class="form-control1" />
+                    <input type="hidden" id="productImagehidden" />
+                    <input type="button" value="Upload" class="btn btn-default" onclick="Upload('PP')" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">पत्ता :</label>
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control1" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <input type="button" value="सेव करा" class="btn btn-default" id="btnSave" />
+                    <input type="button" value="बदल करा" class="btn btn-default" id="btnUpdate" />
+                    <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

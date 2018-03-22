@@ -1,0 +1,102 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+@Scripts.Render("~/bundles/UserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        bindData();
+    })
+</script>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmEditUserProfile" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.HiddenFor(m => m.UserId)
+        <input type="hidden" id="pagename" value="editprofile">
+        <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+        @Html.ValidationSummary(true)
+        <input type="hidden" value="@ViewBag.UserDetails" id="UserDetails" />
+        <div class="form-group" id="contentdiv">
+            <div id="divPersonal">
+                <h3>वैयक्तिक माहिती</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">पत्ता</label>
+                    <div class="col-sm-8"><input type="text" id="txtAddress" class="form-control1" required="required" maxlength="50"  /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">शहर/गाव</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="City" class="form-control1" required="required" maxlength="50"  />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">तालुका</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="Taluka" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">जिल्हा</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="District" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">मोबाईल नंबर</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="MobileNo" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">जन्मस्थान</label>
+                    <div class="col-sm-8"><input type="text" id="PlaceOfBirth" class="form-control1" required="required" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">जन्म नाव</label>
+                    <div class="col-sm-8"><input type="text" id="txtBirthName" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">ई-मेल</label>
+                    <div class="col-sm-8"><input type="email" id="txtEmail" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">नोकरी/व्यवसाय  माहिती</label>
+                    <div class="col-sm-8"><input type="text" id="txtCompanyName" class="form-control1" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">नोकरी/व्यवसाय  ठिकाण</label>
+                    <div class="col-sm-8"><input type="text" id="txtCompanyLocation" class="form-control1"  /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">वजन</label>
+                    <div class="col-sm-8"><input type="number" min="40" max="140" id="weight" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="focusedinput">वार्षिक उत्पन्न</label>
+                    <div class="col-sm-8">
+                        <select id="cmbIncome" class="form-control1" name="txtIncome" required="required">
+                            <option selected="selected" value="">वार्षिक उत्पन्न निवडा</option>
+                            <option value="Under   Rs.50,000">Rs.50,000 पेक्षा कमी</option>
+                            <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                            <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                            <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                            <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                            <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                            <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                            <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                            <option value="Rs.10,00,001 and above">Rs.10,00,001 त्यापेक्षा जास्त </option>
+                            <option value="No Income">उत्पन्न नाही</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="span_3">
+                <input type="button" value="सेव करा" class="btn btn-default" id="btnUpdateUserData" onclick="UpdateUserData()" />
+                <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" />
+            </div>
+        </div>
+    </div>
+}

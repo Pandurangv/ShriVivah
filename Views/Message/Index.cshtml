@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var val = $("#SelectedUserId").val();
+        $("#UserId").val(val);
+    });
+</script>
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmSendMessage" }))
+{
+    @Html.AntiForgeryToken()
+    <span id="newTime"></span><br />
+    <br />
+    <input type="hidden" value="msg" id="prevpage" />
+    <input type="hidden" id="ActiveUserId" value="@ViewBag.ActiveUserId">
+    <span id="message"></span>
+    <div class="form-horizontal">
+        <div class="form-group" id="contentdiv">
+            <div id="divPersonal">
+                <h3>संदेश पाठवा</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("UserId", ViewBag.UserId as SelectList, new { @class = "form-control1", required = "required" })
+                        <input type="hidden" value="@ViewBag.SelectedUserId" id="SelectedUserId" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-8"><textarea type="text" class="textareawidth" id="MessageText" rows="5" cols="20"></textarea> </div>
+                </div>
+            </div>
+        </div>
+        <div class="span_3">
+            <input type="button" value="संदेश पाठवा" class="btn btn-default" id="btnSendMessage" onclick="SendMessage()" />
+            <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" onclick="window.location='@Url.Action("Index","UserProfile")'" />
+        </div>
+     </div>
+ }

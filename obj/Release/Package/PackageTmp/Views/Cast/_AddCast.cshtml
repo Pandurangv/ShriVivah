@@ -1,0 +1,32 @@
+﻿@model ShriVivah.Models.Entities.tblCast
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmCast" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>जातीची माहिती</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m=>m.CastId)
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>धर्माचे नाव</span>
+                @Html.DropDownList("ReligionId", ViewBag.ReligionId as SelectList)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>जातीचे नाव</span>
+                @Html.EditorFor(model => model.CastName)
+                @Html.ValidationMessageFor(model => model.CastName)
+            </div>
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="सेव करा" class="btn btn-default" id="btnSave" />
+            <input type="button" value="बदल करा" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

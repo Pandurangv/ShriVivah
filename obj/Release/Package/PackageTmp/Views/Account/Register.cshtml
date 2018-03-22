@@ -1,0 +1,117 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Register";
+}
+ <script type="text/javascript">
+     
+        $(document).ready(function () {
+            SetActiveTab("register");
+        });
+</script>
+@Scripts.Render("~/Scripts/Main/RegisterUserController.js")
+<div class="col-md-12 innerDiv" data-ng-app="VarmalaVivahApp" data-ng-controller="RegisterUserController">
+    <h3 class="h3color">उमेदवाराची नोंदणी</h3>
+    <input type="hidden" id="pagename" value="registeruser"/>
+    <hr />
+    <ng-form class="form-horizontal">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="text" placeholder="नाव*"  id="FirstName" maxlength="15" data-ng-blur="ValidateFName()"
+                       class="form-control setMargin"  />
+                <span class="h3color" data-ng-show="ErrorModel.IsFirstName">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="text" placeholder="वडिलांचे नाव*" id="MiddleName" data-ng-blur="ValidateMName()"
+                       maxlength="15" class="form-control setMargin" />
+                <span class="h3color" data-ng-show="ErrorModel.IsMiddleName">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="text" placeholder="आडनाव*" id="LastName" data-ng-blur="ValidateLName()"
+                       maxlength="15" class="form-control setMargin"/>
+                <span class="h3color" data-ng-show="ErrorModel.IsLastName">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="email" id="Email" data-ng-blur="ValidateEmail()"
+                       placeholder="ई-मेल*" 
+                       maxlength="50" class="form-control setMargin" />
+                <span class="h3color" data-ng-show="ErrorModel.IsEmail">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="text"  id="UserName" data-ng-blur="ValidateUserName()"
+                       placeholder="लॉग-इन नाव*" maxlength="20" class="form-control setMargin" />
+                <span class="h3color" data-ng-show="ErrorModel.IsUserName">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="password"  id="Password" data-ng-blur="ValidatePassword()"
+                       placeholder="पासवर्ड*" maxlength="10" class="form-control setMargin"  />
+                <span class="h3color" data-ng-show="ErrorModel.IsPassword">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="password" id="ConfirmPassword" data-ng-blur="ValidateConfirmPassword()"
+                       placeholder="पासवर्ड पुन्हा  प्रविष्ट*" maxlength="10" class="form-control setMargin"  />
+                <span class="h3color" data-ng-show="ErrorModel.IsConfirmPassword">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <input type="tel" id="ContactNo" placeholder="मोबाईल नंबर.*" maxlength="10" class="form-control setMargin" 
+                       data-ng-blur="ValidateContactNo()"/>
+                <span class="h3color" data-ng-show="ErrorModel.IsContactNo">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-8">
+                <input type="checkbox" id="termsandconditions" class="termandconditios" />
+                <label class="termandconditios" for="termsandconditions"><a href="@Url.Action("Terms","Home")" target="_blank"
+                      class="anchorcolor">मी सर्व अटी व नियम वाचले आहेत, मला सर्व अटी व नियम मान्य आहेत.</a></label>
+                <span class="h3color" data-ng-show="ErrorModel.IsTerms">
+                    {{ErrorMessage}}
+                </span>
+            </div>
+            
+        </div>
+            
+        <div class="col-md-12">
+            <div class="col-md-4" style="margin-bottom:30px;">
+                <input type="button" value="नोंद करा" class="btn btn-primary termandconditios" data-ng-click="Save(RegisterModel)">
+            </div>
+        </div>
+        
+</ng-form>
+</div>

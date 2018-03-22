@@ -1,0 +1,431 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            var btnId = $(this).attr("id");
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("AgentFirst", "Agent")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("AgentNext", "Agent")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("AgentPrev", "Agent")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("AgentLast", "Agent")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.UserList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+
+            });
+        });
+        $("#btnSearch").click(function () {
+            var prefix = $("#txtSearch").val();
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            if (prefix == "") {
+                //alert("Please fill search text!");
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "शोध माहिती भरा!",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "Agent")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.UserList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data) {
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "Agent")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#btnSave").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model =
+                {
+                    UserId: $("#UserId").val(),
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("#LastName").val(),
+                    Email: $("#EmailId").val(),
+                    City: $("#City").val(),
+                    UserName: $("#UserName").val(),
+                    Password: $("#Password").val(),
+                    UserType: "Agent",
+                    Taluka: $("#Taluka").val(),
+                    District: $("#District").val(),
+                    State: $("#State").val(),
+                    Address: $("#Address").val(),
+                    MobileNo: $("#ContactNo").val(),
+                    UserName: $("#UserName").val(),
+                };
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddAgent", "Agent")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.UserList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: "माहिती सेव केली आहे.",
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+        $("#UserName").change(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var username = $("#UserName").val();
+            if (username == "") {
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("ValidateUserName","Account")',
+                data: { username: username },
+                dataType: "json",
+                success: function (response) {
+                    if (response == true) {
+                        $("#UserName").val("");
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले आहे.",
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+        $("#btnUpdate").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model =
+                {
+                    UserId: $("#UserId").val(),
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("#LastName").val(),
+                    Email: $("#EmailId").val(),
+                    City: $("#City").val(),
+                    UserType:"Agent",
+                    Taluka: $("#Taluka").val(),
+                    District: $("#District").val(),
+                    State: $("#State").val(),
+                    Address: $("#Address").val(),
+                    MobileNo: $("#ContactNo").val(),
+                    UserName: $("#UserName").val(),
+                    Password: $("#Password").val(),
+                    
+                };
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "Agent")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.UserList);
+
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            clearValues();
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            clearValues();
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            $(cell).css("display", "none");
+            cell.innerHTML = SubCategorydata.UserId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.FirstName + " " + SubCategorydata.LName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.Address;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.MailId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.MobileNo;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.UserName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.Userd;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            $(btn).val("बदल करा");
+            $(btn).attr("onclick", "EditAgent(" + SubCategorydata.UserId + ");")
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditAgent(AgentId) {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
+        if (AgentId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { AgentId: AgentId },
+                url: '@Url.Action("Edit", "Agent")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#UserId").val(students.UserId);
+                    $("#FirstName").val(students.FirstName);
+                    $("#LastName").val(students.LastName);
+                    $("#EmailId").val(students.Email);
+                    $("#ContactNo").val(students.MobileNo);
+                    $("#City").val(students.City);
+                    $("#UserName").val(students.UserName);
+                    $("#Taluka").val(students.Taluka);
+                    $("#District").val(students.District);
+                    $("#State").val(students.State);
+                    $("#Address").val(students.Address);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        }
+    }
+
+    function clearValues() {
+        $("#UserId").val(0);
+        $("#FirstName").val("");
+        $("#LastName").val("");
+        //$("#Email").val("");
+        $("#UserName").val("");
+        $("#MobileNo").val("");
+        $("#City").val("");
+        $("#Taluka").val("");
+        $("#District").val("");
+        $("#State").val("");
+        $("#Address").val("");
+        $("#EmailId").val("");
+        $("#ContactNo").val("");
+        $("#Password").val("");
+        $("#ConfirmPassword").val("");
+    }
+
+    
+</script>
+<div class="span_3" id="divMain">
+    <div class="span_3">
+        <input type="text" id="txtSearch" />
+        <input type="hidden" value="agent" id="pagename" />
+        <input type="button" value="शोध" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="   स्थिर  " class="btn btn-default" id="btnReset" />
+        <input type="button" value="   नवीन" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th style="display:none">अ. क्र.</th>
+                    <th>प्रतिनिधीचे नाव</th>
+                    <th>पत्ता</th>
+                    <th>ई-मेल</th>
+                    <th>मोबाईल नंबर</th>
+                    <th>लॉग-इन नाव</th>
+                    <th>बदल करा</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td style="display:none">@item.UserId</td>
+                        <td>@item.FirstName &nbsp; @item.LName</td>
+                        <td>@item.Address</td>
+                        <td>@item.MailId</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.UserName</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="Edit" onclick="EditAgent(@item.UserId);" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="createDiv" class="span_3" style="display:none">
+    @Html.Partial("_AddAgent", new ShriVivah.Models.Entities.STP_GetUserDetail())
+</div>
+
+

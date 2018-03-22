@@ -1,0 +1,79 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+@Scripts.Render("~/bundles/UserProfile")
+<script type="text/javascript">
+    function NewUser(isnewuser)
+    {
+        if (isnewuser == true)
+        {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "तुमचे खाते 24 तासांच्या आत सक्रिय केले जाईल.",
+                Type: "alert",
+                OnOKClick: function () {
+                    window.location = '@Url.Action("LogOff","Account")';
+                }
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+        }
+        else {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "तुमची माहिती सेव केली आहे.",
+                Type: "alert",
+                OnOKClick: function () {
+                    window.location = '@Url.Action("Index","UserProfile")'
+                }
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+        }
+        
+    }
+</script>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+    <input type="hidden" id="hdnIsActive" value="@ViewBag.IsActive" />
+    <div class="form-horizontal">
+        <div class="form-group" id="contentdiv">
+            <div id="divUserProfile">
+                <h3>वैयक्तिक  माहिती</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">वैयक्तिक फोटो </label>
+                    <div class="col-sm-8"><input type="file" id="profileImage" class="form-control1" required="required" /></div>
+                </div>
+                <div class="spanupload">
+                    <input type="button" id="btnUpload" class="btn btn-default" value="Upload" onclick="Upload();" />
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">मुख्य फोटो</label>
+                    <div class="col-sm-8"><input type="file" id="profileMainImage" class="form-control1" required="required" /></div>
+                </div>
+                <div class="spanupload">
+                    <input type="button" id="btnUploadA" class="btn btn-default" value="Upload" onclick="UploadA();" />
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Kundali Image</label>
+                    <div class="col-sm-8"><input type="file" id="KundaliImage" class="form-control1" required="required" /></div>
+                </div>
+                <div class="spanupload">
+                    <input type="button" id="btnUploadB" class="btn btn-default" value="Upload" onclick="UploadB();" />
+                </div>
+            </div>
+            <div class="spanupload">
+                @if (@ViewBag.IsActive)
+                {
+                    <input type="button" class="btn btn-default" value="Save" onclick="NewUser();" />
+                }
+                else
+                {
+                    <input type="button" class="btn btn-default" value="Save" onclick="NewUser(true)" />
+                }
+            </div>
+        </div>
+    </div>
+}

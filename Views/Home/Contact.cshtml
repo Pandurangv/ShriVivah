@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Scripts.Render("~/bundles/HelperJs/VendorHelper")
+@Scripts.Render("~/Scripts/HelperJs/IndexHelper.js")
+<script type="text/javascript">
+    $(document).ready(function () {
+        SetActiveTab("contact");
+    })
+    
+</script>
+<div class="col-md-12 innerDiv">
+    <input type="hidden" id="pagename" value="contact" />
+    <h3 class="h3color">संपर्क</h3>
+    <div class="col-md-6" style="margin-bottom:20px;">
+        <p class="love">आम्हाला तुमच्या सूचना ऐकायला आवडेल.</p>
+        <ng-form name="frmContact" novalidate>
+            <input type="text" id="Name" class="form-control" placeholder="तुमचे नाव:" data-ng-blur="ValidateName()"
+                   maxlength="60">
+            <br />
+            <span class="h3color" data-ng-show="ErrorModel.IsName">
+                {{ErrorMessage}}
+            </span>
+            <br />
+            <input type="email" id="useremail" class="form-control" placeholder="ई-मेल:" data-ng-blur="ValidateEmail()"
+                   maxlength="80" >
+            <br />
+            <span class="h3color" data-ng-show="ErrorModel.IsEmail">
+                {{ErrorMessage}}
+            </span>
+            <br />
+            <textarea cols="77" rows="6" id="usermessage" class="form-control" placeholder="तुमचा संदेश" data-ng-blur="ValidateUserMessage()"></textarea>
+            <br />
+            <span class="h3color" data-ng-show="ErrorModel.IsUserMsg">
+                {{ErrorMessage}}
+            </span>
+            <br />
+            <div class="send">
+                <input type="button" value="Send" data-ng-click="SaveContacts()" class="btn btn-primary">
+            </div>
+        </ng-form>
+    </div>
+    <div class="col-md-6">
+        <p class="sed-para">आम्हाला आपल्या नोंदी पाठवा. हे आमच्या सेवा सुधारण्यासाठी उपयुक्त होईल</p>
+        <p class="para1"></p>
+        <div class="more-address">
+            <div class="address-more">
+                <p>वरमाला विवाह संस्था</p>
+                <p>शिव क्लासिक</p>
+                <p>नागेश्वर विद्यालयाच्या पाठीमागे</p>
+                <p>मोशी</p>
+            </div>
+            <div class="address-left">
+                <p>Pune</p>
+                <p>411019</p>
+                <p>मोबाईल नंबर</p>
+                <p></p>
+                <p>info@varmalavivah.com</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+	

@@ -1,0 +1,102 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "UserRequests";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+@Styles.Render("~/Content/AdminPanel/jquery-ui.css")
+@Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
+ 
+<div class="col-md-12" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="UserController">
+    <input type="hidden" id="UserId" value="@ViewBag.UserId" />
+    <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+    @if (ViewBag.IsAdmin)
+    {
+        <input type="hidden" id="IsAdmin" value="true" />
+    }
+    else
+    {
+        <input type="hidden" id="IsAdmin" value="false" />
+    }
+    <input type="hidden" id="pagename" value="userprofiles" />
+    <div class="col-md-12 topSet">
+        <input type="text" data-ng-model="Prefix" placeholder="जोडीदाराचा शोध. नाव, जात, गोत्र ..." data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <input type="number" min="18" max="45" data-ng-model="MinAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <input type="number" min="18" max="45" data-ng-model="MaxAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <select style="width:100px;height:28px;" data-ng-model="SelectedQualification"
+                data-ng-options="qualification.DegreeName for qualification in Qualifications"
+                data-ng-change="FliterQualification(SelectedQualification)"></select>
+        <select style="width:100px;height:28px;" id="ddlCast"
+                data-ng-click="FliterCaste()"></select>
+
+        <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CasteId)" id="castelist" />
+        <input type="button" value="शोध" class="btn btn-default" data-ng-click="FilterList()" />
+        <input type="button" value="सुरवातीपासून" class="btn btn-default" data-ng-click="GetUserData()" />
+    </div>
+    <div class="col-md-12">
+        <select style="width:100px;height:28px;"  data-ng-click="FilterMarriage()" id="MarritalStatus">
+            <option value="0" >--वैवाहिक स्थिती--</option>
+            <option value="1">अविवाहित</option>
+            <option value="2">विभक्त</option>
+            <option value="3">विधवा / विधुर</option>
+            <option value="4">घटस्फोटित</option>
+        </select>
+        <span>
+            Result Count {{UserList.length}}
+        </span>
+    </div>
+    <div class="row" id="maindiv" data-ng-repeat="user in SearchUserList">
+        <div class="col-md-12 divPadding">
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object"
+                             ng-src="{{user.Img1}}"
+                             style="width: 55px; height: 55px;">
+                    </a>
+                    @*<span class="glyphicon glyphicon-refresh" onclick="Rotate(user.UserId)"></span>*@
+                </div>
+                <div class="media-body" data-ng-switch="user.MarritalStatus">
+                    <input type="hidden" id="user.UserId" value="user.UserId" />
+                    <span class="mediaprofilestrong spanStyle">{{user.Gender=='M'?'Mr.':'Mrs.'}} {{user.FirstName}} {{user.LName}}</span>
+                    @if (ViewBag.IsAdmin == true)
+                    {
+                        <span>( {{user.IsActive=='false'?'नवीन उमेदवार':'सक्रिय'}} )</span>
+                    }
+                    <span ng-switch-when="null">( --- )</span>
+                    <span ng-switch-when="1">( अविवाहित )</span>
+                    <span ng-switch-when="2">( विभक्त )</span>
+                    <span ng-switch-when="3">( विधवा / विधुर )</span>
+                    <span ng-switch-when="4">( घटस्फोटित )</span>
+                    <p class="mediaprofile">
+                        शिक्षण- {{user.Qualification}}, &nbsp;&nbsp; उंची - {{user.Height}}, &nbsp;&nbsp; धर्म - {{user.ReligionName}},
+                        &nbsp;&nbsp; जात - {{user.CastName}}, &nbsp;&nbsp;
+                        वय- {{user.Age}}, &nbsp;&nbsp; राशी- {{user.OrasName}} &nbsp;&nbsp;{{user.Address}} <br />
+                    </p>
+                    @if (ViewBag.IsAdmin == true)
+                    {
+                        <input type="button" value="पासवर्ड पाठवा" data-ng-click="SendSMS(user.UserId)" class="btn btn-default btnStyle" />
+                        <input type="button" value="विवाह झाला" class="btn btn-default btnStyle" data-ng-click="MarriageDone(user.UserId)" />
+                    }
+                    <input type="button" value="संपूर्ण माहिती पहा." data-ng-click="ViewProfile(user.UserId)" class="btn btn-default btnStyle" /> &nbsp;&nbsp;
+                    <input type="button" value="संदेश पाठवा" class="btn btn-default btnStyle" data-ng-click="SendMessage(user.UserId)" />
+
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Main/UserProfileController.js")
+

@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Home Page";
+}
+<div class="row">
+    <input type="hidden" value="homepage" id="pagename" />
+    <div class="col-sm-4" data-ng-repeat="vtype in VendorTypes">
+        <div class="card">
+            <div class="card-block" data-ng-click="RedirectToVendorList()">
+                <h4 class="card-title">{{vtype.VendorType}}</h4>
+                <h6 class="card-subtitle text-muted">{{vtype.VendorType}}</h6>
+            </div>
+            <img src="{{vtype.TypeImagesPath}}" alt="Card image" class="img-rounded" data-ng-click="RedirectToVendorList()">
+            <div class="card-block">
+                <p class="card-text" data-ng-click="RedirectToVendor()">आपला व्यवसाय वाढवण्यासाठी येथे नोंदणी करा.</p>
+                <button type="button" class="btn btn-primary" data-ng-click="RedirectToVendor()">नोंदणी</button>
+            </div>
+        </div>
+    </div>
+</div>
+   
+    

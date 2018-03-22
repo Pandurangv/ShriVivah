@@ -1,0 +1,361 @@
+﻿@model IQueryable<ShriVivah.Models.DataModels.CityModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("CityFirst", "City")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("CityNext", "City")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("CityPrev", "City")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("CityLast", "City")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CityList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill search text!",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "City")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CityList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "City")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                }
+            });
+        });
+
+        //$("a").click(function () {
+        //    var BGId = this.id;
+        //    Edit(BGId);
+        //});
+
+        $("#btnSave").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model = $('#frmCity').serialize();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddCity", "City")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CityList);
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+        $("#btnUpdate").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model = $('#frmCity').serialize();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "City")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CityList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#CountryId").change(function () {
+            var cid = $(this).val();
+            if (cid>0) {
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '@Url.Action("GetStatesByCountry", "State")',
+                    data: { CountryId: cid },
+                    success: function (data) {
+                        $('#StateId').children('option:not(:first)').remove();
+                        //For spoke ddl
+                        var items1 = "";
+
+                        $.each(data, function (i, item) {
+                            items1 += "<option value=\"" + item.StateId + "\">" + item.StateName + "</option>";
+                        });
+                        $("#StateId").append(items1);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Error during process: \n' + xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            $("#CityId").val("");
+            $("#CityName").val("");
+            $("#CountryId").val("0");
+            $("#StateId").val("0");
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            $("#CityId").val("");
+            $("#CityName").val("");
+            $("#StateId").val("0");
+            $("#CountryId").val("0");
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CityId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CountryName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.StateName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CityName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.CityId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            $(btn).val("बदल करा");
+            //<input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(item.ReligionId);" />
+            //btn.innerHTML = "Edit";
+            //cell.appendChild(a);
+            $(btn).attr("onclick", "EditCity(" + SubCategorydata.CityId + ");")
+            //$(a).click(function () {
+            //    var BGId = this.id;
+            //    Edit(BgId);
+            //});
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditCity(BGId)
+    {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
+        if (BGId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { BGId: BGId },
+                url: '@Url.Action("Edit", "City")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#CityName").val(students.CityName);
+                    $("#CityId").val(students.CityId);
+                    $("#StateId").val(students.StateId);
+                    $("#CountryId").val(students.CountryId);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                    
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    //var spinner = new Spinner().spin();
+                    document.getElementById("contentdiv").appendChild(spinner.el);
+                }
+            });
+        }
+    }
+</script>
+<div class="span_3" id="divMain">
+    <div class="span_3">
+        <input type="text" id="txtSearch" />
+        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
+        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Country Name</th>
+                    <th>State Name</th>
+                    <th>City Name</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td>@item.CityId</td>
+                        <td>@item.CountryName</td>
+                        <td>@item.StateName</td>
+                        <td>@item.CityName</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="Edit" onclick="EditCity(@item.CityId);" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="createDiv" class="span_3" style="display:none">
+    @Html.Partial("_AddCity", new ShriVivah.Models.Entities.tblCity())
+</div>
+

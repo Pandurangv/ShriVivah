@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Married";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Scripts.Render("~/Scripts/Main/MarriedController.js")
+
+<div class="col-md-12 innerDiv" data-ng-app="VarmalaVivahApp" data-ng-controller="MarriedController">
+    <h3>उमेदवार माहिती</h3>
+    <div class="row">
+        <div id="Container" class="col-lg-12" data-ng-repeat="user in UserList">
+            <div class="col-md-6">
+                <img src="@Url.Content("~/Content/Images/user_male.png")" data-ng-show="user.Gender==='M'" />
+                <img src="@Url.Content("~/Content/Images/user_female.png")" data-ng-show="user.Gender==='F'" />
+            </div>
+            <div class="col-md-6 text-left">
+                {{user.FirstName}} {{user.LName}},
+                {{user.ReligionName}}, {{user.CastName}},
+                {{user.DegreeName}}, {{user.Age}}, {{user.Height}}
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <nav>
+                <ul class="pagination">
+                    <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
+                    <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+ </div>
