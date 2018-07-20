@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using ShriVivah.Models.Filters;
 
 namespace ShriVivah.Controllers
 {
@@ -24,6 +24,7 @@ namespace ShriVivah.Controllers
         // GET: Feedback
         // GET: BloodGroup
         [MyAuthorizeAttribute(IsAdmin = true)]
+        [CustomView]
         public ActionResult Index()
         {
             this.LoadIsAdmin();
@@ -57,7 +58,7 @@ namespace ShriVivah.Controllers
                 FeedbackDetails obj = new FeedbackDetails()
                 {
                     Status = false,
-                    ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -126,7 +127,7 @@ namespace ShriVivah.Controllers
                     FeedbackDetails obj = new FeedbackDetails()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -162,7 +163,7 @@ namespace ShriVivah.Controllers
                     FeedbackDetails obj = new FeedbackDetails()
                     {
                         Status = false,
-                        ErrorMessage = "तुम्ही पहिल्याच पानावर आहात.",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात.",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }

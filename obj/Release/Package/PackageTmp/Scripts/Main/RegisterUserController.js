@@ -13,7 +13,8 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         IsPassword: false,
         IsConfirmPassword: false,
         IsContactNo: false,
-        IsTerms:false,
+        IsTerms: false,
+        IsGender:false,
     };
 
     $scope.RegisterModel = { FirstName: "", MiddleName: "", LastName: "", Email: "", UserName: "", Password: "", ConfirmPassword: "", ContactNo: "" };
@@ -75,12 +76,12 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
     }
 
-    
+    $scope.IsRegistrationSuccess = false;
+    $scope.OTP = "";
 
     $scope.Save = function (model)
     {
         var reg = new RegExp("[a-zA-Z]");
-
         if ($("#FirstName").val()=="") {
             $scope.ErrorModel.IsFirstName = true;
             $scope.ErrorMessage = "First name should be filled.";
@@ -115,10 +116,18 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             $scope.ErrorMessage = "User Name should be filled.";
             return false;
         }
-        reg = new RegExp(/^[A-Za-z0-9]+$/);
-        if (!reg.test($("#UserName").val())) {
-            $scope.ErrorModel.IsUserName = true;
-            $scope.ErrorMessage = "User Name should be alphanumeric.";
+        reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)[a-zA-Z0-9]+$/g);
+        if ($("#branding").val()!="SPMO") {
+            if (!reg.test($("#UserName").val())) {
+                $scope.ErrorModel.IsUserName = true;
+                $scope.ErrorMessage = "User Name should be alphanumeric.";
+                return false;
+            }
+        }
+        
+        if ($("#ddlGender").val() == "") {
+            $scope.ErrorModel.IsGender = true;
+            $scope.ErrorMessage = "Please select gender.";
             return false;
         }
         if ($("#Password").val() == "") {
@@ -152,9 +161,94 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             $scope.ErrorMessage = "Please select terms and conditions.";
             return false;
         }
+
         $("#spanvalidate").hide();
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdivbody").appendChild(spinner.el);
+        ShowLoader();
+        $scope.RegisterModel = {
+            FirstName: $("#FirstName").val().toUpperCase(),
+            MiddleName: $("#MiddleName").val().toUpperCase(),
+            LastName: $("#LastName").val().toUpperCase(),
+            Email: $("#Email").val(),
+            UserName: $("#UserName").val(),
+            Password: $("#Password").val(),
+            ConfirmPassword: $("#ConfirmPassword").val(),
+            MobileNo: $("#ContactNo").val().toUpperCase(),
+            Gender: $("#ddlGender").val().toUpperCase()
+        };
+        if ($scope.IsRegistrationSuccess==false) {
+            var url = GetVirtualDirectory();
+            if ($("#branding").val() == "SPMO") {
+                url = url + '/account/RegisterUserForOTP';
+            }
+            else {
+                url = url + '/account/RegisterUser';
+            }
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                data: $scope.RegisterModel,
+            }
+
+            $http(req).then(function (response) {
+                HideLoader();
+                if ($("#branding").val() == "SPMO") {
+                    $scope.IsRegistrationSuccess = true;
+                    $scope.OTP = response.data.ModelObject.OTP;
+                    $scope.SaveWithOTP();
+                }
+                else {
+                    if (response.data.Status == true) {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: response.data.ErrorMessage,
+                            Type: "alert",
+                            OnOKClick: function () {
+                                window.location = url + "/UserProfile/Index";
+                            },
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: response.data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                }
+            },
+            function (response) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: response.data.ErrorMessage,
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                HideLoader();
+            });
+        }
+        else {
+            $scope.SaveWithOTP();
+        }
+    }
+
+    $scope.SaveWithOTP = function () {
+        if ($("#OTP").val() == "") {
+            $scope.ErrorModel.IsOTP = true;
+            $scope.ErrorMessage = "OTP should be filled!";
+            return false;
+        }
+        if ($("#OTP").val().toLowerCase() != $scope.OTP.toLowerCase()) {
+            $scope.ErrorModel.IsOTP = true;
+            $scope.ErrorMessage = "Invalid OTP!";
+            return false;
+        }
+        ShowLoader();
+        var url = GetVirtualDirectory();
         $scope.RegisterModel = {
             FirstName: $("#FirstName").val(),
             MiddleName: $("#MiddleName").val(),
@@ -164,11 +258,12 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             Password: $("#Password").val(),
             ConfirmPassword: $("#ConfirmPassword").val(),
             MobileNo: $("#ContactNo").val(),
+            Gender: $("#ddlGender").val()
         };
-        var url = GetVirtualDirectory();
+        var newurl = url + '/account/RegisterUser';
         var req = {
             method: 'POST',
-            url: url + '/account/RegisterUser',
+            url: newurl,
             headers: {
                 'Content-Type': "application/json"
             },
@@ -176,6 +271,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
 
         $http(req).then(function (response) {
+            HideLoader();
             if (response.data.Status == true) {
                 var objShowCustomAlert = new ShowCustomAlert({
                     Title: "",
@@ -195,7 +291,6 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
             }
-            document.getElementById("contentdivbody").removeChild(spinner.el);
         },
         function (response) {
             var objShowCustomAlert = new ShowCustomAlert({
@@ -204,7 +299,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
                 Type: "alert",
             });
             objShowCustomAlert.ShowCustomAlertBox();
-            document.getElementById("contentdivbody").removeChild(spinner.el);
+            HideLoader();
         });
     }
 

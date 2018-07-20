@@ -212,12 +212,14 @@ namespace ShriVivah.Models
 
         public bool IsAdmin { get; set; }
 
+        public bool IsAgent { get; set; }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var session = filterContext.HttpContext.Session;
             if (session["ActiveUser"] != null)
             {
-                tblUser user = (tblUser)filterContext.HttpContext.Session["ActiveUser"];
+                STP_GetUserDetail user = (STP_GetUserDetail)filterContext.HttpContext.Session["ActiveUser"];
                 if (user.UserType.Equals("Admin", StringComparison.CurrentCultureIgnoreCase)==false && IsAdmin)
                 {
                     if (filterContext.HttpContext.Request.IsAjaxRequest())
@@ -233,15 +235,21 @@ namespace ShriVivah.Models
                     }
                     else
                     {//Redirect him to somewhere.
-                        var redirectTarget = new System.Web.Routing.RouteValueDictionary(new { action = "Index", controller = "Home", area = "" });
-                        filterContext.Result = new RedirectToRouteResult(redirectTarget);
+                        if (IsAgent)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var redirectTarget = new System.Web.Routing.RouteValueDictionary(new { action = "Index", controller = "Home", area = "" });
+                            filterContext.Result = new RedirectToRouteResult(redirectTarget);
+                        }
                     }
                 }
                 else
                 {
                     return; 
                 }
-                
             }
             else
             {

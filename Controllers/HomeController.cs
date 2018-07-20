@@ -1,6 +1,7 @@
 ﻿using ShriVivah.Models;
 using ShriVivah.Models.ContextModel;
 using ShriVivah.Models.Entities;
+using ShriVivah.Models.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,16 +41,17 @@ namespace ShriVivah.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+        [CustomView]
         public ActionResult Index()
         {
             this.loadViewBag();
-            return View();
+            return View("Index");
         }
 
         public ActionResult Contact()
         {
             this.loadViewBag();
-            return View();
+            return string.IsNullOrEmpty(SettingsManager.Instance.Branding)?View():View("ContactUs");
         }
 
         public ActionResult PrivacyPolicy()
@@ -303,7 +305,7 @@ namespace ShriVivah.Controllers
                     ResponseModel obj = new ResponseModel()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -344,7 +346,7 @@ namespace ShriVivah.Controllers
             {
                 ResponseModel model = new ResponseModel()
                 {
-                    ErrorMessage = "Your request has been sent for approval.",
+                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "Your request has been sent for approval.",
                     Status = false,
                 };
                 bool Success=false;
@@ -352,14 +354,14 @@ namespace ShriVivah.Controllers
                 if (requestedUser.Gender.ToUpper()==SessionManager.GetInstance.ActiveUser.Gender.ToUpper())
                 {
                     Success = false;
-                    model.ErrorMessage = "Not able to send request.";
+                    model.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestSentFailed : "Not able to send request.";
                 }
                 else
                 {
                      Success= objUser.SendRequest(RequestUserId, SessionManager.GetInstance.ActiveUser.UserId);
                      if (Success==false)
                      {
-                         model.ErrorMessage = "Request already sent for approval.";
+                         model.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestAlreadySent : "Request already sent for approval.";
                      }
                 }
                 model.Status = Success;
@@ -367,7 +369,7 @@ namespace ShriVivah.Controllers
             }
             else
             {
-                return Json(new ResponseModel() { Status = false, ErrorMessage = "Please do login before send request." });
+                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestLogin : "Please do login before send request." });
             }
         }
 
@@ -410,13 +412,13 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.ReligionName, Value = tbl.ReligionId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---Select Religion---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Religion---" : "---Select Religion---", Value = "0" });
             target.ViewBag.ReligionId = lstData;
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---Select Rashi---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---Select Rashi---", Value = "0" });
 
             target.ViewBag.OrasId = lstData;
             
@@ -425,13 +427,13 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---Select Qualification---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Qualification---" : "---Select Qualification---", Value = "0" });
 
             CastContextModel objC = new CastContextModel();
             lstData = (from tbl in objC.GetCasts()
                        select new SelectListItem { Text = tbl.CastName, Value = tbl.CastId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             target.ViewBag.CasteId = lstData;
 
             target.ViewBag.QualificationId = lstData;
@@ -468,6 +470,7 @@ namespace ShriVivah.Controllers
                     }
                     target.ViewBag.VisitorCount = user.GetVisitors().Count();
                 }
+                target.ViewBag.Title = SettingsManager.Instance.Branding;
             }
             catch (Exception)
             {

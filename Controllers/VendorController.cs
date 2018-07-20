@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ShriVivah.Models.Filters;
+using ShriVivah.Models.Entities;
 
 namespace ShriVivah.Controllers
 {
@@ -32,34 +34,47 @@ namespace ShriVivah.Controllers
             return View();
         }
 
-        [MyAuthorizeAttribute(IsAdmin = true)]
+        [MyAuthorizeAttribute(IsAdmin = true,IsAgent=true)]
+        [CustomView]
         public ActionResult Index()
         {
-            this.LoadIsAdmin();
             UserContextModel objUser = new UserContextModel();
+            this.LoadIsAdmin();
+            if (SettingsManager.Instance.Branding=="SPMO")
+            {
+                var countries = objVendor.GetVendorsSPMO();
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.UserRequestID).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                return View("Index", filter);
+            }
+            else
+            {
+                var countries = objVendor.GetVendors();
+                VendorTypeContextModel objVendorType = new VendorTypeContextModel();
+                List<SelectListItem> lst = (from tbl in objVendorType.GetVendorTypes()
+                                            select new SelectListItem { Value = tbl.VendorTypeId.ToString(), Text = tbl.VendorType }).ToList();
+                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
+                ViewBag.VendorTypeId = lst;
+
+                lst = (from tbl in objUser.GetAgentDetails()
+                       select new SelectListItem
+                       {
+                           Value = tbl.UserId.ToString(),
+                           Text = tbl.FirstName + " " + tbl.LName
+                       }).ToList();
+
+                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
+                ViewBag.AgentId = lst;
+
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                return View("Index", filter);
+            }
             
-
-            var countries = objVendor.GetVendors();
-            VendorTypeContextModel objVendorType=new VendorTypeContextModel();
-            List<SelectListItem> lst = (from tbl in objVendorType.GetVendorTypes()
-                                        select new SelectListItem { Value = tbl.VendorTypeId.ToString(), Text = tbl.VendorType }).ToList();
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = "----व्यवसायाचा प्रकार----" });
-            ViewBag.VendorTypeId = lst;
-
-            lst = (from tbl in objUser.GetAgentDetails()
-                   select new SelectListItem { 
-                        Value=tbl.UserId.ToString(),
-                        Text=tbl.FirstName + " " + tbl.LName
-                   }).ToList();
-
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = "----माहिती देणारा ----" });
-            ViewBag.AgentId = lst;
-
-            int pageindex = 0;
-            var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-            Session["users"] = countries;
-            Session["pageindex"] = 0;
-            return View("Index", filter);
         }
 
         [HttpGet]
@@ -67,6 +82,19 @@ namespace ShriVivah.Controllers
         {
             var countries = objVendor.GetVendors();
             return Json(new ResponseModel() { Status = true, DataResponse = countries }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetSelectedVendorTypesVendors(int? VendorTypeID, string VendorType, string SearchCity, string SearchText, int PageNo)
+        {
+            var searchedVendorDetails = objVendor.GetVendorsSPMO(VendorTypeID, VendorType, SearchCity, SearchText);
+            var cityModel = searchedVendorDetails.ToList().Select(x => x.City).Distinct();
+            int page = PageNo;
+            searchedVendorDetails = searchedVendorDetails.OrderBy(p => p.UserRequestID).Skip(page * PageSize).Take(PageSize);
+            if (cityModel.Count() == 0)
+                return Json(new ResponseModel() { Status = true, DataResponse = searchedVendorDetails }, JsonRequestBehavior.AllowGet);
+            else
+                return Json(new ResponseModel() { Status = true, DataResponse = searchedVendorDetails, CityList = Newtonsoft.Json.JsonConvert.SerializeObject(cityModel) }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult RegisterVendor()
@@ -77,20 +105,32 @@ namespace ShriVivah.Controllers
             VendorTypeContextModel objVendorType = new VendorTypeContextModel();
             List<SelectListItem> lst = (from tbl in objVendorType.GetVendorTypes()
                                         select new SelectListItem { Value = tbl.VendorTypeId.ToString(), Text = tbl.VendorType }).ToList();
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = "----व्यवसायाचा प्रकार ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text =SettingsManager.Instance.Branding == "SPMO" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
             ViewBag.VendorTypeId = lst;
+            ViewBag.VendorTypes = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
+            if (SettingsManager.Instance.Branding!="SPMO")
+            {
+                lst = (from tbl in objUser.GetAgentDetails()
+                       select new SelectListItem
+                       {
+                           Value = tbl.UserId.ToString(),
+                           Text = tbl.FirstName + " " + tbl.LName
+                       }).ToList();
+            }
+            else
+            {
+                lst = (from tbl in objUser.GetPanchayatList()
+                       select new SelectListItem
+                       {
+                           Value = tbl.UserId.ToString(),
+                           Text = tbl.FirstName + " " + tbl.LName + " " + tbl.City + " " + tbl.Address + " " + tbl.State + " " + tbl.PanchayatCode
+                       }).ToList();
+            }
 
-            lst = (from tbl in objUser.GetAgentDetails()
-                   select new SelectListItem
-                   {
-                       Value = tbl.UserId.ToString(),
-                       Text = tbl.FirstName + " " + tbl.LName
-                   }).ToList();
-
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = "----माहिती देणारा ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
             ViewBag.AgentId = lst;
-            return View("RegisterVendor");
-
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "RegisterVendorSPMO" : "RegisterVendor";
+            return View(ViewName);
         }
 
         
@@ -106,17 +146,34 @@ namespace ShriVivah.Controllers
 
         public ActionResult VendorFirst()
         {
-            IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
-            int pageindex = 0;
-            var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-            Session["users"] = users;
-            Session["pageindex"] = 0;
-            VendorDetails obj = new VendorDetails()
+            if (SettingsManager.Instance.Branding == "SPMO")
             {
-                Status = true,
-                VendorList = filter
-            };
-            return Json(obj, JsonRequestBehavior.AllowGet);
+                IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
+                int pageindex = 0;
+                var filter = users.OrderBy(p => p.UserRequestID).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = users;
+                Session["pageindex"] = 0;
+                VendorDetails obj = new VendorDetails()
+                {
+                    Status = true,
+                    VendorListSPMO = filter
+                };
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
+                int pageindex = 0;
+                var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = users;
+                Session["pageindex"] = 0;
+                VendorDetails obj = new VendorDetails()
+                {
+                    Status = true,
+                    VendorList = filter
+                };
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -178,138 +235,284 @@ namespace ShriVivah.Controllers
 
         public ActionResult SearchVendor(string prefix)
         {
-            var countries = objVendor.GetVendors().Where(p => p.VendorName.ToUpper() == prefix.ToUpper());
-            int pageindex = 0;
-            var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-            Session["users"] = countries;
-            Session["pageindex"] = 0;
-            if (filter.Count() > 0)
+            if (SettingsManager.Instance.Branding == "SPMO")
             {
-                VendorDetails obj = new VendorDetails()
+                var countries = objVendor.GetVendorsSPMO().Where(p => p.VendorName.Contains(prefix.ToUpper()) || p.Address.Contains(prefix) || p.ContactNo.Contains(prefix));
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.UserRequestID).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                if (filter.Count() > 0)
                 {
-                    Status = true,
-                    VendorList = filter
-                };
-                return Json(obj, JsonRequestBehavior.AllowGet);
+                    VendorDetails obj = new VendorDetails()
+                    {
+                        Status = true,
+                        VendorListSPMO = filter
+                    };
+                    return Json(obj, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    VendorDetails obj = new VendorDetails()
+                    {
+                        Status = false,
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                    };
+                    return Json(obj, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                VendorDetails obj = new VendorDetails()
+                var countries = objVendor.GetVendors().Where(p => p.VendorName.ToUpper() == prefix.ToUpper());
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                if (filter.Count() > 0)
                 {
-                    Status = false,
-                    ErrorMessage = "आणखी माहिती उपलब्ध नाही."
-                };
-                return Json(obj, JsonRequestBehavior.AllowGet);
+                    VendorDetails obj = new VendorDetails()
+                    {
+                        Status = true,
+                        VendorList = filter
+                    };
+                    return Json(obj, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    VendorDetails obj = new VendorDetails()
+                    {
+                        Status = false,
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                    };
+                    return Json(obj, JsonRequestBehavior.AllowGet);
+                }
             }
         }
 
         public ActionResult Reset()
         {
-            var countries = objVendor.GetVendors();
-            int pageindex = 0;
-            var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-            Session["users"] = countries;
-            Session["pageindex"] = 0;
-            return Json(filter, JsonRequestBehavior.AllowGet);
+            if (SettingsManager.Instance.Branding == "SPMO")
+            {
+                var countries = objVendor.GetVendorsSPMO();
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.UserRequestID).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                return Json(filter, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var countries = objVendor.GetVendors();
+                int pageindex = 0;
+                var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                Session["users"] = countries;
+                Session["pageindex"] = 0;
+                return Json(filter, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         public ActionResult VendorNext()
         {
-            IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
-            if (users != null)
+            if (SettingsManager.Instance.Branding == "SPMO")
             {
-                int pageindex = Convert.ToInt32(Session["pageindex"]);
-                pageindex++;
-                var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-                if (filter.Count() > 0)
+                IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
+                if (users != null)
                 {
-                    Session["pageindex"] = pageindex;
-                    VendorDetails obj = new VendorDetails()
+                    int pageindex = Convert.ToInt32(Session["pageindex"]);
+                    pageindex++;
+                    var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                    if (filter.Count() > 0)
                     {
-                        Status = true,
-                        ErrorMessage = "",
-                        VendorList = filter
-                    };
-                    return Json(obj, JsonRequestBehavior.AllowGet);
-                    //return Json(filter, JsonRequestBehavior.AllowGet);
+                        Session["pageindex"] = pageindex;
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = true,
+                            ErrorMessage = "",
+                            VendorListSPMO = filter
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = false,
+                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    VendorDetails obj = new VendorDetails()
-                    {
-                        Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही."
-                    };
-                    return Json(obj, JsonRequestBehavior.AllowGet);
+                    return VendorFirst();
                 }
             }
             else
             {
-                return VendorFirst();
+                IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
+                if (users != null)
+                {
+                    int pageindex = Convert.ToInt32(Session["pageindex"]);
+                    pageindex++;
+                    var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                    if (filter.Count() > 0)
+                    {
+                        Session["pageindex"] = pageindex;
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = true,
+                            ErrorMessage = "",
+                            VendorList = filter
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = false,
+                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return VendorFirst();
+                }
             }
         }
 
         public ActionResult VendorPrev()
         {
-            IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
-
-            if (users != null)
+            if (SettingsManager.Instance.Branding == "SPMO")
             {
-                int pageindex = Convert.ToInt32(Session["pageindex"]);
-                if (pageindex > 0)
+                IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
+
+                if (users != null)
                 {
-                    pageindex--;
-                    var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
-                    Session["pageindex"] = pageindex;
-                    VendorDetails obj = new VendorDetails()
+                    int pageindex = Convert.ToInt32(Session["pageindex"]);
+                    if (pageindex > 0)
                     {
-                        Status = true,
-                        ErrorMessage = "",
-                        VendorList = filter,
-                    };
-                    return Json(obj, JsonRequestBehavior.AllowGet);
+                        pageindex--;
+                        var filter = users.OrderBy(p => p.UserRequestID).Skip(pageindex * PageSize).Take(PageSize);
+                        Session["pageindex"] = pageindex;
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = true,
+                            ErrorMessage = "",
+                            VendorListSPMO = filter,
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = false,
+                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    VendorDetails obj = new VendorDetails()
-                    {
-                        Status = false,
-                        ErrorMessage = "तुम्ही पहिल्याच पानावर आहात",
-                    };
-                    return Json(obj, JsonRequestBehavior.AllowGet);
+                    return VendorFirst();
                 }
             }
             else
             {
-                return VendorFirst();
+                IQueryable<VendorModel> users = (IQueryable<VendorModel>)Session["users"];
+
+                if (users != null)
+                {
+                    int pageindex = Convert.ToInt32(Session["pageindex"]);
+                    if (pageindex > 0)
+                    {
+                        pageindex--;
+                        var filter = users.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
+                        Session["pageindex"] = pageindex;
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = true,
+                            ErrorMessage = "",
+                            VendorList = filter,
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        VendorDetails obj = new VendorDetails()
+                        {
+                            Status = false,
+                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                        };
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return VendorFirst();
+                }
             }
         }
 
         public ActionResult VendorLast()
         {
-            var users = objVendor.GetVendors();
-            VendorDetails obj = new VendorDetails();
-            int pageindex = Convert.ToInt32(Session["pageindex"]);
-            pageindex++;
-            obj.Status = true;
-            if (users != null)
+            if (SettingsManager.Instance.Branding == "SPMO")
             {
-                Session["pageindex"] = pageindex;
-                if ((users.Count() % PageSize) == 0)
+                var users = objVendor.GetVendorsSPMO();
+                VendorDetails obj = new VendorDetails();
+                int pageindex = Convert.ToInt32(Session["pageindex"]);
+                pageindex++;
+                obj.Status = true;
+                if (users != null)
                 {
-                    obj.VendorList = users.OrderBy(p => p.VendorId).Skip(users.Count() - PageSize).Take(PageSize);
-                    return Json(obj, JsonRequestBehavior.AllowGet);
+                    Session["pageindex"] = pageindex;
+                    if ((users.Count() % PageSize) == 0)
+                    {
+                        obj.VendorListSPMO = users.OrderBy(p => p.UserRequestID).Skip(users.Count() - PageSize).Take(PageSize);
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        int rem = users.Count() % PageSize;
+                        obj.VendorListSPMO = users.OrderBy(p => p.UserRequestID).Skip(users.Count() - rem).Take(PageSize);
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    int rem = users.Count() % PageSize;
-                    obj.VendorList = users.OrderBy(p => p.VendorId).Skip(users.Count() - rem).Take(PageSize);
-                    return Json(obj, JsonRequestBehavior.AllowGet);
+                    return VendorFirst();
                 }
             }
             else
             {
-                return VendorFirst();
+                var users = objVendor.GetVendors();
+                VendorDetails obj = new VendorDetails();
+                int pageindex = Convert.ToInt32(Session["pageindex"]);
+                pageindex++;
+                obj.Status = true;
+                if (users != null)
+                {
+                    Session["pageindex"] = pageindex;
+                    if ((users.Count() % PageSize) == 0)
+                    {
+                        obj.VendorList = users.OrderBy(p => p.VendorId).Skip(users.Count() - PageSize).Take(PageSize);
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        int rem = users.Count() % PageSize;
+                        obj.VendorList = users.OrderBy(p => p.VendorId).Skip(users.Count() - rem).Take(PageSize);
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return VendorFirst();
+                }
             }
         }
 
@@ -318,16 +521,42 @@ namespace ShriVivah.Controllers
             this.loadViewBag();
             Session["pageindexsearch"] = 0;
             var users = objVendor.GetVendors().Skip(0 * PageSize).Take(PageSize);
-            return View(users);
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "VendorsSPMO" : "Vendors";
+            return View(ViewName, users);
         }
+
+        //public ActionResult Vendors(int? VendorTypeID)
+        //{
+        //    int id = SessionManager.GetInstance.VendorTypeID;
+        //    SessionManager.GetInstance.VendorTypeID = VendorTypeID == null ? id : VendorTypeID.Value;
+
+        //    ViewBag.VendorTypeID = SessionManager.GetInstance.VendorTypeID;
+        //    this.loadViewBag();
+        //    Session["pageindexsearch"] = 0;
+        //    var users = objVendor.GetVendors().Skip(0 * PageSize).Take(PageSize);
+        //    string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "VendorsSPMO" : "Vendors";
+        //    return View(ViewName,users);
+        //}
 
         public ActionResult VendorsFilter(string prefix)
         {
-            var userdetails = objVendor.GetVendors();
-            var filter = userdetails.OrderBy(p => p.VendorId).Skip(0 * PageSize).Take(PageSize).Where(p=>p.VendorName.Contains(prefix) || p.VendorType.Contains(prefix) || p.Address.Contains(prefix) || p.BusinessDescription.Contains(prefix) || p.City.Contains(prefix) || p.OwnerName.Contains(prefix));
-            Session["pageindexsearch"] = 0;
-            Session["resultsearch"] = userdetails;
-            return Json(filter,JsonRequestBehavior.AllowGet);
+            if (SettingsManager.Instance.Branding == "SPMO")
+            {
+                var userdetails = objVendor.GetVendorsSPMO();
+                var filter = userdetails.OrderBy(p => p.UserRequestID).Skip(0 * PageSize).Take(PageSize).Where(p => p.VendorName.Contains(prefix) || p.Address.Contains(prefix) || p.BusinessDescription.Contains(prefix) || p.City.Contains(prefix) || p.OwnerName.Contains(prefix));
+                Session["pageindexsearch"] = 0;
+                Session["resultsearch"] = userdetails;
+                return Json(filter, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var userdetails = objVendor.GetVendors();
+                var filter = userdetails.OrderBy(p => p.VendorId).Skip(0 * PageSize).Take(PageSize).Where(p => p.VendorName.Contains(prefix) || p.VendorType.Contains(prefix) || p.Address.Contains(prefix) || p.BusinessDescription.Contains(prefix) || p.City.Contains(prefix) || p.OwnerName.Contains(prefix));
+                Session["pageindexsearch"] = 0;
+                Session["resultsearch"] = userdetails;
+                return Json(filter, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         public ActionResult LoadMoreVendors()
@@ -358,7 +587,7 @@ namespace ShriVivah.Controllers
             obj.Status = true;
             try
             {
-                obj.ErrorMessage = "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 model.IsActive = true;
                 if (model.RegistrationDate==null)
                 {
@@ -378,7 +607,7 @@ namespace ShriVivah.Controllers
             catch (Exception)
             {
                 obj.Status = false;
-                obj.ErrorMessage = "माहिती सेव करू शकत नाही.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FailedToSave : "माहिती सेव करू शकत नाही.";
             }
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -391,7 +620,7 @@ namespace ShriVivah.Controllers
             //var test = countries.Where(p => p.Vendor.ToUpper() == model.Vendor.ToUpper()).FirstOrDefault();
             VendorDetails obj = new VendorDetails();
             obj.Status = true;
-            obj.ErrorMessage = "माहिती मध्ये बदल केला आहे.";
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहिती मध्ये बदल केला आहे.";
             objVendor.Update(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
@@ -409,8 +638,17 @@ namespace ShriVivah.Controllers
 
         public ActionResult ActiveDeactiveVendor(int VendorId,bool IsActive)
         {
-            bool success= objVendor.ActiveDeactiveVendor(VendorId,IsActive);
-            return Json(success, JsonRequestBehavior.AllowGet);
+            if (SettingsManager.Instance.Branding == "SPMO")
+            {
+                bool success = objVendor.ActiveDeactiveVendorSPMO(VendorId, IsActive);
+                return Json(success, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                bool success = objVendor.ActiveDeactiveVendor(VendorId, IsActive);
+                return Json(success, JsonRequestBehavior.AllowGet);
+            }
+            
         }
     }
 }

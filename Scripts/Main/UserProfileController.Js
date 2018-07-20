@@ -6,7 +6,7 @@
     };
 
     ReportService.getQualifications = function () {
-        return $http.get(urlBase + "/Qualification/Educations");
+        return $http.get(urlBase + "/Qualification/Education");
     };
 
     ReportService.MarriageDone = function (UserId) {
@@ -23,6 +23,7 @@
 VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','UserService', function ($scope, $http, $filter,UserService) {
 
     $scope.IsAdmin = $("#IsAdmin").val();
+    $scope.UserGender = $("#UserGender").val();
     $scope.MainUserList = [];
 
     $scope.UserList = [];
@@ -30,13 +31,16 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
     $scope.SearchUserList = [];
 
     $scope.RootUrl = GetVirtualDirectory() + "/";
-
+    $scope.Field = "Name";
     $scope.Paging = 10;
     $scope.CurruntIndex = 0;
 
     $scope.CasteList = [];
 
     $scope.SelectedCaste = {};
+
+    $scope.MinAge = 18;
+    $scope.MaxAge = 45;
 
     $scope.ViewProfile = function (RequestFrom) {
         window.location =$scope.RootUrl + "/UserProfile/ShowProfile?ProfileId=" + RequestFrom;
@@ -45,7 +49,81 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
     $scope.First = function () {
         $scope.CurruntIndex = 0;
         $scope.SearchUserList = $filter('limitTo')($scope.UserList, $scope.Paging, 0);
+        if ($scope.UserList.length==0) {
+            $scope.SearchUserList = $scope.UserList;
+        }
+        try {
+            setTimeout($scope.$apply(), 3000);
+        } catch (e) {
+
+        }
     }
+
+    $scope.FilterPageSize = function (PageSize) {
+        $scope.Paging = PageSize;
+        $scope.First();
+    }
+
+    $scope.HideShowInput = function ()
+    {
+        $scope.Field = $("#Fields").val();
+        switch ($scope.Field) {
+            case "City":
+            case "JobBusinessLocation":
+            case "Name":
+                $("#txtPrefix").show();
+                $("#ddlQ").hide();
+                $("#MarritalStatus").hide();
+                $("#AgeBetween").hide();
+                $("#OrasId").hide();
+                $("#BloodGroupId").hide();
+                break;
+            case "Qualification":
+                $("#txtPrefix").hide();
+                $("#ddlQ").show();
+                $("#MarritalStatus").hide();
+                $("#AgeBetween").hide();
+                $("#OrasId").hide();
+                $("#BloodGroupId").hide();
+                break;
+            case "MarritalStatus":
+                $("#txtPrefix").hide();
+                $("#ddlQ").hide();
+                $("#MarritalStatus").show();
+                $("#AgeBetween").hide();
+                $("#OrasId").hide();
+                $("#BloodGroupId").hide();
+                break;
+            case "AgeBetween":
+                $("#txtPrefix").hide();
+                $("#ddlQ").hide();
+                $("#MarritalStatus").hide();
+                $("#AgeBetween").show();
+                $("#OrasId").hide();
+                $("#BloodGroupId").hide();
+                break;
+            case "BloodGroup":
+                $("#txtPrefix").hide();
+                $("#ddlQ").hide();
+                $("#MarritalStatus").hide();
+                $("#AgeBetween").hide();
+                $("#OrasId").hide();
+                $("#BloodGroupId").show();
+                break;
+            case "Moonsign":
+                $("#txtPrefix").hide();
+                $("#ddlQ").hide();
+                $("#MarritalStatus").hide();
+                $("#AgeBetween").hide();
+                $("#OrasId").show();
+                $("#BloodGroupId").hide();
+                break;
+            default:
+
+        }
+    }
+
+    
 
     $scope.Prev = function () {
         $scope.CurruntIndex = $scope.CurruntIndex - $scope.Paging;
@@ -83,17 +161,6 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
 
     $scope.PrefixQualification = "";
     
-    $scope.FliterQualification = function (quali)
-    {
-        if (quali.QualificationId>0) {
-            $scope.PrefixQualification = quali.DegreeName;
-        }
-        else {
-            $scope.PrefixQualification = "";
-        }
-        $scope.FilterList();
-    }
-
     $scope.PrefixCaste = "";
 
     $scope.MarritalStatus="0";
@@ -114,108 +181,51 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
         $scope.FilterList();
     }
 
-    $scope.FilterMarriage = function () {
-        if ($("#MarritalStatus").val() > 0) {
-            $scope.MarritalStatus = $("#MarritalStatus").val();
+    
+
+    $scope.FilterListQ = function (Qualification) {
+        var regqualification = new RegExp(Qualification.DegreeName.toLowerCase());
+        $scope.UserList = $scope.MainUserList.filter(function (actype) {
+            return regqualification.test(actype.Qualification==null?"":actype.Qualification.toLowerCase());
+        });
+        $scope.First();
+    }
+
+    $scope.FilterListM = function () {
+        var marritalStatus = $("#MarritalStatus").val();
+        $scope.UserList = $scope.MainUserList.filter(function (actype) {
+            return actype.MarritalStatus==marritalStatus;
+        });
+        $scope.First();
+    }
+
+    $scope.FilterAge = function () {
+        if ($scope.MaxAge=="") {
+            $scope.MaxAge = 45;
         }
-        else {
-            $scope.MarritalStatus ="0";
+        if ($scope.MinAge == "") {
+            $scope.MinAge = 18;
         }
-        $scope.FilterList();
+        $scope.UserList = $scope.MainUserList.filter(function (actype) {
+            return actype.Age>= $scope.MinAge && actype.Age<=$scope.MaxAge;
+        });
+        $scope.First();
     }
 
     $scope.FilterList = function () {
         var reg = new RegExp($scope.Prefix.toLowerCase());
-        var regqualification = new RegExp($scope.PrefixQualification.toLowerCase());
-        var regcaste = new RegExp($scope.PrefixCaste.toLowerCase());
-
-        if ($scope.MinAge == "") {
-            $scope.MinAge = 18;
-        }
-        if ($scope.MaxAge == "") {
-            $scope.MaxAge = 45;
-        }
         $scope.UserList = $scope.MainUserList.filter(function (actype) {
-            if ($scope.Prefix != "" && $scope.PrefixQualification != "" && $scope.PrefixCaste != "" && $scope.MarritalStatus!="0") {
+            if ($scope.Field == "Name") {
                 return ((reg.test(actype.FirstName.toLowerCase())
                 || reg.test(actype.MName.toLowerCase())
                 || reg.test(actype.LName.toLowerCase()))
-                && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-                && regqualification.test(actype.Qualification.toLowerCase())
-                && actype.MarritalStatus==$scope.MarritalStatus
-                && regcaste.test(actype.CastName.toLowerCase()));
+                );
             }
-            else if ($scope.Prefix == "" && $scope.PrefixQualification != "" && $scope.PrefixCaste != "" && $scope.MarritalStatus != "0") {
-                return ((actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-               && regqualification.test(actype.Qualification.toLowerCase())
-                    && actype.MarritalStatus == $scope.MarritalStatus
-               && regcaste.test(actype.CastName.toLowerCase()));
+            else if ($scope.Field == "City") {
+                return reg.test(actype.City==null?"":actype.City.toLowerCase());
             }
-            else if ($scope.Prefix != "" && $scope.PrefixQualification == "" && $scope.PrefixCaste != "" && $scope.MarritalStatus != "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-               || reg.test(actype.MName.toLowerCase())
-               || reg.test(actype.LName.toLowerCase()))
-               && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-               && actype.MarritalStatus == $scope.MarritalStatus
-               && regcaste.test(actype.CastName.toLowerCase()));
-            }
-            else if ($scope.Prefix != "" && $scope.PrefixQualification != "" && $scope.PrefixCaste != "" && $scope.MarritalStatus != "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-               || reg.test(actype.MName.toLowerCase())
-               || reg.test(actype.LName.toLowerCase())
-               || reg.test(actype.CastName.toLowerCase())
-                    )
-               && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-               && actype.MarritalStatus == $scope.MarritalStatus
-               && regqualification.test(actype.Qualification.toLowerCase()));
-            }
-            else if ($scope.Prefix != "" && $scope.PrefixQualification == "" && $scope.PrefixCaste == "" && $scope.MarritalStatus != "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-               || reg.test(actype.MName.toLowerCase())
-               || reg.test(actype.LName.toLowerCase())
-               || reg.test(actype.CastName.toLowerCase())
-               || reg.test(actype.Qualification.toLowerCase())
-                    )
-               && actype.MarritalStatus == $scope.MarritalStatus
-               && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge));
-            }
-            else if ($scope.Prefix == "" && $scope.PrefixQualification != "" && $scope.PrefixCaste == "" && $scope.MarritalStatus != "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-                || reg.test(actype.MName.toLowerCase())
-                || reg.test(actype.LName.toLowerCase())
-                || reg.test(actype.CastName.toLowerCase())
-                || reg.test(actype.Qualification.toLowerCase()))
-                && regqualification.test(actype.Qualification.toLowerCase())
-                && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge));
-            }
-            else if ($scope.Prefix == "" && $scope.PrefixQualification == "" && $scope.PrefixCaste != "" && $scope.MarritalStatus != "0") {
-                return ((actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-                && actype.MarritalStatus == $scope.MarritalStatus
-               && regcaste.test(actype.CastName.toLowerCase()));
-            }
-            else if ($scope.Prefix != "" && $scope.PrefixQualification == "" && $scope.PrefixCaste == "" && $scope.MarritalStatus == "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-                || reg.test(actype.MName.toLowerCase())
-                || reg.test(actype.LName.toLowerCase())
-                || reg.test(actype.CastName.toLowerCase())
-                || reg.test(actype.Qualification.toLowerCase()))
-                && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge));
-            }
-            else if ($scope.Prefix != "" && $scope.PrefixQualification == "" && $scope.PrefixCaste != "" && $scope.MarritalStatus == "0") {
-                return ((reg.test(actype.FirstName.toLowerCase())
-                || reg.test(actype.MName.toLowerCase())
-                || reg.test(actype.LName.toLowerCase())
-                || reg.test(actype.CastName.toLowerCase())
-                || reg.test(actype.Qualification.toLowerCase()))
-                && regcaste.test(actype.CastName.toLowerCase())
-                && (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge));
-            }
-            else if ($scope.Prefix == "" && $scope.PrefixQualification == "" && $scope.PrefixCaste == "" && $scope.MarritalStatus != "0") {
-                return ((actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge)
-                && actype.MarritalStatus == $scope.MarritalStatus);
-            }
-            else {
-                return (actype.Age >= $scope.MinAge && actype.Age <= $scope.MaxAge);
+            else if ($scope.Field == "JobBusinessLocation") {
+                return reg.test(actype.JobLocation == null ? "" : actype.JobLocation.toLowerCase());
             }
         });
         $scope.First();
@@ -237,6 +247,7 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
                UserService.getUserDetails()
                .success(function (studs) {
                    HideLoader();
+                   $scope.MainUserList = [];
                    angular.forEach(studs, function (value, key) {
                        if (value.Img1 == null) {
                            if (value.Gender == 'M') {
@@ -247,7 +258,13 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
                            }
                        }
                        else {
-                           value.Img1 = $scope.RootUrl + value.Img1;
+                           $scope.IsAdmin = ($scope.IsAdmin === 'true');
+                           if ($scope.UserGender.toUpperCase() == 'F' || $scope.IsAdmin) {
+                               value.Img1 = $scope.RootUrl + value.Img1;
+                           }
+                           else {
+                               value.Img1 = $scope.RootUrl + "Content/Images/user_female.png";
+                           }
                        }
                        $scope.MainUserList.push(value);
                    });
@@ -313,10 +330,35 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
     
 
     $scope.init = function () {
+        $scope.IsAdmin = ($scope.IsAdmin === 'true');
+        if ($scope.IsAdmin) {
+            $("#btnReg").show();
+        }
+        else {
+            $("#btnReg").hide();
+        }
+        $scope.HideShowInput();
+        
+        $scope.Paging = 10;
          $("#myModal").hide();
          $("#btnCloseModel").click(function () {
              $("#myModal").hide();
          });
+         $("#PageSizeDown,#PageSizeUp").change(function () {
+             $scope.FilterPageSize($(this).val());
+             if ($(this).attr("id") == "PageSizeUp") {
+                 $("#PageSizeDown").val($(this).val());
+             }
+             else {
+                 $("#PageSizeUp").val($(this).val());
+             }
+         });
+         $("#Fields").change(function () {
+             $scope.HideShowInput();
+         });
+         $("#MarritalStatus").change(function () {
+             $scope.FilterListM();
+         })
          $("#MarritalStatus").val(0);
          $scope.CasteList = JSON.parse($("#castelist").val());
          var html = "";

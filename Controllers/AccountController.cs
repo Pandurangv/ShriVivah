@@ -12,7 +12,7 @@ using ShriVivah.Models;
 using System.Web.Security;
 using ShriVivah.Models.ContextModel;
 using ShriVivah.Models.Entities;
-
+using System.Resources;
 
 namespace ShriVivah.Controllers
 {
@@ -40,21 +40,21 @@ namespace ShriVivah.Controllers
 
                     if (status)
                     {
-                        return Json(new ResponseModel() { Status = true, ErrorMessage = "कृपया व्यवस्थापनाशी संपर्क करा." }, JsonRequestBehavior.AllowGet);
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.ForgotPassword : "तुमचा पासवर्ड तुमच्या मेल वरती पाठवला आहे, तुमचा नवीन पासवर्ड वापरून लॉगिन करा " }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new ResponseModel() { Status = false, ErrorMessage = "कृपया व्यवस्थापनाशी संपर्क करा." }, JsonRequestBehavior.AllowGet);
+                        return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.ContactAdmin : "कृपया व्यवस्थापनाशी संपर्क करा." }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    return Json(new ResponseModel() { Status = false, ErrorMessage = "कृपया व्यवस्थापनाशी संपर्क करा." }, JsonRequestBehavior.AllowGet);
+                    return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.ContactAdmin : "कृपया व्यवस्थापनाशी संपर्क करा." }, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                return Json(new ResponseModel() { Status = false, ErrorMessage = "अवैध लॉग-इन नाव." }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserName : "अवैध लॉग-इन नाव." }, JsonRequestBehavior.AllowGet);
             }
         }
         
@@ -62,14 +62,29 @@ namespace ShriVivah.Controllers
         [AllowAnonymous]
         public ActionResult Login(LoginViewModel model)
         {
-            var user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried!=0).FirstOrDefault();
+            STP_GetUserDetail user = null;
+            if (SettingsManager.Instance.Branding!="SPMO")
+            {
+                user = objUser.Select_STP_GetUserDetails().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried != 0).FirstOrDefault();
+            }
+            else
+            {
+                user=objUser.Select_STP_GetUserDetails().Where(p => p.MobileNo.ToUpper() == model.MobileNo.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried != 0).FirstOrDefault();
+            }
             if (user!=null)
             {
                 if (Convert.ToBoolean(user.IsActive) && user.UserType.ToUpper() != "AGENT")
                 {
                     SessionManager.GetInstance.ActiveUser = user;
                     var lst = new List<RegisterViewModel>();
-                    lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender });
+                    lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender,UserType=user.UserType });
+                    return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                }
+                else if (!Convert.ToBoolean(user.IsActive) && user.UserType.ToUpper() == "USER" && user.DateOfBirth==null)
+                {
+                    SessionManager.GetInstance.ActiveUser = user;
+                    var lst = new List<RegisterViewModel>();
+                    lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender, UserType = "USER" });
                     return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -78,35 +93,44 @@ namespace ShriVivah.Controllers
                     {
                         SessionManager.GetInstance.ActiveUser = user;
                         var lst = new List<RegisterViewModel>();
-                        lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender });
+                        lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender,UserType = "ADMIN" });
                         return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
                         if (user.UserType.ToUpper() == "AGENT")
                         {
-                            return Json(new ResponseModel() { Status = false, ErrorMessage = "प्रतिनिधी लॉगिन साठी अद्याप सुविधा नाहीत." }, JsonRequestBehavior.AllowGet);
+                            if (SettingsManager.Instance.Branding == "SPMO")
+                            {
+                                SessionManager.GetInstance.ActiveUser = user;
+                                var lst = new List<RegisterViewModel>();
+                                lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender,UserType= "AGENT" });
+                                return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AgentLogin : "प्रतिनिधी लॉगिन साठी अद्याप सुविधा नाहीत." }, JsonRequestBehavior.AllowGet);
+                            }
                         }
                         else
                         {
-                            return Json(new ResponseModel() { Status = false, ErrorMessage = "आपले खाते 48 तासांच्या आत सक्रिय होईल ." }, JsonRequestBehavior.AllowGet);
+                            return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AccountActivate : "आपले खाते 48 तासांच्या आत सक्रिय होईल ." }, JsonRequestBehavior.AllowGet);
                         }
                     }
                 }
             }
             else
             {
-                return Json(new ResponseModel() { Status = false, ErrorMessage = "अवैध लॉग-इन नाव किंवा पासवर्ड." }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding=="SPMO"? Resources.SPMOResources.InvalidUserNamePassword :"अवैध लॉग-इन नाव किंवा पासवर्ड." }, JsonRequestBehavior.AllowGet);
             }
         }
-
-
 
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
+            UserContextModel objUser = new UserContextModel();
             this.loadViewBag();
             CountryModel objCountry = new CountryModel();
             var lst = objCountry.GetCountrys();
@@ -115,7 +139,14 @@ namespace ShriVivah.Controllers
 
             lstData.Insert(0, new SelectListItem() { Text = "---Select Country---", Value = "0" });
             ViewBag.CountryId = lstData;
-            return View();
+            List<SelectListItem> lstPanchayat = (from tbl in objUser.GetPanchayatList()
+                   select new SelectListItem
+                   {
+                       Value = tbl.UserId.ToString(),
+                       Text = tbl.FirstName + " " + tbl.LName + " " + tbl.City + " " + tbl.Address + " " + tbl.State + " " + tbl.PanchayatCode
+                   }).ToList();
+            ViewBag.AgentId = lstPanchayat;
+            return string.IsNullOrEmpty(SettingsManager.Instance.Branding)?View():View("RegisterSPMO");
         }
 
         public ActionResult MailConfirmation(bool OTP)
@@ -128,7 +159,7 @@ namespace ShriVivah.Controllers
         [HttpPost]
         public ActionResult VerifyOTP(string OTP)
         {
-            tblUser user= (tblUser)Session["beforeVerify"];
+            STP_GetUserDetail user = (STP_GetUserDetail)Session["beforeVerify"];
             if (user!=null)
             {
                 ResponseModel test = objUser.VerifyUserOTP(user, OTP);
@@ -191,32 +222,71 @@ namespace ShriVivah.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        public ActionResult RegisterUserForOTP(RegisterViewModel model)
+        {
+            return Json(objUser.SendSMS(null,model));
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
         public ActionResult RegisterUser(RegisterViewModel model)
         {
-            tblUser user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
-            if (user==null)
+            tblUser user = null;
+            if (SettingsManager.Instance.Branding=="SPMO")
             {
-                model.RoleName = "User";
-                int userid=objUser.Save(model);
-                if (userid > 0)
+                user = objUser.GetUser().Where(p => p.MobileNo.ToUpper() == model.MobileNo.ToUpper()).FirstOrDefault();
+                if (user == null)
                 {
-                    user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
-                    model.UserId = userid;
-                    PendingUsersController pending = new PendingUsersController();
-                    pending.SendSMS(userid);
-                    SessionManager.GetInstance.ActiveUser = user;
+                    model.RoleName = "User";
+                    int userid = objUser.Save(model);
+                    if (userid > 0)
+                    {
+                        user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
+                        model.UserId = userid;
+                        PendingUsersController pending = new PendingUsersController();
+                        pending.SendSMS(userid);
+                        SessionManager.GetInstance.ActiveUser = new STP_GetUserDetail() {UserId=user.UserId,Password=user.Password,FirstName=user.FirstName,MName=user.MName,LName=user.LName,MailId=user.MailId,MobileNo=user.MobileNo,UserType=user.UserType,Gender=user.Gender };
 
-                    //objUser.SendOTP(model);
-                    return Json(new ResponseModel() { Status = true, ErrorMessage = "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);
+                        //objUser.SendOTP(model);
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationPage : "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationFailed : "उमेदवार नोंदणी करणे अशक्य." }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    return Json(new ResponseModel() { Status = false, ErrorMessage = "उमेदवार नोंदणी करणे अशक्य." }, JsonRequestBehavior.AllowGet);
+                    return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.SameUserExist : "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले." }, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                return Json(new ResponseModel() { Status = false, ErrorMessage = "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले." }, JsonRequestBehavior.AllowGet);
+                user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
+                if (user == null)
+                {
+                    model.RoleName = "User";
+                    int userid = objUser.Save(model);
+                    if (userid > 0)
+                    {
+                        user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
+                        model.UserId = userid;
+                        PendingUsersController pending = new PendingUsersController();
+                        pending.SendSMS(userid);
+                        SessionManager.GetInstance.ActiveUser = new STP_GetUserDetail() { UserId = user.UserId, Password = user.Password, FirstName = user.FirstName, MName = user.MName, LName = user.LName, MailId = user.MailId, MobileNo = user.MobileNo, Gender = user.Gender }; 
+
+                        //objUser.SendOTP(model);
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationPage : "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationFailed : "उमेदवार नोंदणी करणे अशक्य." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.SameUserExist : "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले." }, JsonRequestBehavior.AllowGet);
+                }
             }
         }
 

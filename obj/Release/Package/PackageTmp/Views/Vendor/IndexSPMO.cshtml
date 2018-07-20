@@ -1,0 +1,70 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.UserRequests_Vendor>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+
+@Scripts.Render("~/bundles/HelperJs/VendorHelper")
+<div class="span_3" id="divMain">
+    <div class="span_3">
+        <input type="hidden" id="pagename" value="vendor" />
+        <input type="text" id="txtSearch" />
+        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
+        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th style="display:none">Id</th>
+                    <th>Vendor Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Contact No</th>
+                    <th>Registration Date</th>
+                    <th>Expiry Date</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td style="display:none">@item.VendorId</td>
+                        <td>@item.VendorName</td>
+                        <td>@item.Address</td>
+                        <td>@item.City</td>
+                        <td>@item.ContactNo</td>
+                        <td>@string.Format("{0:dd-MM-yyyy}",item.RegistrationDate)</td>
+                        <td>@string.Format("{0:dd-MM-yyyy}", item.ExpiryDate)</td>
+                        @if (@item.IsApproved)
+                        {
+                            <td>
+                                <input type="button" class="btn-success btn" value="Deactivate" onclick="ActiveDeactiveVendor(@item.UserRequestID , this);" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <input type="button" class="btn-success btn" value="Activate" onclick="ActiveDeactiveVendor(@item.UserRequestID ,this);" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+

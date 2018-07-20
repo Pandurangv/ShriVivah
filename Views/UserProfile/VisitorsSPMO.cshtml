@@ -1,0 +1,56 @@
+﻿@model IQueryable<ShriVivah.Models.VisitorModel>
+@{
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+
+@Scripts.Render("~/bundles/UserProfile")
+@Scripts.Render("~/Scripts/HelperJs/VisitorHelper.js")
+<div class="col-md-12 topset" id="divMain">
+    <div class="col-md-12" style="margin-top:15px;">
+        <div class="col-md-6">
+            <input type="text" class="txtSearchWidth" id="txtSearch" placeholder="Search Partner." />
+        </div>
+        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="Reset" class="btn btn-default" id="btnReset" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <input type="hidden" id="UserId" value="@ViewBag.UserId" />
+        <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Cast</th>
+                    <th>View Profile</th>
+                </tr>
+            </thead>
+            <tbody id="visitordata">
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td>@item.VisitedUserId</td>
+                        <td>@item.UserName</td>
+                        <td>@item.Address</td>
+                        <td>@item.ReligionName</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="View Profile" onclick="ViewProfile(@item.VisitedUserId);" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+

@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+}
+<section id="services" style="padding-top:0px">
+    <div class="container">
+        <header class="section-header wow fadeInUp">
+            <h3>Services</h3>
+        </header>
+        <div class="row">
+            <div class="col-md-2" data-wow-duration="1.4s" data-ng-repeat="vtype in VendorTypes">
+                <h4 class="title"><a href="@Url.Action("Vendors","Vendor")">{{vtype.VendorType}}</a></h4>
+                <div class="col-md-4">
+                    <img src="{{vtype.TypeImagesPath}}" alt="Card image" class="img-rounded" data-ng-click="RedirectToVendorList(vtype.VendorType)">
+                </div>
+                <button type="button" class="btn btn-primary btnMargin" data-ng-click="RedirectToVendor()">Register</button>
+            </div>
+        </div>
+    </div>
+</section>
+

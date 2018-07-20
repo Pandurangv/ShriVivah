@@ -174,8 +174,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\SPMOResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPMOResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MyAuthorizeAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -184,6 +190,7 @@
     <Compile Include="Controllers\CastController.cs" />
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\EventManagementController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\GanController.cs" />
     <Compile Include="Controllers\GotraController.cs" />
@@ -197,6 +204,7 @@
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Controllers\UserRequestController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\VendorTypeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -219,9 +227,12 @@
     <Compile Include="Models\DataModels\BGModel.cs" />
     <Compile Include="Models\DataModels\CastModel.cs" />
     <Compile Include="Models\DataModels\CityModel.cs" />
+    <Compile Include="Models\DataModels\EventManagementModel.cs" />
     <Compile Include="Models\DataModels\StateContextModel.cs" />
     <Compile Include="Models\Entities\ShreeVivahDbContext.cs" />
     <Compile Include="Models\Entities\tblUser.cs" />
+    <Compile Include="Models\EventManagementContextModel.cs" />
+    <Compile Include="Models\Filters\CustomViewAttribute.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PredicateBuilder.cs" />
     <Compile Include="Models\RequestModel.cs" />
@@ -275,29 +286,6 @@
     <Content Include="Content\FrontUI\flexslider.css" />
     <Content Include="Content\FrontUI\font-awesome.min.css" />
     <Content Include="Content\FrontUI\fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\FrontUI\images\arr.png" />
-    <Content Include="Content\FrontUI\images\f1.jpg" />
-    <Content Include="Content\FrontUI\images\f2.jpg" />
-    <Content Include="Content\FrontUI\images\f3.jpg" />
-    <Content Include="Content\FrontUI\images\f4.jpg" />
-    <Content Include="Content\FrontUI\images\f5.jpg" />
-    <Content Include="Content\FrontUI\images\f6.jpg" />
-    <Content Include="Content\FrontUI\images\footer-icon.png" />
-    <Content Include="Content\FrontUI\images\mainback.png" />
-    <Content Include="Content\FrontUI\images\me1.jpg" />
-    <Content Include="Content\FrontUI\images\me2.jpg" />
-    <Content Include="Content\FrontUI\images\me3.jpg" />
-    <Content Include="Content\FrontUI\images\me4.jpg" />
-    <Content Include="Content\FrontUI\images\pic1.jpg" />
-    <Content Include="Content\FrontUI\images\pic2.jpg" />
-    <Content Include="Content\FrontUI\images\pic3.jpg" />
-    <Content Include="Content\FrontUI\images\pic4.jpg" />
-    <Content Include="Content\FrontUI\images\r1.jpg" />
-    <Content Include="Content\FrontUI\images\r2.jpg" />
-    <Content Include="Content\FrontUI\images\r3.jpg" />
-    <Content Include="Content\FrontUI\images\r4.jpg" />
-    <Content Include="Content\FrontUI\images\r5.jpg" />
-    <Content Include="Content\FrontUI\images\r6.jpg" />
     <Content Include="Content\FrontUI\menu.css" />
     <Content Include="Content\FrontUI\popuo-box.css" />
     <Content Include="Content\FrontUI\style.css" />
@@ -321,6 +309,32 @@
     <Content Include="Content\images\user_male.png" />
     <Content Include="Content\images\varmalaloader.gif" />
     <Content Include="Content\Main\bootstrap.min.css" />
+    <Content Include="Content\SPMO\FrontUI\animate.min.css" />
+    <Content Include="Content\SPMO\FrontUI\bootstrap.min.css" />
+    <Content Include="Content\SPMO\FrontUI\font-awesome.min.css" />
+    <Content Include="Content\SPMO\FrontUI\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\SPMO\FrontUI\fonts\ionicons.svg" />
+    <Content Include="Content\SPMO\FrontUI\Images\11.png" />
+    <Content Include="Content\SPMO\FrontUI\Images\11_old.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\22.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\22.png" />
+    <Content Include="Content\SPMO\FrontUI\Images\33.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\33.png" />
+    <Content Include="Content\SPMO\FrontUI\Images\44.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\44.png" />
+    <Content Include="Content\SPMO\FrontUI\Images\55.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\66.jpg" />
+    <Content Include="Content\SPMO\FrontUI\Images\varmalaloader.gif" />
+    <Content Include="Content\SPMO\FrontUI\ionicons.min.css" />
+    <Content Include="Content\SPMO\FrontUI\lightbox.min.css" />
+    <Content Include="Content\SPMO\FrontUI\owl.carousel.min.css" />
+    <Content Include="Content\SPMO\FrontUI\style.css" />
+    <Content Include="Content\SPMO\FrontUI\UI.css" />
+    <Content Include="Content\SPMO\UserDashboard\AdminLTE.min.css" />
+    <Content Include="Content\SPMO\UserDashboard\bootstrap.min.css" />
+    <Content Include="Content\SPMO\UserDashboard\font-awesome.min.css" />
+    <Content Include="Content\SPMO\UserDashboard\spmostyle.css" />
+    <Content Include="Content\SPMO\UserDashboard\_all-skins.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -362,6 +376,14 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\MANGAL.TTF" />
     <Content Include="Content\fonts\Shiv01.ttf" />
+    <Content Include="Content\SPMO\FrontUI\fonts\ionicons.eot" />
+    <Content Include="Content\SPMO\FrontUI\fonts\ionicons.ttf" />
+    <Content Include="Content\SPMO\FrontUI\fonts\ionicons.woff" />
+    <Content Include="Content\SPMO\FrontUI\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\SPMO\FrontUI\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\SPMO\FrontUI\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\SPMO\FrontUI\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\SPMO\FrontUI\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\ShreeV.pubxml" />
     <None Include="Properties\PublishProfiles\ShreeVivah.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -393,13 +415,29 @@
     <Content Include="Scripts\Main\angular.min.js" />
     <Content Include="Scripts\Main\App.js" />
     <Content Include="Scripts\Main\bootstrap.min.js" />
+    <Content Include="Scripts\Main\datehelper.js" />
+    <Content Include="Scripts\Main\EventController.js" />
+    <Content Include="Scripts\Main\jquery.date-dropdowns.min.js" />
+    <Content Include="Scripts\Main\jquery.liMarquee.js" />
     <Content Include="Scripts\Main\jquery.min.js" />
     <Content Include="Scripts\Main\MarriedController.js" />
+    <Content Include="Scripts\Main\PanchayatController.js" />
     <Content Include="Scripts\Main\RegisterUserController.js" />
     <Content Include="Scripts\Main\SearchController.js" />
     <Content Include="Scripts\Main\UserProfileController.Js" />
     <Content Include="Scripts\Main\VendorListController.js" />
     <Content Include="Scripts\Main\VendorTypesController.js" />
+    <Content Include="Scripts\SPMO\adminlte.min.js" />
+    <Content Include="Scripts\SPMO\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\easing.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\hoverIntent.js" />
+    <Content Include="Scripts\SPMO\FrontUI\jquery-migrate.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\jquery.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\main.js" />
+    <Content Include="Scripts\SPMO\FrontUI\owl.carousel.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\superfish.min.js" />
+    <Content Include="Scripts\SPMO\FrontUI\wow.min.js" />
     <Content Include="Scripts\timer.js" />
     <Content Include="Scripts\HelperJS\UserEditHelper.js" />
     <Content Include="Scripts\HelperJS\UserProfileHelper.js" />
@@ -496,10 +534,55 @@
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\PendingUsers\Index.cshtml" />
     <Content Include="Views\Home\Married.cshtml" />
+    <Content Include="Views\Shared\_LayoutSPMO.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Account\RegisterSPMO.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdminSPMO.cshtml" />
+    <Content Include="Views\UserProfile\IndexSPMO.cshtml" />
+    <Content Include="Views\UserProfile\UserRequestsSPMO.cshtml" />
+    <Content Include="Views\UserProfile\EditProfileSPMO.cshtml" />
+    <Content Include="Views\UserProfile\ChangePasswordSPMO.cshtml" />
+    <Content Include="Views\UserProfile\EditUserSPMO.cshtml" />
+    <Content Include="Views\UserProfile\UploadPhotosSPMO.cshtml" />
+    <Content Include="Views\UserProfile\ShowProfileSPMO.cshtml" />
+    <Content Include="Views\UserProfile\VisitorsSPMO.cshtml" />
+    <Content Include="Views\Vendor\VendorsSPMO.cshtml" />
+    <Content Include="Views\Vendor\RegisterVendorSPMO.cshtml" />
+    <Content Include="Views\Agent\IndexSPMO.cshtml" />
+    <Content Include="Views\Agent\_AddAgentSPMO.cshtml" />
+    <Content Include="Views\Cast\IndexSPMO.cshtml" />
+    <Content Include="Views\Cast\_AddCastSPMO.cshtml" />
+    <Content Include="Views\Country\IndexSPMO.cshtml" />
+    <Content Include="Views\Country\_AddCountrySPMO.cshtml" />
+    <Content Include="Views\PendingUsers\IndexSPMO.cshtml" />
+    <Content Include="Views\Religion\IndexSPMO.cshtml" />
+    <Content Include="Views\Religion\_AddReligionSPMO.cshtml" />
+    <Content Include="Views\State\IndexSPMO.cshtml" />
+    <Content Include="Views\State\_AddStateSPMO.cshtml" />
+    <Content Include="Views\Vendor\IndexSPMO.cshtml" />
+    <Content Include="Views\Vendor\_AddVendorSPMO.cshtml" />
+    <Content Include="Views\UserRequest\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutNew.cshtml" />
+    <Content Include="Views\Home\IndexSPMO.cshtml" />
+    <Content Include="Views\Message\IndexSPMO.cshtml" />
+    <Content Include="Views\BloodGroup\_AddBloodGroupSPMO.cshtml" />
+    <Content Include="Views\BloodGroup\IndexSPMO.cshtml" />
+    <Content Include="Views\Qualification\IndexSPMO.cshtml" />
+    <Content Include="Views\Qualification\_AddQualificationSPMO.cshtml" />
+    <Content Include="Views\Oras\IndexSPMO.cshtml" />
+    <Content Include="Views\Oras\_AddOrasSPMO.cshtml" />
+    <Content Include="Views\VendorType\IndexSPMO.cshtml" />
+    <Content Include="Views\VendorType\_AddVendorTypeSPMO.cshtml" />
+    <Content Include="Views\UserProfile\RegisterFromAdminSPMO.cshtml" />
+    <Content Include="Views\Feedback\IndexSPMO.cshtml" />
+    <Content Include="Views\UserProfile\MyPhotos.cshtml" />
+    <Content Include="Views\EventManagement\IndexSPMO.cshtml" />
+    <Content Include="Views\Agent\PanchayatSPMO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\AdminPanel\css\" />
+    <Folder Include="Content\FrontUI\images\" />
     <Folder Include="Content\ProfileImage\" />
     <Folder Include="Content\VendorImages\Temp\" />
     <Folder Include="Log\" />
@@ -512,6 +595,12 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\SPMOResources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>SPMOResources.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

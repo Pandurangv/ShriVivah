@@ -1,0 +1,136 @@
+.inputborder {
+    border-radius: 8px;
+}
+
+/* Plugin Example Container */
+.example {
+    width: 33%;
+    min-width: 400px;
+    padding: 15px;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.example:first-of-type {
+    position: relative;
+    bottom: 35px;
+}
+
+/* Example Heading */
+.example h2 {
+    font-family: "Roboto Condensed", helvetica, arial, sans-serif;
+    font-size: 1.3em;
+    margin: 15px 0;
+    color: #4F5462;
+}
+
+.example input {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 150px;
+    padding: 8px 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    background: #F2F2F2;
+    text-align: center;
+    font-size: 1em;
+    letter-spacing: 0.02em;
+    font-family: "Roboto Condensed", helvetica, arial, sans-serif;
+}
+
+.example select {
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    margin: 0 3px;
+}
+
+.example select.invalid {
+    color: #E9403C;
+}
+
+.example input[type="submit"] {
+    margin-top: 10px;
+}
+
+.example input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: #e5e5e5;
+}
+.day {
+    border: 1px solid #e0e0e0;
+    padding: 5px 8px;
+    color: #616161;
+    background: #fff;
+    box-shadow: none !important;
+    width: 31%;
+    font-size: 0.85em;
+    font-weight: 300;
+    height: 40px;
+    -webkit-appearance: none;
+    border-radius: 7px;
+    margin-right: 5px;
+}
+.month {
+    border: 1px solid #e0e0e0;
+    padding: 5px 8px;
+    color: #616161;
+    background: #fff;
+    box-shadow: none !important;
+    width: 32%;
+    font-size: 0.85em;
+    font-weight: 300;
+    height: 40px;
+    -webkit-appearance: none;
+    border-radius: 7px;
+    margin-right: 5px;
+}
+.year {
+    border: 1px solid #e0e0e0;
+    padding: 5px 8px;
+    color: #616161;
+    background: #fff;
+    box-shadow: none !important;
+    width: 32%;
+    font-size: 0.85em;
+    font-weight: 300;
+    height: 40px;
+    -webkit-appearance: none;
+    border-radius: 7px;
+    margin-right: 5px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.divPadding {
+   padding: 15px;
+   box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.2);
+   background-color: #fff;
+   margin-top: 15px;
+}
+
+.mediaprofile {
+   color: #2E32BF;
+   font-weight: normal;
+   font-size: 14px;
+   padding-top: 10px;
+   padding-bottom: 10px;
+}
+
+
+input.btn.btn-default.btnStyle {
+   background-color: #9358ac;
+}
+
+.btnStyle {
+   padding: 5px !important;
+   font-size: 12px !important;
+}

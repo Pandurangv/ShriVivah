@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using ShriVivah.Models.Filters;
 
 namespace ShriVivah.Controllers
 {
@@ -40,10 +41,25 @@ namespace ShriVivah.Controllers
             {
                 ViewBag.IsAdmin = true;
             }
-            tblUser user= objUser.GetUser().Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).FirstOrDefault();
-            if (user.DateOfBirth==null)
+            var user= objUser.Select_STP_GetUserDetails().Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).FirstOrDefault();
+            bool active = user.UserType.ToUpper()=="ADMIN"?true:(user.IsActive == null ? false : user.IsActive.Value);
+            if (!active)
             {
-                return RedirectToAction("MyProfileDetails", "UserProfile");    
+                if (user.UserType.ToUpper() == "USER")
+                {
+                    if (user.DateOfBirth != null)
+                    {
+                        return RedirectToAction("UploadPhotos", "UserProfile");
+                    }
+                    else
+                    {
+                        return RedirectToAction("MyProfileDetails", "UserProfile");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Vendor");
+                }
             }
             else
             {
@@ -54,21 +70,21 @@ namespace ShriVivah.Controllers
                 lstData = (from tbl in objC.GetCasts()
                            select new SelectListItem { Text = tbl.CastName, Value = tbl.CastId.ToString() }).ToList();
 
-                lstData.Insert(0, new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+                lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding=="SPMO"? "---Select Cast---": "---जात निवडा---", Value = "0" });
                 ViewBag.CasteId = lstData;
 
                 OrasModel oras = new OrasModel();
                 lstData = (from tbl in oras.GetOrass()
                            select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-                lstData.Insert(0, new SelectListItem() { Text = "---राशी निवडा---", Value = "0" });
+                lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---राशी निवडा---", Value = "0" });
 
                 ViewBag.OrasId = lstData;
 
                 lstData = (from tbl in oras.GetHeights()
                            select new SelectListItem { Text = tbl.Height, Value = tbl.HeightId.ToString() }).ToList();
 
-                lstData.Insert(0, new SelectListItem() { Text = "---उंची---", Value = "0" });
+                lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Height---": "---उंची---", Value = "0" });
 
                 ViewBag.HeightId = lstData;
                 ViewBag.EHeightId = lstData;
@@ -78,34 +94,50 @@ namespace ShriVivah.Controllers
                 lstData = (from tbl in bg.GetEducations()
                            select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-                lstData.Insert(0, new SelectListItem() { Text = "---शिक्षण---", Value = "0" });
+                lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Education---" : "---शिक्षण---", Value = "0" });
 
                 ViewBag.QualificationId = lstData;
+
+                lstData = (from tbl in bg.GetBloodGroups()
+                           select new SelectListItem { Text = tbl.BloodGroupName, Value = tbl.BloodGroupId.ToString() }).ToList();
+
+                lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Blood Group---" : "---शिक्षण---", Value = "0" });
+
+                ViewBag.BloodGroupId = lstData;
                 Session["pageindex"] = 0;
+                string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "UserRequestsSPMO" : "UserRequests";
                 if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()=="ADMIN")
                 {
                     var userdetails = objUser.Select_STP_GetUserDetails().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId 
                                 && p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.ismarried==0);
                     Session["users"] = userdetails;
                     var filter = userdetails.OrderBy(p => p.UserId).Skip(0 * PageSize).Take(PageSize);
-                    return View("UserRequests", filter);
+                    
+                    return View(ViewName, filter);
                 }
-                else
+                else if(SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "USER")
                 {
-                    //var dt = objUser.Select_STP_GetUserDetails();
                     var userdetails = objUser.GetUserDetailsForUser().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId && p.Gender == gender && p.UserType.ToUpper() != "ADMIN" && p.ismarried == 0);
                     Session["users"] = userdetails;
                     var filter = userdetails.OrderBy(p => p.UserId).Skip(0 * PageSize).Take(PageSize);
-                    return View("UserRequests", filter);
+                    return View(ViewName, filter);
+                }
+                else //if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "AGENT")
+                {
+                    var userdetails = objUser.GetUserDetailsForUser().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId && p.Gender == gender && p.UserType.ToUpper() != "ADMIN" && p.ismarried == 0 && p.City.ToUpper()==SessionManager.GetInstance.ActiveUser.City.ToUpper());
+                    Session["users"] = userdetails;
+                    var filter = userdetails.OrderBy(p => p.UserId).Skip(0 * PageSize).Take(PageSize);
+                    return View(ViewName, filter);
                 }
             }
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
+        [CustomView]
         public ActionResult ChangePassword()
         {
             this.LoadIsAdmin();
-            return View("ChangePassword",new RegisterViewModel());
+            return View("ChangePassword", new RegisterViewModel());
         }
 
         public ActionResult UpdatePassword(string Old, string NewPassword)
@@ -114,7 +146,7 @@ namespace ShriVivah.Controllers
             {
                 Status = false
             };
-            tblUser user = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail user = SessionManager.GetInstance.ActiveUser;
             user.Password = NewPassword;
             objUser.ChangePassword(user);
             response.Status = true;
@@ -122,6 +154,7 @@ namespace ShriVivah.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+        [CustomView]
         public ActionResult NewUsers()
         {
             this.LoadIsAdmin();
@@ -130,21 +163,21 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in objC.GetCasts()
                        select new SelectListItem { Text = tbl.CastName, Value = tbl.CastId.ToString() }).ToList();
 
-            lstData.Add(new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             ViewBag.CasteId = lstData;
 
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राशी निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---राशी निवडा---", Value = "0" });
 
             ViewBag.OrasId = lstData;
 
             lstData = (from tbl in oras.GetHeights()
                        select new SelectListItem { Text = tbl.Height, Value = tbl.HeightId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---उंची---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Height---" : "---उंची---", Value = "0" });
 
             ViewBag.HeightId = lstData;
             ViewBag.EHeightId = lstData;
@@ -154,7 +187,7 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---शिक्षण---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Education---" : "---शिक्षण---", Value = "0" });
 
             ViewBag.QualificationId = lstData;
             //ViewBag.EQualificationId = lstData;
@@ -180,11 +213,11 @@ namespace ShriVivah.Controllers
         [MyAuthorize]
         public ActionResult GetUserData()
         {
-            var result = objUser.Select_STP_GetUserDetails().Where(p => p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.ismarried == 0);
+            var result = objUser.Select_STP_GetUserDetails().Where(p => p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT");// && p.ismarried == 0);
             if (SessionManager.GetInstance.ActiveUser!=null && SessionManager.GetInstance.ActiveUser.UserType.ToUpper() != "ADMIN")
             {
                 string genderfilter = SessionManager.GetInstance.ActiveUser.Gender == "M" ? "F" : "M";
-                result = objUser.Select_STP_GetUserDetails().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId && p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.ismarried == 0 && p.Gender==genderfilter);
+                result = objUser.Select_STP_GetUserDetails().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId && p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.Gender==genderfilter && p.IsActive==true);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -300,7 +333,7 @@ namespace ShriVivah.Controllers
                     ResponseModel obj = new ResponseModel()
                     {
                         Status = false,
-                        ErrorMessage = "तुम्ही पहिल्याच पानावर आहात",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -344,7 +377,7 @@ namespace ShriVivah.Controllers
                     ResponseModel obj = new ResponseModel()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -359,6 +392,13 @@ namespace ShriVivah.Controllers
             }
         }
 
+
+        public ActionResult GetAllImages()
+        {
+            var result= objUser.GetAllImages();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         [MyAuthorizeAttribute(IsAdmin = false)]
         public ActionResult UploadPhotos()
         {
@@ -370,7 +410,6 @@ namespace ShriVivah.Controllers
             ViewBag.Gender = "M";
             ViewBag.TotalUsers = users.Count();
             var dt = DateTime.Now.Date.AddDays(-15);
-
             //target.ViewBag.NewRegisterd = users.Where(p => dt <= p.DateofReg.Value.Date).Count();
             ViewBag.UserId = SessionManager.GetInstance.ActiveUser.UserId;
             if (SessionManager.GetInstance.ActiveUser != null)
@@ -383,7 +422,8 @@ namespace ShriVivah.Controllers
                 }
                 ViewBag.VisitorCount = user.GetVisitors().Count();
             }
-            return View("UploadPhotos");
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "UploadPhotosSPMO" : "UploadPhotos";
+            return View(ViewName);
         }
 
         [MyAuthorizeAttribute(IsAdmin = true)]
@@ -402,21 +442,21 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in objC.GetCasts()
                        select new SelectListItem { Text=tbl.CastName,Value=tbl.CastId.ToString()}).ToList();
 
-            lstData.Add(new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             ViewBag.CasteId = lstData;
 
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राशी निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---राशी निवडा---", Value = "0" });
 
             ViewBag.OrasId = lstData;
 
             lstData = (from tbl in oras.GetHeights()
                        select new SelectListItem { Text = tbl.Height, Value = tbl.HeightId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---उंची---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = "---Select Height---", Value = "0" });
 
             ViewBag.HeightId = lstData;
             ViewBag.EHeightId = lstData;
@@ -426,11 +466,12 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---शिक्षण---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Education---" : "---शिक्षण---", Value = "0" });
 
             ViewBag.QualificationId = lstData;
             //ViewBag.EQualificationId = lstData;
 
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "UserRequestsSPMO" : "UserRequests";
 
             string gender = SessionManager.GetInstance.ActiveUser.Gender == "M" ? "F" : "M";
             ViewBag.SearchGender = gender;
@@ -438,18 +479,19 @@ namespace ShriVivah.Controllers
             {
                 var userdetails = objUser.Select_STP_GetUserDetails().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId 
                 && p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.ismarried==0);
-                return View("UserRequests", userdetails);
+                return View(ViewName, userdetails);
             }
             else
             {
                 var userdetails = objUser.GetUserDetailsForUser().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId 
                 && p.Gender == gender && p.UserType.ToUpper() != "ADMIN" && p.ismarried == 0);
-                return View("UserRequests", userdetails);
+                return View(ViewName, userdetails);
             }
             
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
+        [CustomView]
         public ActionResult Visitors()
         {
             this.LoadIsAdmin();
@@ -529,7 +571,7 @@ namespace ShriVivah.Controllers
                     VisitorResponse obj = new VisitorResponse()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -565,7 +607,7 @@ namespace ShriVivah.Controllers
                     VisitorResponse obj = new VisitorResponse()
                     {
                         Status = false,
-                        ErrorMessage = "You are already on first page",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "You are already on first page",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -580,7 +622,7 @@ namespace ShriVivah.Controllers
         public ActionResult ShowProfile(int ProfileId)
         {
             this.LoadIsAdmin();
-            if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()!="ADMIN")
+            if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()!="ADMIN" && SessionManager.GetInstance.ActiveUser.UserId!=ProfileId)
             {
                 objUser.InsertVisitorDetails(ProfileId);
             }
@@ -591,7 +633,8 @@ namespace ShriVivah.Controllers
             }
             
             ViewBag.RelativeDetails= objUser.GetRelativeDetails(ProfileId);
-            return View("ShowProfile", userinfo);
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "ShowProfileSPMO" : "ShowProfile";
+            return View(ViewName, userinfo);
         }
 
         public ActionResult ApproveRequest(int RequestId)
@@ -604,6 +647,64 @@ namespace ShriVivah.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        [MyAuthorize(IsAdmin = true)]
+        [CustomView]
+        public ActionResult RegisterFromAdmin()
+        {
+            this.LoadIsAdmin();
+            return View("RegisterFromAdmin");
+        }
+
+        [MyAuthorize(IsAdmin =true)]
+        [HttpPost]
+        public ActionResult RegisterUser(RegisterViewModel model)
+        {
+            tblUser user = null;
+            if (SettingsManager.Instance.Branding == "SPMO")
+            {
+                user = objUser.GetUser().Where(p => p.MobileNo.ToUpper() == model.MobileNo.ToUpper()).FirstOrDefault();
+                if (user == null)
+                {
+                    model.RoleName = "User";
+                    int userid = objUser.Save(model);
+                    if (userid > 0)
+                    {
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationPage : "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationFailed : "उमेदवार नोंदणी करणे अशक्य." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.SameUserExist : "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                user = objUser.GetUser().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper()).FirstOrDefault();
+                if (user == null)
+                {
+                    model.RoleName = "User";
+                    int userid = objUser.Save(model);
+                    if (userid > 0)
+                    {
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationPage : "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RegistrationFailed : "उमेदवार नोंदणी करणे अशक्य." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.SameUserExist : "लॉग-इन नाव आधीपासून दुसर्या उमेदवार वापरले." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [MyAuthorize(IsAdmin =false)]
         public ActionResult UpdateUserData(RegisterViewModel model)
         {
             ResponseModel response = new ResponseModel() { Status = false };
@@ -618,12 +719,12 @@ namespace ShriVivah.Controllers
                 objUser.UpdateJobLocation(job);
                 
                 response.Status = true;
-                response.ErrorMessage = "उमेदवाराची माहिती जतन केली .";
+                response.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UserInformationSave : "उमेदवाराची माहिती जतन केली .";
             }
             catch (Exception)
             {
                 response.Status = false;
-                response.ErrorMessage = "उमेदवाराची माहिती जतन करू शकत नाही.";
+                response.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "उमेदवाराची माहिती जतन करू शकत नाही.";
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -634,7 +735,8 @@ namespace ShriVivah.Controllers
             this.LoadIsAdmin();
             var user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).FirstOrDefault();
             ViewBag.UserDetails = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            return View("EditProfile");
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "EditProfileSPMO" : "EditProfile";
+            return View(ViewName);
         }
 
         [MyAuthorizeAttribute(IsAdmin = true)]
@@ -646,18 +748,18 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.ReligionName, Value = tbl.ReligionId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---धर्म निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Religion---" : "---धर्म निवडा---", Value = "0" });
             ViewBag.ReligionId = lstData;
 
             lstData = new List<SelectListItem>();
-            lstData.Add(new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             ViewBag.CasteId = lstData;
 
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राशी निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---राशी निवडा---", Value = "0" });
 
             ViewBag.OrasId = lstData;
             ViewBag.EOrasId = lstData;
@@ -666,14 +768,14 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in objCountry.GetCountrys()
                        select new SelectListItem { Text = tbl.CountryName, Value = tbl.CountryId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---देश निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Country---" : "---देश निवडा---", Value = "0" });
             ViewBag.CountryId = lstData;
 
             StateModel objState = new StateModel();
             lstData = (from tbl in objState.GetStates()
                        select new SelectListItem { Text = tbl.StateName, Value = tbl.StateId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राज्य निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select State---" : "---राज्य निवडा---", Value = "0" });
             ViewBag.StateId = lstData;
 
 
@@ -681,7 +783,7 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in oras.GetHeights()
                        select new SelectListItem { Text = tbl.Height, Value = tbl.HeightId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---उंची निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Height---" : "---उंची निवडा---", Value = "0" });
 
             ViewBag.HeightId = lstData;
             ViewBag.EHeightId = lstData;
@@ -691,7 +793,7 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetBloodGroups()
                        select new SelectListItem { Text = tbl.BloodGroupName, Value = tbl.BloodGroupId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---रक्त गट---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Blood Group---" : "---रक्त गट---", Value = "0" });
 
             ViewBag.BloodGroupId = lstData;
 
@@ -699,14 +801,15 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---शिक्षण निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Education---" : "---शिक्षण निवडा---", Value = "0" });
 
             ViewBag.QualificationId = lstData;
             ViewBag.EQualificationId = lstData;
 
             var user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId == UserId).FirstOrDefault();
             ViewBag.UserDetails = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            return View("EditUser");
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "EditUserSPMO" : "EditUser";
+            return View(ViewName);
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
@@ -718,18 +821,18 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.ReligionName, Value = tbl.ReligionId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---धर्म निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Religion---" : "---धर्म निवडा---", Value = "0" });
             ViewBag.ReligionId = lstData;
 
             lstData = new List<SelectListItem>();
-            lstData.Add(new SelectListItem() { Text = "---जात निवडा---", Value = "0" });
+            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             ViewBag.CasteId = lstData;
 
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राशी निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---राशी निवडा---", Value = "0" });
 
             ViewBag.OrasId = lstData;
             ViewBag.EOrasId = lstData;
@@ -738,14 +841,14 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in objCountry.GetCountrys()
                        select new SelectListItem { Text = tbl.CountryName, Value = tbl.CountryId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---देश निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Country---" : "---देश निवडा---", Value = "0" });
             ViewBag.CountryId = lstData;
 
             StateModel objState = new StateModel();
             lstData = (from tbl in objState.GetStates()
                        select new SelectListItem { Text = tbl.StateName, Value = tbl.StateId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---राज्य निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select State---" : "---राज्य निवडा---", Value = "0" });
             ViewBag.StateId = lstData;
 
 
@@ -753,7 +856,7 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in oras.GetHeights()
                        select new SelectListItem { Text = tbl.Height, Value = tbl.HeightId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---उंची---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Height---" : "---उंची---", Value = "0" });
 
             ViewBag.HeightId = lstData;
             ViewBag.EHeightId = lstData;
@@ -763,7 +866,7 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetBloodGroups()
                        select new SelectListItem { Text = tbl.BloodGroupName, Value = tbl.BloodGroupId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---रक्त गट ---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Blood Group---" : "---रक्त गट ---", Value = "0" });
 
             ViewBag.BloodGroupId = lstData;
 
@@ -771,12 +874,15 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = "---शिक्षण---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Education---" : "---शिक्षण---", Value = "0" });
+
+            ViewBag.MinAge = SessionManager.GetInstance.ActiveUser.Gender == "M" ? 22 : 18;
 
             ViewBag.QualificationId = lstData;
             ViewBag.EQualificationId = lstData;
+            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "IndexSPMO" : "Index";
 
-            return View("Index");
+            return View(ViewName);
         }
 
         
@@ -784,7 +890,7 @@ namespace ShriVivah.Controllers
         [HttpPost]
         public ActionResult UpdateUserByAdmin()
         {
-            ResponseModel response = new ResponseModel() { Status = false, ErrorMessage = "उमेदवाराची माहिती जतन करू शकत नाही." };
+            ResponseModel response = new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UserinformationSaveFailed : "उमेदवाराची माहिती जतन करू शकत नाही." };
             try
             {
                 JavaScriptSerializer serialize = new JavaScriptSerializer();
@@ -811,7 +917,8 @@ namespace ShriVivah.Controllers
         [HttpPost]
         public ActionResult UpdateUserProfile(RegisterViewModel model,FamilyModel family,List<RelativeModel> relatives)
         {
-            ResponseModel response = new ResponseModel() { Status = false, ErrorMessage = "उमेदवाराची माहिती जतन करू शकत नाही." };
+            ResponseModel response = new ResponseModel() { Status = false,
+                ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UserinformationSaveFailed : "उमेदवाराची माहिती जतन करू शकत नाही." };
             try
             {
                 JavaScriptSerializer serialize = new JavaScriptSerializer();
@@ -1308,16 +1415,19 @@ namespace ShriVivah.Controllers
             {
                 string base64string = string.Empty;
                 HttpPostedFileBase file = Request.Files[0];
-                base64string = "Content/ProfileImage/" + SessionManager.GetInstance.ActiveUser.UserId + "_1.jpg";
+                base64string = "Content/ProfileImage/" + SessionManager.GetInstance.ActiveUser.UserId + string.Format("{0:ddMMyyyyHHmmss}",DateTime.Now) +  ".jpg";
                 if (UserId>0)
                 {
-                    base64string = "Content/ProfileImage/" + UserId + "_1.jpg";
+                    base64string = "Content/ProfileImage/" + UserId + string.Format("{0:ddMMyyyyHHmmss}", DateTime.Now) + ".jpg";
                 }
                 file.SaveAs(Server.MapPath("~/"+ base64string));
                 //model.Image1=imgArr;
                 objUser.UploadImage(base64string, "P");
-                SessionManager.GetInstance.ActiveUser.Img1 = base64string;
-                result = true;
+                if (string.IsNullOrEmpty(SessionManager.GetInstance.ActiveUser.Img1))
+                {
+                    SessionManager.GetInstance.ActiveUser.Img1 = base64string;
+                }
+                result = SessionManager.GetInstance.ActiveUser.IsActive==null?false: SessionManager.GetInstance.ActiveUser.IsActive.Value;
             }
             return Json(result);
         }
@@ -1327,35 +1437,36 @@ namespace ShriVivah.Controllers
         [HttpPost]
         public ActionResult UploadA()
         {
-            bool result = false;
+            //bool result = false;
+            string base64string = string.Empty;
             if (Request.Files.Count > 0)
             {
-                string base64string = string.Empty;
                 HttpPostedFileBase file = Request.Files[0];
                 base64string = "Content/ProfileImage/" + SessionManager.GetInstance.ActiveUser.UserId + "_2.jpg";
                 file.SaveAs(Server.MapPath("~/" + base64string));
                 objUser.UploadImage(base64string, "M");
                 SessionManager.GetInstance.ActiveUser.Img2 = base64string;
-                result = true;
+                //result = base64string;
             }
-            return Json(result);
+            return Json(base64string);
         }
 
         [HttpPost]
         public ActionResult UploadB()
         {
-            bool result = false;
+            //bool result = false;
+            string base64string = string.Empty;
             if (Request.Files.Count > 0)
             {
-                string base64string = string.Empty;
+                
                 HttpPostedFileBase file = Request.Files[0];
                 base64string = "Content/ProfileImage/" + SessionManager.GetInstance.ActiveUser.UserId + "_3.jpg";
                 file.SaveAs(Server.MapPath("~/" + base64string));
                 objUser.UploadImage(base64string, "K");
                 SessionManager.GetInstance.ActiveUser.KImg = base64string;
-                result = true;
+                //result = true;
             }
-            return Json(result);
+            return Json(base64string);
         }
     }
 

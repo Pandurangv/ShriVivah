@@ -1,0 +1,27 @@
+﻿@model ShriVivah.Models.Entities.tblCountry
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmCountry" })) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <h4>Country Information</h4>
+        @Html.HiddenFor(p => p.CountryId)
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+            <label for="focusedinput" class="col-sm-2 control-label">Country Name</label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control1 inputborder" })
+                @Html.ValidationMessageFor(model => model.CountryName)
+            </div>
+        </div>
+        <div class="col-md-12">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}
+
+

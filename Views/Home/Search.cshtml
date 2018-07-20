@@ -77,10 +77,20 @@
         <div class="col-sm-12" style="margin-bottom:20px;">
             <nav>
                 <ul class="pagination">
-                    <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
-                    <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
-                    <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
-                    <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+                    @if (SettingsManager.Instance.Branding == "SPMO")
+                    {
+                        <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">First</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">Previous</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">Next</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">Last</span></a></li>
+                    }
+                    else
+                    {
+                        <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+                    }
                 </ul>
             </nav>
         </div>

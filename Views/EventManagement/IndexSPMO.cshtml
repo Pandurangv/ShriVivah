@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+@Scripts.Render("~/Scripts/Main/jquery.date-dropdowns.min.js")
+@Scripts.Render("~/Scripts/Main/EventController.js")
+<script type="text/javascript">
+    $(function () {
+        $("#EventDate").dateDropdowns({
+            maxYear:2050,
+        });
+    });
+</script>
+
+<div class="form-horizontal" data-ng-app="VarmalaVivahApp" data-ng-controller="EventController">
+    <div class="span_3" id="divMain" data-ng-show="Details==true">
+        <div class="col-md-12 divPadding1">
+            <div class="col-md-8">
+                <input type="text" id="txtSearch" placeholder="Name, Address, Panchayat Code, Mobile No" class="form-control1 inputborder" data-ng-model="Prefix" data-ng-change="FilterList()"/>
+            </div>
+            <div class="col-md-4">
+                <input type="hidden" value="agent" id="pagename" />
+                <input type="button" value="Search" class="btn btn-default" id="btnSearch" data-ng-click="FilterList()"/>
+                <input type="button" value=" Reset " class="btn btn-default" id="btnReset" data-ng-click="GetEventData()"/>
+                <input type="button" value=" New" class="btn btn-default" data-ng-click="AddNewUI()" />
+            </div>
+        </div>
+        <div class="bs-example1" data-example-id="contextual-table">
+            <table class="table table-bordered" id="SubCategoryInfo">
+                <thead>
+                    <tr>
+                        <th style="display:none">Event Id</th>
+                        <th>Event Name</th>
+                        <th>Event Location</th>
+                        <th>Event Date</th>
+                        <th>State</th>
+                        <th>Contact Person</th>
+                        <th>Mobile No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="active" data-ng-repeat="event in SearchEventList">
+                        <td style="display:none">{{event.EventId}}</td>
+                        <td>{{event.EventName}}</td>
+                        <td>{{event.EventLocation}}</td>
+                        <td>{{event.EventDate | mydate | date: 'dd-MM-yyyy'}}</td>
+                        <td>{{event.EventState}}</td>
+                        <td>{{event.ContactPerson}}</td>
+                        <td>{{event.MobileNo}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 page_1">
+            <nav>
+                <ul class="pagination">
+                    <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                    <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                    <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                    <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="form-group" id="contentdiv" data-ng-show="Add==true || Edit==true">
+        <div id="divPersonal">
+            <div class="col-md-12 divPadding">
+                <h3>Event Managment</h3>
+                <div class="form">
+                    <input type="hidden" id="pagename" value="registeruser" />
+                    <hr />
+                    <ng-form class="contactForm">
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="text" placeholder="Event Name*" id="EventName" maxlength="50" data-ng-blur="ValidateFName()"
+                                       class="form-control1 inputborder" />
+                                <span class="h3color" data-ng-show="ErrorModel.IsEventName">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="hidden" id="EventDate" />
+                                <span class="h3color" data-ng-show="ErrorModel.IsEventDate">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="text" placeholder="Event Location*" id="EventLocation" data-ng-blur="ValidateEventLocation()"
+                                       maxlength="50" class="form-control1 inputborder" />
+                                <span class="h3color" data-ng-show="ErrorModel.IsEventLocation">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="text" placeholder="Event District" id="EventDistrict" 
+                                       maxlength="50" class="form-control1 inputborder" />
+                                <span class="h3color" data-ng-show="ErrorModel.IsEventDistrict">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                @Html.DropDownList("StateId", ViewBag.StateId as SelectList, new { @class = "form-control1 inputborder" })
+                                <span class="h3color" data-ng-show="ErrorModel.IsEventState">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                @Html.DropDownList("AgentId", ViewBag.AgentId as SelectList, new { @class = "form-control1 inputborder" })
+                                <span class="h3color" data-ng-show="ErrorModel.IsOrganizedBy">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="text" id="ContactPerson" placeholder="Contact Person." class="form-control1 inputborder"  maxlength="250"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <input type="number" id="ContactNo" placeholder="Contact No*" maxlength="10" class="form-control1 inputborder" />
+                                <span class="h3color" data-ng-show="ErrorModel.IsContactNoLength">
+                                    {{ErrorMessage}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-4">
+                                <button class="btn btn-default" data-ng-click="SaveEvent()">Save</button>
+                                <button class="btn btn-default" data-ng-click="Cancel()">Cancel</button>
+                            </div>
+                        </div>
+                    </ng-form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

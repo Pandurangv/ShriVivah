@@ -21,6 +21,16 @@ function baseUrl() {
     return pathname;
 }
 
+function validateEmail(element)
+{
+    var isvalid = true;
+    var reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    if (reg.test($(element).val()) == false) {
+        isvalid= false;
+    }
+    return isvalid;
+}
+
 function ShowLoader()
 {
     $("#rclLoader").show();
@@ -98,6 +108,14 @@ function GetAllMessgaes(userid, touserid)
             }
         });
     }, 15000);
+}
+
+function parseJsonDate(jsondate) {
+    var date = new Date(parseInt(jsondate.substr(6)));
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+
+    return date.getFullYear() + "-" + (month) + "-" + (day);
 }
 
 function bindUserMessges(students)

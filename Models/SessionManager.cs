@@ -43,14 +43,43 @@ namespace ShriVivah.Models
             set { HttpContext.Current.Session["SearchUser"] = value; }
         }
 
-        public tblUser ActiveUser 
+        public int VendorTypeID
         {
             get
             {
-                tblUser user = null;
+                int user = 0;
+                if (HttpContext.Current.Session["VendorTypeID"] != null)
+                {
+                    user = Convert.ToInt32(HttpContext.Current.Session["VendorTypeID"]);
+                }
+                return user;
+            }
+            set { HttpContext.Current.Session["VendorTypeID"] = value; }
+        }
+
+        //RegisterUser
+        public RegisterViewModel RegisterUser
+        {
+            get
+            {
+                RegisterViewModel user = null;
+                if (HttpContext.Current.Session["RegisterUser"] != null)
+                {
+                    user = (RegisterViewModel)HttpContext.Current.Session["RegisterUser"];
+                }
+                return user;
+            }
+            set { HttpContext.Current.Session["RegisterUser"] = value; }
+        }
+
+        public STP_GetUserDetail ActiveUser 
+        {
+            get
+            {
+                STP_GetUserDetail user = null;
                 if (HttpContext.Current.Session["ActiveUser"] != null)
                 {
-                    user = (tblUser)HttpContext.Current.Session["ActiveUser"];
+                    user = (STP_GetUserDetail)HttpContext.Current.Session["ActiveUser"];
                 }
                 return user;
             }

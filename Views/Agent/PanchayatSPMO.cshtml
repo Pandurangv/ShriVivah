@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+}
+@Scripts.Render("~/Scripts/Main/PanchayatController.js")
+<div class="container">
+    <div class="row innerDiv" id="contentdiv" data-ng-app="VarmalaVivahApp" data-ng-controller="PanchayatController">
+        <div class="col-md-12" style="margin-bottom:20px;"> 
+            <div class="col-md-8">
+                <input type="text" class="form-control" data-ng-model="Prefix" data-ng-blur="FilterList()" placeholder="Search Text"/>
+            </div>
+            <div class="col-md-4 pull-right" style="position:relative">
+                <input type="button" value="<<" data-ng-click="First()" class="btn btn-primary" />
+                <input type="button" value="<" data-ng-click="Prev()" class="btn btn-primary" />
+                <input type="button" value=">" data-ng-click="Next()" class="btn btn-primary" />
+                <input type="button" value=">>" data-ng-click="Last()" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Dist</th>
+                        <th>State</th>
+                        <th>Contact No.</th>
+                        <th>Mail Id.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="user in SearchUserList">
+                        <th>{{user.PanchayatCode}}</th>
+                        <th>{{user.Name}}</th>
+                        <th>{{user.Address}}</th>
+                        <th>{{user.City}}</th>
+                        <th>{{user.District}}</th>
+                        <th>{{user.State}}</th>
+                        <th>{{user.MobileNo}}</th>
+                        <th>{{user.EmailId}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-12" style="margin-bottom:20px;">
+            <input type="button" value="<<" data-ng-click="First()" class="btn btn-primary" />
+            <input type="button" value="<" data-ng-click="Prev()" class="btn btn-primary" />
+            <input type="button" value=">" data-ng-click="Next()" class="btn btn-primary" />
+            <input type="button" value=">>" data-ng-click="Last()" class="btn btn-primary" />
+        </div>
+    </div>
+</div>

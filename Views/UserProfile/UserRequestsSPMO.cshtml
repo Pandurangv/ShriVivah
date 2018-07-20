@@ -1,0 +1,166 @@
+﻿@model IQueryable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "UserRequests";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+@Styles.Render("~/Content/AdminPanel/jquery-ui.css")
+@Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
+
+<div class="col-md-12" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="UserController" style="min-height:500px">
+    <input type="hidden" id="UserId" value="@ViewBag.UserId" />
+    <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+    <input type="hidden" id="UserGender" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender" />
+    @if (ViewBag.IsAdmin)
+    {
+        <input type="hidden" id="IsAdmin" value="true" />
+    }
+    else
+    {
+        <input type="hidden" id="IsAdmin" value="false" />
+    }
+    
+    <input type="hidden" id="pagename" value="userprofiles" />
+    <div class="row">
+        <div class="col-md-12 divPadding1">
+            <div class="col-md-4">
+                <select class="form-control1 inputborder" id="Fields">
+                    <option value="Name">Name</option>
+                    <option value="Qualification">Qualification</option>
+                    <option value="City">City</option>
+                    <option value="JobBusinessLocation">Job/Business Location</option>
+                    <option value="MarritalStatus">Marrital Status</option>
+                    <option value="Moonsign">Moon Sign</option>
+                    <option value="AgeBetween">Age Between</option>
+                    <option value="MarritalStatus">Marrital Status</option>
+                    <option value="BloodGroup">Blood Group</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control1 inputborder" type="text" data-ng-model="Prefix" placeholder="Search Partner " data-ng-change="FilterList()" id="txtPrefix"/>
+                <select class="form-control1 inputborder" data-ng-model="SelectedQualification" id="ddlQ"
+                        data-ng-options="qualification.DegreeName for qualification in Qualifications" data-ng-change="FilterListQ(SelectedQualification)"></select>
+                <select class="form-control1 inputborder" id="MarritalStatus">
+                    <option value="0">--Marrital Status--</option>
+                    <option value="1">Unmarried</option>
+                    <option value="2">Separated</option>
+                    <option value="3">Widow</option>
+                    <option value="4">Divorcee</option>
+                </select>
+                <div class="col-md-12" id="AgeBetween">
+                    <div class="col-md-6">
+                        <input class="form-control1 inputborder" type="text" data-ng-model="MinAge" placeholder="Min Age" data-ng-change="FilterAge()" />
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control1 inputborder" type="text" data-ng-model="MaxAge" placeholder="Max Age" data-ng-change="FilterAge()"/>
+                    </div>
+                </div>
+                @Html.DropDownList("OrasId", ViewBag.OrasId as SelectList, new { @class = "form-control1 inputborder" })
+                @Html.DropDownList("BloodGroupId", ViewBag.BloodGroupId as SelectList, new { @class = "form-control1 inputborder" })
+            </div>
+            <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CasteId)" id="castelist" />
+            <div class="col-md-4">
+                <input type="button" value="Reset" class="btn btn-default" data-ng-click="GetUserData()" />
+                <input type="button" value="Register" id="btnReg" class="btn btn-default" onclick="window.location='@Url.Action("RegisterFromAdmin","UserProfile")'" />
+            </div>
+            @*<div id="demo" class="col-md-12 collapse">
+                sdfkasgkk
+            </div>*@
+        </div>
+        <div class="col-md-12" style="background-color:#fff">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="col-md-9">
+                    <nav class="pull-right">
+                        <ul class="pagination" style="margin:0px">
+                            <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">First</span></a></li>
+                            <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">Previous</span></a></li>
+                            <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">Next</span></a></li>
+                            <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">Last</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control1 inputborder" id="PageSizeUp" >
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="maindiv" >
+        <div class="col-md-12" >
+            <div class="col-md-6 divPadding" data-ng-repeat="user in SearchUserList">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object"
+                                 ng-src="{{user.Img1}}"
+                                 style="width: 55px; height: 55px;">
+                        </a>
+                    </div>
+                    <div class="media-body" data-ng-switch="user.MarritalStatus">
+                        <input type="hidden" id="user.UserId" value="user.UserId" />
+                        <span class="mediaprofilestrong spanStyle">{{user.Gender=='M'?'Mr.':'Miss.'}} {{user.FirstName}} {{user.LName}}</span>
+                        @if (ViewBag.IsAdmin == true)
+                        {
+                            <span>( {{user.IsActive=='false' || user.IsActive== false ?'New Registrations':'Active'}} )</span>
+                        }
+                        <span ng-switch-when="null">( --- )</span>
+                        <span ng-switch-when="1">( Unmarried )</span>
+                        <span ng-switch-when="2">( Seperated )</span>
+                        <span ng-switch-when="3">( Widow )</span>
+                        <span ng-switch-when="4">( Divorcee )</span>
+                        <p class="mediaprofile">
+                            Education- {{user.Qualification}}, &nbsp;&nbsp; Height - {{user.Height}}, &nbsp;&nbsp; Religion - {{user.ReligionName}},
+                            &nbsp;&nbsp; Cast - {{user.CastName}}, &nbsp;&nbsp;
+                            Age- {{user.Age}}, &nbsp;&nbsp; Moon Sign- {{user.OrasName}} &nbsp;&nbsp;{{user.Address}} <br />
+                        </p>
+                    </div>
+                    <div class="clearfix">
+                        @if (ViewBag.IsAdmin == true)
+                        {
+                            <input type="button" value="Send Password" data-ng-click="SendSMS(user.UserId)" class="btn btn-default btnStyle" />
+                                <input type="button" value="Get Married" class="btn btn-default btnStyle" data-ng-click="MarriageDone(user.UserId)" />
+                        }
+                        <input type="button" value="View Profile." data-ng-click="ViewProfile(user.UserId)" class="btn btn-default btnStyle" /> &nbsp;&nbsp;
+                        <input type="button" value="Send Message" class="btn btn-default btnStyle" data-ng-click="SendMessage(user.UserId)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="background:#fff">
+        <div class="col-md-6 page_1">
+            <div class="col-md-9">
+                <nav class="pull-right">
+                    <ul class="pagination" style="margin:0px">
+                        <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">First</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">Previous</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">Next</span></a></li>
+                        <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">Last</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control1 inputborder" id="PageSizeDown">
+                    <option value="10" selected="selected">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Main/UserProfileController.js")
+

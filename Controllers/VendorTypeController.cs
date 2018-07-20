@@ -1,5 +1,6 @@
 ﻿using ShriVivah.Models;
 using ShriVivah.Models.ContextModel;
+using ShriVivah.Models.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace ShriVivah.Controllers
         }
         // GET: VendorType
         [MyAuthorizeAttribute(IsAdmin=true)]
+        [CustomView]
         public ActionResult Index()
         {
             this.LoadIsAdmin();
@@ -42,9 +44,8 @@ namespace ShriVivah.Controllers
                 HttpPostedFileBase file = Request.Files[0];
                 base64string = "Content/VendorImages/Temp/" + string.Format("{0:dd_MM_yyyy_hh_mm_ss}", DateTime.Now) + "_B.jpg";
                 file.SaveAs(Server.MapPath("~/" + base64string));
-                //model.Image1=imgArr;
+                //SessionManager.GetInstance.ImagePath = "~/" + base64string;
                 error.FilePath = base64string;
-                //objUser.UploadImage(base64string, "P");
                 error.Status = true;
             }
             return Json(error);
@@ -86,7 +87,7 @@ namespace ShriVivah.Controllers
                 VendorTypeDetails obj = new VendorTypeDetails()
                 {
                     Status = false,
-                    ErrorMessage = "आणखी माहिती उपलब्ध नाही."
+                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -127,7 +128,7 @@ namespace ShriVivah.Controllers
                     VendorTypeDetails obj = new VendorTypeDetails()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -163,7 +164,7 @@ namespace ShriVivah.Controllers
                     VendorTypeDetails obj = new VendorTypeDetails()
                     {
                         Status = false,
-                        ErrorMessage = "तुम्ही पहिल्याच पानावर आहात.",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात.",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -207,17 +208,9 @@ namespace ShriVivah.Controllers
             var countries = objOras.GetVendorTypes();
             var test = countries.Where(p => p.VendorType.ToUpper() == model.VendorType.ToUpper()).FirstOrDefault();
             VendorTypeDetails obj = new VendorTypeDetails();
-            if (test != null)
-            {
-                obj.Status = false;
-                obj.ErrorMessage = "हि माहिती आधीपासून उपलब्ध आहे.";
-            }
-            else
-            {
-                obj.Status = true;
-                obj.ErrorMessage = "माहिती सेव केली आहे.";
-                objOras.Save(model);
-            }
+            obj.Status = true;
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+            objOras.Save(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorTypeId).Skip(pageindex * PageSize).Take(PageSize);
             Session["users"] = countries;
@@ -233,17 +226,10 @@ namespace ShriVivah.Controllers
             var countries = objOras.GetVendorTypes();
             var test = countries.Where(p => p.VendorType.ToUpper() == model.VendorType.ToUpper()).FirstOrDefault();
             VendorTypeDetails obj = new VendorTypeDetails();
-            if (test != null)
-            {
-                obj.Status = false;
-                obj.ErrorMessage = "हि माहिती आधीपासून उपलब्ध आहे..";
-            }
-            else
-            {
-                obj.Status = true;
-                obj.ErrorMessage = "माहितीमध्ये बदल करण्यात आला आहे.";
-                objOras.Update(model);
-            }
+            //model.TypeImagesPath = SessionManager.GetInstance.ImagePath;
+            obj.Status = true;
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
+            objOras.Update(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorTypeId).Skip(pageindex * PageSize).Take(PageSize);
             Session["users"] = countries;

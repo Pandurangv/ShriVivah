@@ -44,6 +44,8 @@ namespace ShriVivah.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        public string MobileNo { get; set; }
+
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
@@ -109,7 +111,9 @@ namespace ShriVivah.Models
 
         public int? Age { get; set; }
 
+        public int AgentId { get; set; }
 
+        public string OTP { get; set; }
 
         public string Height { get; set; }
 

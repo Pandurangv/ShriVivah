@@ -6,39 +6,8 @@
 
 @Styles.Render("~/Content/AdminPanel/jquery-ui.css")
 @Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
-<script type="text/javascript">
-    $(function() {
-        var availableTags = [];
-        
-        $("#maindiv").find(".media").each(function (index) {
-            var id = $(this).find("input[type=hidden]").val();
-            var name = $("#name_" + id).html();
-            $(this).css("overflow", "inherit");
-            availableTags.push(name);
-        });
-        $("#txtSearch" ).autocomplete({
-            source: availableTags
-        });
-    });
-
-    function Rotate(userid) {
-        var currunt=parseInt($("#Img1_"+ userid).attr("data"));
-        if (currunt==360) {
-            currunt = 0;
-        }
-        currunt=currunt+90;
-        $("#Img1_"+ userid).css({
-            "-webkit-transform": "rotate("+ currunt+"deg)",
-            "-moz-transform": "rotate("+ currunt+"deg)",
-            "transform": "rotate("+ currunt+"deg)" /* For modern browsers(CSS3)  */
-        });
-        $("#Img1_"+ userid).attr("data",currunt);
-    }
-
-    </script>
-
-    @Scripts.Render("~/bundles/UserProfile")
-<div class="col-md-12" id="divMain">
+ 
+<div class="col-md-12" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="UserController">
     <input type="hidden" id="UserId" value="@ViewBag.UserId" />
     <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
     @if (ViewBag.IsAdmin)
@@ -49,157 +18,85 @@
     {
         <input type="hidden" id="IsAdmin" value="false" />
     }
-    @*@Html.Hidden("IsAdmin", @ViewBag.IsAdmin,{ @id: "IsAdmin" });*@
     <input type="hidden" id="pagename" value="userprofiles" />
     <div class="col-md-12 topSet">
-        <div class="col-md-6">
-            <input type="text" class="txtSearchWidth" id="txtSearch" placeholder="जोडीदाराचा शोध. नाव, जात, गोत्र ..." />
-        </div>
-        <input type="button" value="शोध" class="btn btn-default" id="btnSearch" />
-        <input type="button" value="सुरवातीपासून" class="btn btn-default" id="btnReset" />
-        <input type="button" value="शोध" class="btn btn-default" id="btnShowPopup" />
-    </div>
+        <input type="text" data-ng-model="Prefix" placeholder="जोडीदाराचा शोध. नाव, जात, गोत्र ..." data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <input type="number" min="18" max="45" data-ng-model="MinAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <input type="number" min="18" max="45" data-ng-model="MaxAge" placeholder="वय" data-ng-change="FilterList()" data-ng-foucusout="FilterList()" />
+        <select style="width:100px;height:28px;" data-ng-model="SelectedQualification"
+                data-ng-options="qualification.DegreeName for qualification in Qualifications"
+                data-ng-change="FliterQualification(SelectedQualification)"></select>
+        <select style="width:100px;height:28px;" id="ddlCast"
+                data-ng-click="FliterCaste()"></select>
 
-    <div class="bs-example5" data-example-id="default-media" id="maindiv">
-        @foreach (var item in Model)
-        {
+        <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CasteId)" id="castelist" />
+        <input type="button" value="शोध" class="btn btn-default" data-ng-click="FilterList()" />
+        <input type="button" value="सुरवातीपासून" class="btn btn-default" data-ng-click="GetUserData()" />
+    </div>
+    <div class="col-md-12">
+        <select style="width:100px;height:28px;"  data-ng-click="FilterMarriage()" id="MarritalStatus">
+            <option value="0" >--वैवाहिक स्थिती--</option>
+            <option value="1">अविवाहित</option>
+            <option value="2">विभक्त</option>
+            <option value="3">विधवा / विधुर</option>
+            <option value="4">घटस्फोटित</option>
+        </select>
+        <span>
+            Result Count {{UserList.length}}
+        </span>
+    </div>
+    <div class="row" id="maindiv" data-ng-repeat="user in SearchUserList">
+        <div class="col-md-12 divPadding">
             <div class="media">
                 <div class="media-left">
                     <a href="#">
-                        @if (!string.IsNullOrEmpty(@item.Img1))
-                        {
-                            <img class="media-object" src="@Url.Content(String.Format("~/{0}", item.Img1))" data-holder-rendered="true" style="width: 80px; height: 80px;" id="Img1_@item.UserId" data="0">
-                        }
-                        else
-                        {
-                            if (@item.Gender == "M")
-                            {
-                                <img class="media-object" src="@Url.Content("~/Content/Images/User_male.png")" data-holder-rendered="true" style="width: 80px; height: 80px;">
-                            }
-                            else
-                            {
-                                <img class="media-object" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 80px; height: 80px;">
-                            }
-                        }
+                        <img class="media-object"
+                             ng-src="{{user.Img1}}"
+                             style="width: 55px; height: 55px;">
                     </a>
-                    <span class="glyphicon glyphicon-refresh" onclick="Rotate(@item.UserId)"></span>
+                    @*<span class="glyphicon glyphicon-refresh" onclick="Rotate(user.UserId)"></span>*@
                 </div>
-                <div class="media-body">
-                    <input type="hidden" id="@item.UserId" value="@item.UserId" />
-                    @if (!string.IsNullOrEmpty(@item.Gender))
-                    {
-                        if (@item.Gender == "M")
-                        {
-                            <span class="mediaprofile spanStyle" id="name_@item.UserId">चि. @item.FirstName @item.LName</span>
-                        }
-                        else
-                        {
-                            <span class="mediaprofile spanStyle" id="name_@item.UserId">कु. @item.FirstName @item.LName</span>
-                        }
-                    }
-                    else
-                    {
-                        <span class="mediaprofile spanStyle" id="name_@item.UserId">@item.FirstName @item.LName</span>
-                    }
+                <div class="media-body" data-ng-switch="user.MarritalStatus">
+                    <input type="hidden" id="user.UserId" value="user.UserId" />
+                    <span class="mediaprofilestrong spanStyle">{{user.Gender=='M'?'Mr.':'Mrs.'}} {{user.FirstName}} {{user.LName}}</span>
                     @if (ViewBag.IsAdmin == true)
                     {
-                        if (Convert.ToBoolean(item.IsActive)==false)
-                        {
-                            <span>नवीन उमेदवार</span>
-                        }
-                        else
-                        {
-                            <span>सक्रिय</span>
-                        }
+                        <span>( {{user.IsActive=='false'?'नवीन उमेदवार':'सक्रिय'}} )</span>
                     }
-                    
+                    <span ng-switch-when="null">( --- )</span>
+                    <span ng-switch-when="1">( अविवाहित )</span>
+                    <span ng-switch-when="2">( विभक्त )</span>
+                    <span ng-switch-when="3">( विधवा / विधुर )</span>
+                    <span ng-switch-when="4">( घटस्फोटित )</span>
                     <p class="mediaprofile">
-                        शिक्षण- @item.Qualification, &nbsp;&nbsp; उंची - @item.Height, &nbsp;&nbsp; धर्म - @item.ReligionName,
-                        &nbsp;&nbsp; जात - @item.CastName, &nbsp;&nbsp;
-                        वय-@item.Age, &nbsp;&nbsp; राशी- @item.OrasName &nbsp;&nbsp;@item.Address <br />
+                        शिक्षण- {{user.Qualification}}, &nbsp;&nbsp; उंची - {{user.Height}}, &nbsp;&nbsp; धर्म - {{user.ReligionName}},
+                        &nbsp;&nbsp; जात - {{user.CastName}}, &nbsp;&nbsp;
+                        वय- {{user.Age}}, &nbsp;&nbsp; राशी- {{user.OrasName}} &nbsp;&nbsp;{{user.Address}} <br />
                     </p>
                     @if (ViewBag.IsAdmin == true)
                     {
-                        <input type="button" value="पासवर्ड पाठवा" onclick="SendSMS(@item.UserId)" class="btn btn-default" />
-                        <input type="button" value="विवाह झाला" class="btn btn-default" onclick="MarriageDone(@item.UserId)" />
+                        <input type="button" value="पासवर्ड पाठवा" data-ng-click="SendSMS(user.UserId)" class="btn btn-default btnStyle" />
+                        <input type="button" value="विवाह झाला" class="btn btn-default btnStyle" data-ng-click="MarriageDone(user.UserId)" />
                     }
-                    <input type="button" value="संपूर्ण माहिती पहा." onclick="ViewProfile(@item.UserId)" class="btn btn-default" /> &nbsp;&nbsp;
-                    <input type="button" value="संदेश पाठवा" class="btn btn-default" onclick="SendMessage(@item.UserId)" />
-                    
+                    <input type="button" value="संपूर्ण माहिती पहा." data-ng-click="ViewProfile(user.UserId)" class="btn btn-default btnStyle" /> &nbsp;&nbsp;
+                    <input type="button" value="संदेश पाठवा" class="btn btn-default btnStyle" data-ng-click="SendMessage(user.UserId)" />
+
                 </div>
                 <div class="clearfix"> </div>
             </div>
-        }
+        </div>
     </div>
     <div class="col-md-6 page_1">
         <nav>
             <ul class="pagination">
-                <li><a href="#" aria-label="First" id="btnGoFirst"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
-                <li><a href="#" aria-label="First" id="btnGoBack"><span aria-hidden="true">मागे पहा</span></a></li>
-                <li><a href="#" aria-label="First" id="btnLoadMore"><span aria-hidden="true">पुढे पहा</span></a></li>
-                <li><a href="#" aria-label="First" id="btnGoLast"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="First()"><span aria-hidden="true">पहिल्या पानावर</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Prev()"><span aria-hidden="true">मागे पहा</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Next()"><span aria-hidden="true">पुढे पहा</span></a></li>
+                <li><a href="#" aria-label="First" data-ng-click="Last()"><span aria-hidden="true">शेवटच्या पानावर</span></a></li>
             </ul>
         </nav>
     </div>
 </div>
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel">×</button>
-                <h2 class="modal-title">जोडीदाराचा शोध</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-content modeldata">
-                    <label for="focusedinput">वयोमर्यादा</label>
-                    <div>
-                        <input type="number" id="ageFrom" required="required" placeholder="कमीत कमी वय" />
-                        <input type="number" id="ageTo" required="required" placeholder="जास्तीत जास्त वय" />
-                    </div>
-                    <label for="focusedinput">जात</label>
-                    <div>
-                        @Html.DropDownList("CasteId", ViewBag.CasteId as SelectList, new { @class = "form-control" })
-                    </div>
-                    <label for="focusedinput">उंची कमीत कमी</label>
-                    <div>
-                        @Html.DropDownList("HeightId", ViewBag.HeightId as SelectList, new { @class = "form-control" })
-                    </div>
-                    <label for="focusedinput">उंची जास्तीत जास्त</label>
-                    <div>
-                        @Html.DropDownList("EHeightId", ViewBag.EHeightId as SelectList, new { @class = "form-control" })
-                    </div>
-                    <label for="focusedinput">शिक्षण</label>
-                    <div>
-                        @*@Html.DropDownList("QualificationId", ViewBag.QualificationId as SelectList, new { @class = "form-control" })*@
-                        <input id="QualificationId" type="text" class="form-control" />
-                    </div>
-                    <label for="focusedinput">वार्षिक उत्पन्न</label>
-                    <div>
-                        <select id="cmbIncome" class="form-control" name="txtIncome" required="required">
-                            <option selected="selected" value="">वार्षिक उत्पन्न निवडा</option>
-                            <option value="Under   Rs.50,000">Rs.50,000 पेक्षा कमी</option>
-                            <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
-                            <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
-                            <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
-                            <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
-                            <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
-                            <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
-                            <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
-                            <option value="Rs.10,00,001 and above">Rs.10,00,001 त्यापेक्षा जास्त </option>
-                            <option value="No Income">उत्पन्न नाही</option>
-                        </select>
-                    </div>
-                    <label for="focusedinput">नोकरीचे ठिकाण</label>
-                    <div>
-                        <input type="text" id="City" required="required" placeholder="Job Location" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btnASearch">शोध</button>
-            </div>
-        </div>
-    </div>
-</div>
 
+@Scripts.Render("~/Scripts/Main/UserProfileController.js")
 

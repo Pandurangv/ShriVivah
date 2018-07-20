@@ -25,6 +25,11 @@ namespace ShriVivah.Models.Entities
             this.Configuration.LazyLoadingEnabled = false;
         }
 
+        public DbSet<ProfileImage> tblProfileImages { get; set; }
+
+        public DbSet<EventManagement> EventManagements { get; set; }
+
+
         public DbSet<tblRelatived> tblRelativeds { get; set; }
 
         public DbSet<tblVendorType> tblVendorTypes { get; set; }
@@ -70,13 +75,13 @@ namespace ShriVivah.Models.Entities
 
         public DbSet<tblCity> tblCities { get; set; }
 
-        public DbSet<tblCast> tblCasts { get; set; }
+        public DbSet<UserRequests> UserRequest { get; set; }
 
-        //public DbSet<tblContactUs> tblContactUss { get; set; }
+        public DbSet<tblCast> tblCasts { get; set; }
 
         public DbSet<tblContactDetails> tblContactDetailss { get; set; }
 
-
+        public DbSet<UserRequests_Vendor> viewUserRequests_Vendor { get; set; }
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 

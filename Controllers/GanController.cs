@@ -110,7 +110,7 @@ namespace ShriVivah.Controllers
                     GanDetails obj = new GanDetails()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -146,7 +146,7 @@ namespace ShriVivah.Controllers
                     GanDetails obj = new GanDetails()
                     {
                         Status = false,
-                        ErrorMessage = "You are already on first page",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "You are already on first page",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -193,12 +193,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = "Record already exist.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = "Record saved successfully.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "Record saved successfully.";
                 objGan.Save(model);
             }
             int pageindex = 0;
@@ -219,12 +219,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = "Record already exist.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = "Record updated successfully.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "Record updated successfully.";
                 objGan.Update(model);
             }
             int pageindex = 0;

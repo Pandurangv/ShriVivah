@@ -50,7 +50,7 @@ namespace ShriVivah.Models.ContextModel
             return success;
         }
 
-        public void ChangePassword(tblUser user)
+        public void ChangePassword(STP_GetUserDetail user)
         {
             tblUser obju = (from tbl in objData.tblUsers where tbl.UserId == user.UserId select tbl).FirstOrDefault();
             obju.Password = user.Password;
@@ -59,9 +59,7 @@ namespace ShriVivah.Models.ContextModel
 
         public IQueryable<STP_GetUserDetail> Select_STP_GetUserDetails()
         {
-            var url = new UrlHelper();
-            
-            string commandText = "[dbo].[STP_GetUserDetailsData]";
+            string commandText = "[dbo].[STP_GetUserDetails]";
             var result= objData.Database.SqlQuery<STP_GetUserDetail>(commandText).AsQueryable();
             
             return result;
@@ -120,6 +118,24 @@ namespace ShriVivah.Models.ContextModel
             objData.tblUsers.Add(user);
             objData.SaveChanges();
 
+            if (SettingsManager.Instance.Branding == "SPMO")
+            {
+                UserRequests request = new UserRequests()
+                {
+                    IsDelete = false,
+                    IsAdminApproved = false,
+                    IsApproved = false,
+                    IsUserRequest = false,
+                    PanchayatId = model.UserData.AgentId,
+                    RequestDate = DateTime.Now,
+                    UserId = user.UserId.Value,
+                    VendorId = 0,
+                };
+                //tbl.IsDelete = false;
+                objData.UserRequest.Add(request);
+                objData.SaveChanges();
+            }
+
             model.UserFamily.UserId = user.UserId.Value;
             Update(model.UserFamily);
 
@@ -140,20 +156,54 @@ namespace ShriVivah.Models.ContextModel
             
         }
 
-        internal ResponseModel SendSMS(STP_GetUserDetail user)
+        internal ResponseModel SendSMS(STP_GetUserDetail user, RegisterViewModel model=null)
         {
-            ResponseModel response = new ResponseModel() { Status = false };
-            //bool flag = false;
-            string authKey = "138171AtpMQmwmda5884566c";
+            ResponseModel response = new ResponseModel() { Status = false };//bool flag = false;
+            string authKey = SettingsManager.Instance.AuthKey;
             //Multiple mobiles numbers separated by comma
-            string mobileNumber = user.MobileNo;
+            string mobileNumber = user != null ? user.MobileNo : model.MobileNo;
             //Sender ID,While using route4 sender id should be 6 characters long.
-            string senderId = "VVivah";
+            string senderId = SettingsManager.Instance.SenderId;
             //Your message to send, Add URL encoding here.
             StringBuilder sb = new StringBuilder();
-            sb.Append("Please do login Using below credintials Login Id : ").Append(user.UserName).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, Regards Trupti, www.Varmalavivah.com 8806369038");
-            string message = HttpUtility.UrlEncode(sb.ToString());
-
+            string message = string.Empty;
+            if (user!=null)
+            {
+                if (SettingsManager.Instance.Branding == "SPMO")
+                {
+                    sb.Append("Please do login Using below credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, Regards Sindhi Hindu, www.sindhihindu.com 9273763490");
+                }
+                else
+                {
+                    sb.Append("Please do login Using below credintials Login Id : ").Append(user.UserName).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, Regards Trupti, www.Varmalavivah.com 8806369038");
+                }
+                message = HttpUtility.UrlEncode(sb.ToString());
+            }
+            else
+            {
+                string uid = Guid.NewGuid().ToString();
+                string charat = "";
+                string otp = "";// uid.ToString().Substring(0, 5);
+                for (int i = 0; i < uid.Length; i++)
+                {
+                    charat = uid.Substring(i, 1);
+                    int res = 0;
+                    if (int.TryParse(charat,out res))
+                    {
+                        otp += charat;
+                        if (otp.Length==3)
+                        {
+                            break;
+                        }
+                    }
+                }
+                
+                model.OTP = otp;
+                SessionManager.GetInstance.RegisterUser = model;
+                response.ModelObject = model;
+                sb.Append("Please do not share OTP with any other. Your OTP is " + otp +" Regards, Sindhi Hindu");
+                message = HttpUtility.UrlEncode(sb.ToString());
+            }
             //Prepare you post parameters
             StringBuilder sbPostData = new StringBuilder();
             sbPostData.AppendFormat("authkey={0}", authKey);
@@ -166,7 +216,7 @@ namespace ShriVivah.Models.ContextModel
             try
             {
                 //Call Send SMS API
-                string sendSMSUri = "https://control.msg91.com/api/sendhttp.php";
+                string sendSMSUri = SettingsManager.Instance.SMSUrl;
                 //Create HTTPWebrequest
                 HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(sendSMSUri);
                 //Prepare and Add URL Encoded data
@@ -184,7 +234,7 @@ namespace ShriVivah.Models.ContextModel
                 HttpWebResponse webresponse = (HttpWebResponse)httpWReq.GetResponse();
                 StreamReader reader = new StreamReader(webresponse.GetResponseStream());
                 string responseString = reader.ReadToEnd();
-                
+
 
                 //Close the response
                 reader.Close();
@@ -202,20 +252,37 @@ namespace ShriVivah.Models.ContextModel
 
         public int Save(RegisterViewModel model)
         {
-            tblUser user = new tblUser() { 
-                FirstName=model.FirstName,
-                MName=model.MiddleName,
-                LName=model.LastName,
-                MailId=model.Email,
-                MobileNo=model.MobileNo,
-                UserName=model.UserName,
-                Password=model.Password,
-                UserType=model.RoleName,
-                IsDelete=false,
-                IsActive=model.IsActive==null?true:model.IsActive,
+            tblUser user = new tblUser()
+            {
+                FirstName = model.FirstName,
+                MName = model.MiddleName,
+                LName = model.LastName,
+                MailId = model.Email,
+                MobileNo = model.MobileNo,
+                UserName = model.UserName,
+                Password = model.Password,
+                UserType = model.RoleName,
+                IsDelete = false,
+                IsActive = SettingsManager.Instance.Branding == "SPMO" ? false : (model.IsActive == null ? true : model.IsActive),
+                Gender = model.Gender,
             };
             objData.tblUsers.Add(user);
             objData.SaveChanges();
+
+            UserRequests userRequest = new UserRequests()
+            {
+                UserId = user.UserId.Value,
+                PanchayatId = model.AgentId,
+                VendorId = 0,
+                IsUserRequest = true,
+                RequestDate = DateTime.Now,
+                IsApproved = false,
+                IsDelete = false,
+                IsAdminApproved = false
+            };
+            objData.UserRequest.Add(userRequest);
+            objData.SaveChanges();
+
             return user.UserId.Value;
         }
 
@@ -256,6 +323,14 @@ namespace ShriVivah.Models.ContextModel
             return result;
         }
 
+        internal IQueryable<SP_GetAgentDetails> GetPanchayatList()
+        {
+            string commandText = "[dbo].[SP_GetAgentDetails]";
+            var result = objData.Database.SqlQuery<SP_GetAgentDetails>(commandText).AsQueryable();
+
+            return result;
+        }
+
         internal IQueryable<STP_GetUserDetail> GetAgentDetails()
         {
             int cYear = DateTime.Now.Date.Year;
@@ -280,7 +355,9 @@ namespace ShriVivah.Models.ContextModel
                               State = tbl.State,
                               Taluka=tbl.Taluka,
                               District=tbl.District,
-                              UserName=tbl.UserName
+                              UserName=tbl.UserName,
+                              PanchayatCode=tbl.PanchayatCode,
+                              Name=tbl.FirstName + " " + tbl.LName
                           });
 
             
@@ -403,7 +480,12 @@ namespace ShriVivah.Models.ContextModel
             return result;
         }
 
-        
+        internal List<ProfileImage> GetAllImages()
+        {
+            var lst= objData.tblProfileImages.Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).ToList();
+            lst.Insert(0, new ProfileImage() { ProfileImageId = 0, UserId = SessionManager.GetInstance.ActiveUser.UserId, ImagePath = SessionManager.GetInstance.ActiveUser.Img1 });
+            return lst;
+        }
 
         public int OTP
         {
@@ -457,12 +539,12 @@ namespace ShriVivah.Models.ContextModel
                     select tbl);
         }
 
-        internal ResponseModel VerifyUserOTP(tblUser user, string OTP)
+        internal ResponseModel VerifyUserOTP(STP_GetUserDetail user, string OTP)
         {
             tblOTP tbl = GetOTPS().Where(p => p.UserId == user.UserId && p.OTP == OTP).FirstOrDefault();
             if (tbl==null)
             {
-                return new ResponseModel() { Status=false, ErrorMessage="Invalid OTP, Please feel valid OTP"};
+                return new ResponseModel() { Status=false, ErrorMessage= SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidOTP : "Invalid OTP, Please feel valid OTP" };
             }
             else
             {
@@ -471,18 +553,36 @@ namespace ShriVivah.Models.ContextModel
                 {
                     tbl.IsDelete = true;
                     objData.SaveChanges();
-                    return new ResponseModel() { Status = false, ErrorMessage = "OTP has been expired Please Generate OTP again" };
+                    return new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.OTPExpired : "OTP has been expired Please Generate OTP again" };
                 }
                 else
                 {
-                    return new ResponseModel() { Status = true, ErrorMessage = "your mail id was confirmed. Please complete your profile." };
+                    return new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.MailConfirmation : "your mail id was confirmed. Please complete your profile." };
                 }
             }
         }
-
+        public bool SaveMultipleProfileImages(List<ProfileImage> listOfProfileImage)
+        {
+            bool saveStatus = false;
+            try
+            {
+                foreach (var pi in listOfProfileImage)
+                {
+                    objData.tblProfileImages.Add(pi);
+                    objData.SaveChanges();
+                }
+                saveStatus = true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
+            return saveStatus;
+        }
         public void UploadImage(string img, string imgtype)
         {
-            tblUser user = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail user = SessionManager.GetInstance.ActiveUser;
             if (user != null)
             {
                 tblUser obju = (from tbl in objData.tblUsers where tbl.UserId == user.UserId select tbl).FirstOrDefault();
@@ -491,9 +591,17 @@ namespace ShriVivah.Models.ContextModel
                     switch (imgtype)
                     {
                         case "P":
-                            if (!string.IsNullOrEmpty(img))
+                            if (string.IsNullOrEmpty(obju.Img1))
                             {
                                 obju.Img1 = img;
+                            }
+                            else
+                            {
+                                ProfileImage pimg = new ProfileImage() {
+                                    ImagePath = img,
+                                    UserId=user.UserId,
+                                };
+                                objData.tblProfileImages.Add(pimg);
                             }
                             break;
                         case "M":
@@ -522,7 +630,7 @@ namespace ShriVivah.Models.ContextModel
 
         internal void UpdateUserProfile(RegisterViewModel model)
         {
-            tblUser user = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail user = SessionManager.GetInstance.ActiveUser;
             if (user != null)
             {
                 tblUser obju = (from tbl in objData.tblUsers where tbl.UserId == user.UserId select tbl).FirstOrDefault();
@@ -578,7 +686,7 @@ namespace ShriVivah.Models.ContextModel
         public void Update(RegisterViewModel model)
         {
 
-            tblUser user = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail user = SessionManager.GetInstance.ActiveUser;
             if (user!=null)
             {
                 tblUser obju = (from tbl in objData.tblUsers where tbl.UserId == user.UserId select tbl).FirstOrDefault();
@@ -592,7 +700,10 @@ namespace ShriVivah.Models.ContextModel
                     obju.Color = model.Color;
                     obju.DateOfBirth = model.DateOfBirth;
                     obju.DateofReg = DateTime.Now.Date;
-                    obju.Gender = model.Gender;
+                    if (SettingsManager.Instance.Branding != "SPMO")
+                    {
+                        obju.Gender = model.Gender;
+                    }
                     obju.HandicapedType = model.HandicappedType;
                     obju.HeightId = model.HeightId;
                     obju.IdentificationMark = model.IdentificationMark;
@@ -620,13 +731,17 @@ namespace ShriVivah.Models.ContextModel
                     obju.Income = model.Income;
                     obju.Gotra = model.GotraName;
                     obju.IsActive = true;
+                    if (SettingsManager.Instance.Branding != "SPMO")
+                    {
+                        obju.IsActive = false;
+                    }
                     objData.SaveChanges();
                 }
             }
         }
         internal void UpdateParentContact(FamilyModel family)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
             if (objuser != null)
             {
                 tblFamilyDetails objfamily = objData.tblFamilyDetailss.Where(p => p.UserId == objuser.UserId).FirstOrDefault();
@@ -640,7 +755,7 @@ namespace ShriVivah.Models.ContextModel
 
         internal void UpdateJobLocation(tblJobDetails job)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
             if (objuser != null)
             {
                 tblJobDetails objfamily = objData.tblJobDetailss.Where(p => p.UserId == objuser.UserId).FirstOrDefault();
@@ -668,7 +783,7 @@ namespace ShriVivah.Models.ContextModel
 
         public void Update(FamilyModel family)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
             if (objuser!=null)
             {
                 tblFamilyDetails objfamily = objData.tblFamilyDetailss.Where(p => p.UserId == objuser.UserId).FirstOrDefault();
@@ -704,13 +819,14 @@ namespace ShriVivah.Models.ContextModel
 
         public void Update(List<RelativeModel> relatives,int UserId=0)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
+            tblUser user = null;
             if (UserId>0)
             {
-                objuser = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
             }
             
-            if (objuser != null)
+            if (user != null)
             {
                 foreach (RelativeModel item in relatives)
                 {
@@ -732,7 +848,7 @@ namespace ShriVivah.Models.ContextModel
 
         public void Save(tblExpectation tbl)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
             if (objuser != null)
             {
                 objData.tblExpectations.Add(tbl);
@@ -875,7 +991,7 @@ namespace ShriVivah.Models.ContextModel
 
         internal void Save(tblJobDetails job)
         {
-            tblUser objuser = SessionManager.GetInstance.ActiveUser;
+            STP_GetUserDetail objuser = SessionManager.GetInstance.ActiveUser;
             if (objuser != null)
             {
                 job.UserId = objuser.UserId.Value;
@@ -885,10 +1001,26 @@ namespace ShriVivah.Models.ContextModel
             }
         }
 
-        internal void SetActive(int UserId, bool IsActive)
+        internal void SetActive(int UserId, bool IsActive,bool IsAgent=false)
         {
-            tblUser user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
-            user.IsActive = IsActive;
+            if (IsAgent)
+            {
+                tblUser user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                user.IsActive = IsActive;
+            }
+            else
+            {
+                if (SettingsManager.Instance.Branding == "SPMO")
+                {
+                    UserRequests user = objData.UserRequest.Where(p => p.UserId == UserId).FirstOrDefault();
+                    user.IsApproved = IsActive;
+                }
+                else
+                {
+                    tblUser user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                    user.IsActive = IsActive;
+                }
+            }
             objData.SaveChanges();
         }
 
@@ -949,6 +1081,8 @@ namespace ShriVivah.Models.ContextModel
 
                 };
                 objData.tblUsers.Add(user);
+                objData.SaveChanges();
+                user.PanchayatCode = SettingsManager.Instance.Prefix + user.UserId.ToString();
                 objData.SaveChanges();
             }
             catch (Exception ex)

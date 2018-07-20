@@ -1,0 +1,266 @@
+﻿@model IEnumerable<ShriVivah.Models.Entities.tblCountry>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#CountryName").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                if ($("#btnSave").css("display")=="block") {
+                    $("#btnSave").trigger("click");
+                }
+                else {
+                    $("#btnUpdate").trigger("click");
+                }
+            }
+        });
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            //var spinner = new Spinner().spin();
+            //document.getElementById("contentdiv").appendChild(spinner.el);
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("CountryFirst", "Country")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("CountryNext", "Country")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("CountryPrev", "Country")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("CountryLast", "Country")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CountryList);
+                    }
+                    else {
+                        alert(students.ErrorMessage);
+                    }
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                alert("Please fill search text!");
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "Country")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CountryList);
+                    }
+                    else {
+                        alert(students.ErrorMessage);
+                    }
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "Country")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                }
+            });
+        });
+
+        //$("a").click(function () {
+        //    var BGId = this.id;
+        //    Edit(BGId);
+        //});
+
+        $("#btnSave").click(function () {
+            var model = $('#frmCountry').serialize();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddCountry", "Country")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CountryList);
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        //ShowAlert('error', data.ErrorMessage);
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                }
+            });
+        });
+        $("#btnUpdate").click(function () {
+            var model = $('#frmCountry').serialize();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "Country")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CountryList);
+                        alert(data.ErrorMessage);
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        alert(data.ErrorMessage);
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                }
+            });
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            $("#CountryId").val("");
+            $("#CountryName").val("");
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            $("#CountryId").val("");
+            $("#CountryName").val("");
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CountryId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CountryName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.CountryId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            $(btn).val("बदल करा");
+            //<input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(item.ReligionId);" />
+            //btn.innerHTML = "Edit";
+            //cell.appendChild(a);
+            $(btn).attr("onclick", "EditCountry(" + SubCategorydata.CountryId + ");")
+            //$(a).click(function () {
+            //    var BGId = this.id;
+            //    Edit(BgId);
+            //});
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditCountry(BGId)
+    {
+        if (BGId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { BGId: BGId },
+                url: '@Url.Action("Edit", "Country")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#CountryName").val(students.CountryName);
+                    $("#CountryId").val(students.CountryId);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                }
+            });
+        }
+    }
+</script>
+<div class="span_3" id="divMain">
+    <input type="hidden" id="pagename" value="country" />
+    <div class="span_3">
+        <input type="text" id="txtSearch" />
+        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
+        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Country Name</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td>@item.CountryId</td>
+                        <td>@item.CountryName</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="Edit" onclick="EditCountry(@item.CountryId);" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="createDiv" class="span_3" style="display:none">
+    @Html.Partial("_AddCountrySPMO", new ShriVivah.Models.Entities.tblCountry())
+</div>

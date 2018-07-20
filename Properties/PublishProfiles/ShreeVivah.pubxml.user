@@ -6,110 +6,113 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>F:\Publish\ShreeVivah</_PublishTargetUrl>
+    <_PublishTargetUrl>F:\Publish\SPMO</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="App_GlobalResources/SPMOResources.resx">
+      <publishTime>04/08/2018 18:43:17</publishTime>
+    </File>
     <File Include="bin/Antlr3.Runtime.dll">
-      <publishTime>02/27/2015 22:48:20</publishTime>
+      <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
-      <publishTime>10/24/2015 22:28:10</publishTime>
+      <publishTime>03/02/2015 09:32:26</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
-      <publishTime>10/24/2015 22:28:10</publishTime>
+      <publishTime>03/02/2015 09:32:26</publishTime>
     </File>
     <File Include="bin/Grid.dll">
       <publishTime>02/27/2015 23:43:18</publishTime>
     </File>
     <File Include="bin/LinqKit.dll">
-      <publishTime>01/10/2016 14:25:48</publishTime>
+      <publishTime>10/02/2015 17:15:24</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
-      <publishTime>02/27/2015 22:48:27</publishTime>
+      <publishTime>09/11/2013 02:09:50</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
       <publishTime>02/27/2015 22:48:27</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.SignalR.Core.dll">
-      <publishTime>03/31/2016 19:18:33</publishTime>
+      <publishTime>12/15/2014 01:51:18</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.dll">
-      <publishTime>03/31/2016 19:18:33</publishTime>
+      <publishTime>12/15/2014 01:51:22</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.dll">
-      <publishTime>10/25/2015 18:58:46</publishTime>
+      <publishTime>02/13/2015 13:16:30</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Host.HttpListener.dll">
-      <publishTime>10/25/2015 18:45:14</publishTime>
+      <publishTime>11/07/2013 15:22:00</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
-      <publishTime>03/31/2016 19:18:33</publishTime>
+      <publishTime>01/13/2014 16:11:04</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Hosting.dll">
-      <publishTime>10/25/2015 18:45:14</publishTime>
+      <publishTime>11/07/2013 15:22:04</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
-      <publishTime>02/27/2015 22:48:28</publishTime>
+      <publishTime>09/11/2013 01:50:00</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.dll">
-      <publishTime>10/25/2015 18:58:46</publishTime>
+      <publishTime>02/13/2015 13:16:36</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.MicrosoftAccount.dll">
-      <publishTime>02/27/2015 22:48:29</publishTime>
+      <publishTime>09/11/2013 01:50:02</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
-      <publishTime>02/27/2015 22:48:28</publishTime>
+      <publishTime>09/11/2013 01:50:02</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Twitter.dll">
       <publishTime>10/25/2015 18:58:46</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>02/27/2015 22:48:19</publishTime>
+      <publishTime>07/25/2012 11:48:56</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>10/25/2015 18:45:13</publishTime>
+      <publishTime>08/03/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/Owin.dll">
-      <publishTime>02/27/2015 22:48:27</publishTime>
+      <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/ShriVivah.dll">
-      <publishTime>08/27/2017 16:29:47</publishTime>
+      <publishTime>05/07/2018 22:10:57</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>10/25/2015 18:45:14</publishTime>
+      <publishTime>01/28/2015 04:02:42</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>10/01/2013 20:54:26</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>10/25/2015 18:45:14</publishTime>
+      <publishTime>01/28/2015 04:02:54</publishTime>
     </File>
     <File Include="bin/System.Web.Http.Owin.dll">
-      <publishTime>10/25/2015 18:45:14</publishTime>
+      <publishTime>01/28/2015 04:03:16</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>09/07/2013 11:04:28</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>02/27/2015 22:48:19</publishTime>
+      <publishTime>10/01/2013 20:54:22</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>09/04/2013 02:27:04</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>10/01/2013 20:54:24</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>10/01/2013 20:54:26</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>10/01/2013 20:54:26</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>02/27/2015 22:48:18</publishTime>
+      <publishTime>10/01/2013 20:54:26</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
-      <publishTime>02/27/2015 22:48:21</publishTime>
+      <publishTime>07/17/2013 17:03:52</publishTime>
     </File>
     <File Include="Content/AdminPanel/bootstrap.min.css">
       <publishTime>03/13/2016 12:48:21</publishTime>
@@ -220,10 +223,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/18/2015 11:45:16</publishTime>
     </File>
     <File Include="Content/AdminPanel/style.css">
-      <publishTime>03/07/2016 00:38:33</publishTime>
+      <publishTime>05/06/2018 15:36:30</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>04/17/2016 15:20:31</publishTime>
+      <publishTime>09/09/2017 23:36:11</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
       <publishTime>02/27/2015 22:48:07</publishTime>
@@ -244,7 +247,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/27/2016 08:32:49</publishTime>
     </File>
     <File Include="Content/FrontUI/bootstrap.css">
-      <publishTime>04/17/2016 16:35:22</publishTime>
+      <publishTime>09/09/2017 23:45:06</publishTime>
     </File>
     <File Include="Content/FrontUI/flexslider.css">
       <publishTime>11/21/2015 22:49:28</publishTime>
@@ -408,14 +411,122 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/images/user_male.png">
       <publishTime>01/10/2016 22:25:37</publishTime>
     </File>
+    <File Include="Content/images/varmalaloader.gif">
+      <publishTime>09/09/2017 23:33:13</publishTime>
+    </File>
     <File Include="Content/Main/bootstrap.min.css">
-      <publishTime>03/08/2017 23:24:50</publishTime>
+      <publishTime>09/26/2017 08:16:49</publishTime>
     </File>
     <File Include="Content/MasterPage.json">
       <publishTime>02/26/2016 00:03:35</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>04/09/2017 21:49:54</publishTime>
+      <publishTime>09/09/2017 23:35:55</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/animate.min.css">
+      <publishTime>04/06/2018 22:05:21</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/bootstrap.min.css">
+      <publishTime>04/06/2018 21:59:16</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/font-awesome.min.css">
+      <publishTime>04/06/2018 21:59:52</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/fontawesome-webfont.eot">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/fontawesome-webfont.svg">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/fontawesome-webfont.ttf">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/fontawesome-webfont.woff">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/fontawesome-webfont.woff2">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/FontAwesome.otf">
+      <publishTime>04/10/2018 23:58:35</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/ionicons.eot">
+      <publishTime>04/07/2018 18:21:32</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/ionicons.svg">
+      <publishTime>04/07/2018 18:21:32</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/ionicons.ttf">
+      <publishTime>04/07/2018 18:21:32</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/fonts/ionicons.woff">
+      <publishTime>04/07/2018 18:21:32</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/11.png">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/11_old.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/22.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/22.png">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/33.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/33.png">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/44.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/44.png">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/55.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/66.jpg">
+      <publishTime>04/06/2018 21:42:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/Images/varmalaloader.gif">
+      <publishTime>04/30/2018 22:40:25</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/ionicons.min.css">
+      <publishTime>04/07/2018 20:57:36</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/lightbox.min.css">
+      <publishTime>04/06/2018 22:10:52</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/owl.carousel.min.css">
+      <publishTime>04/07/2018 16:22:18</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/style.css">
+      <publishTime>05/06/2018 16:19:17</publishTime>
+    </File>
+    <File Include="Content/SPMO/FrontUI/UI.css">
+      <publishTime>04/06/2018 21:48:11</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/AdminLTE.min.css">
+      <publishTime>04/10/2018 22:25:51</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/bootstrap.min.css">
+      <publishTime>04/10/2018 22:23:27</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/font-awesome.min.css">
+      <publishTime>04/10/2018 22:24:05</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/spmostyle.css">
+      <publishTime>05/06/2018 13:53:14</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/style.css">
+      <publishTime>04/10/2018 22:22:27</publishTime>
+    </File>
+    <File Include="Content/SPMO/UserDashboard/_all-skins.min.css">
+      <publishTime>04/10/2018 22:26:15</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>02/27/2015 22:47:52</publishTime>
@@ -529,7 +640,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/13/2015 23:34:42</publishTime>
     </File>
     <File Include="Scripts/HelperJS/common.js">
-      <publishTime>07/01/2017 21:23:32</publishTime>
+      <publishTime>05/05/2018 16:51:37</publishTime>
     </File>
     <File Include="Scripts/HelperJS/FontHelper.js">
       <publishTime>07/02/2017 19:45:27</publishTime>
@@ -553,16 +664,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/22/2015 13:02:29</publishTime>
     </File>
     <File Include="Scripts/HelperJS/UserEditHelper.js">
-      <publishTime>12/19/2016 22:48:42</publishTime>
+      <publishTime>05/02/2018 00:09:35</publishTime>
     </File>
     <File Include="Scripts/HelperJS/UserProfileHelper.js">
-      <publishTime>08/12/2017 20:10:09</publishTime>
+      <publishTime>05/06/2018 10:09:07</publishTime>
     </File>
     <File Include="Scripts/HelperJS/ValidationHelper.js">
       <publishTime>04/02/2016 19:02:06</publishTime>
     </File>
     <File Include="Scripts/HelperJS/VendorHelper.js">
-      <publishTime>10/22/2016 12:04:54</publishTime>
+      <publishTime>05/07/2018 21:52:32</publishTime>
     </File>
     <File Include="Scripts/HelperJS/VisitorHelper.js">
       <publishTime>06/18/2016 18:20:28</publishTime>
@@ -604,7 +715,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2016 17:33:56</publishTime>
     </File>
     <File Include="Scripts/Main/App.js">
-      <publishTime>09/27/2016 21:01:33</publishTime>
+      <publishTime>09/16/2017 15:06:22</publishTime>
     </File>
     <File Include="Scripts/Main/bootstrap.min.js">
       <publishTime>09/24/2016 17:33:56</publishTime>
@@ -612,14 +723,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/Main/jquery.min.js">
       <publishTime>09/24/2016 17:33:56</publishTime>
     </File>
+    <File Include="Scripts/Main/MarriedController.js">
+      <publishTime>09/24/2017 18:12:14</publishTime>
+    </File>
     <File Include="Scripts/Main/RegisterUserController.js">
-      <publishTime>03/08/2017 23:33:36</publishTime>
+      <publishTime>05/01/2018 16:37:27</publishTime>
+    </File>
+    <File Include="Scripts/Main/SearchController.js">
+      <publishTime>09/26/2017 23:33:24</publishTime>
+    </File>
+    <File Include="Scripts/Main/UserProfileController.Js">
+      <publishTime>04/14/2018 18:55:54</publishTime>
     </File>
     <File Include="Scripts/Main/VendorListController.js">
-      <publishTime>07/04/2017 22:14:32</publishTime>
+      <publishTime>05/06/2018 18:31:05</publishTime>
     </File>
     <File Include="Scripts/Main/VendorTypesController.js">
-      <publishTime>07/02/2017 15:26:54</publishTime>
+      <publishTime>04/15/2018 09:45:00</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.6.2.js">
       <publishTime>02/27/2015 22:48:19</publishTime>
@@ -642,11 +762,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/slider/jssor.slider.mini.js">
       <publishTime>02/28/2015 16:09:31</publishTime>
     </File>
+    <File Include="Scripts/SPMO/adminlte.min.js">
+      <publishTime>04/10/2018 23:53:44</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/bootstrap.bundle.min.js">
+      <publishTime>04/08/2018 00:56:06</publishTime>
+    </File>
     <File Include="Scripts/timer.js">
       <publishTime>05/11/2016 23:44:20</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>07/02/2017 19:47:09</publishTime>
+      <publishTime>04/10/2018 23:53:44</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
       <publishTime>02/27/2015 22:48:24</publishTime>
@@ -663,6 +789,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/Register.cshtml">
       <publishTime>03/08/2017 23:28:50</publishTime>
     </File>
+    <File Include="Views/Account/RegisterSPMO.cshtml">
+      <publishTime>05/01/2018 16:03:54</publishTime>
+    </File>
     <File Include="Views/Account/_ChangePasswordPartial.cshtml">
       <publishTime>02/27/2015 22:48:23</publishTime>
     </File>
@@ -676,13 +805,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/27/2015 22:48:24</publishTime>
     </File>
     <File Include="Views/Agent/Index.cshtml">
-      <publishTime>06/25/2016 20:12:02</publishTime>
+      <publishTime>04/08/2018 14:30:57</publishTime>
+    </File>
+    <File Include="Views/Agent/IndexSPMO.cshtml">
+      <publishTime>05/05/2018 18:27:38</publishTime>
     </File>
     <File Include="Views/Agent/_AddAgent.cshtml">
       <publishTime>06/25/2016 20:04:22</publishTime>
     </File>
+    <File Include="Views/Agent/_AddAgentSPMO.cshtml">
+      <publishTime>05/05/2018 14:56:07</publishTime>
+    </File>
     <File Include="Views/BloodGroup/Index.cshtml">
-      <publishTime>05/15/2016 12:13:50</publishTime>
+      <publishTime>05/06/2018 10:34:19</publishTime>
     </File>
     <File Include="Views/BloodGroup/_AddBloodGroup.cshtml">
       <publishTime>11/08/2015 17:21:05</publishTime>
@@ -690,8 +825,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Cast/Index.cshtml">
       <publishTime>05/15/2016 12:13:56</publishTime>
     </File>
+    <File Include="Views/Cast/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:14:16</publishTime>
+    </File>
     <File Include="Views/Cast/_AddCast.cshtml">
       <publishTime>05/14/2016 23:07:07</publishTime>
+    </File>
+    <File Include="Views/Cast/_AddCastSPMO.cshtml">
+      <publishTime>05/06/2018 10:14:16</publishTime>
     </File>
     <File Include="Views/City/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
@@ -702,11 +843,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Country/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
+    <File Include="Views/Country/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:14:39</publishTime>
+    </File>
     <File Include="Views/Country/_AddCountry.cshtml">
       <publishTime>05/14/2016 22:32:54</publishTime>
     </File>
+    <File Include="Views/Country/_AddCountrySPMO.cshtml">
+      <publishTime>05/06/2018 10:14:39</publishTime>
+    </File>
     <File Include="Views/Feedback/Index.cshtml">
-      <publishTime>08/27/2017 17:52:55</publishTime>
+      <publishTime>08/27/2017 18:34:25</publishTime>
     </File>
     <File Include="Views/Gan/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
@@ -726,17 +873,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Home/Contact.cshtml">
       <publishTime>03/09/2017 22:08:49</publishTime>
     </File>
+    <File Include="Views/Home/ContactUs.cshtml">
+      <publishTime>04/11/2018 08:04:26</publishTime>
+    </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>07/02/2017 15:21:45</publishTime>
+      <publishTime>04/19/2018 23:37:54</publishTime>
     </File>
     <File Include="Views/Home/MailTest.cshtml">
       <publishTime>04/07/2016 21:46:26</publishTime>
+    </File>
+    <File Include="Views/Home/Married.cshtml">
+      <publishTime>09/24/2017 18:11:51</publishTime>
     </File>
     <File Include="Views/Home/PrivacyPolicy.cshtml">
       <publishTime>10/23/2016 22:06:36</publishTime>
     </File>
     <File Include="Views/Home/Search.cshtml">
-      <publishTime>12/11/2016 20:24:54</publishTime>
+      <publishTime>04/14/2018 13:43:54</publishTime>
     </File>
     <File Include="Views/Home/Terms.cshtml">
       <publishTime>10/23/2016 21:48:43</publishTime>
@@ -753,6 +906,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/PendingUsers/Index.cshtml">
       <publishTime>04/16/2017 11:40:28</publishTime>
     </File>
+    <File Include="Views/PendingUsers/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:15:32</publishTime>
+    </File>
     <File Include="Views/Qualification/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
@@ -762,20 +918,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Religion/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
+    <File Include="Views/Religion/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:16:00</publishTime>
+    </File>
     <File Include="Views/Religion/_AddReligion.cshtml">
       <publishTime>05/14/2016 17:14:43</publishTime>
+    </File>
+    <File Include="Views/Religion/_AddReligionSPMO.cshtml">
+      <publishTime>05/06/2018 10:16:00</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>02/27/2015 22:48:23</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>09/26/2016 22:43:01</publishTime>
+      <publishTime>09/09/2017 23:49:35</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutAdmin.cshtml">
-      <publishTime>07/02/2017 00:09:28</publishTime>
+      <publishTime>09/23/2017 22:45:16</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutAdminPanel.cshtml">
-      <publishTime>07/01/2017 14:43:31</publishTime>
+      <publishTime>04/15/2018 22:43:05</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutAdminSPMO.cshtml">
+      <publishTime>05/06/2018 14:00:32</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutSPMO.cshtml">
+      <publishTime>05/06/2018 18:08:06</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/27/2015 22:48:24</publishTime>
@@ -786,8 +954,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/State/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
+    <File Include="Views/State/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:16:47</publishTime>
+    </File>
     <File Include="Views/State/_AddState.cshtml">
       <publishTime>05/14/2016 22:50:47</publishTime>
+    </File>
+    <File Include="Views/State/_AddStateSPMO.cshtml">
+      <publishTime>05/06/2018 10:16:47</publishTime>
     </File>
     <File Include="Views/User/Register.cshtml">
       <publishTime>03/01/2015 23:06:53</publishTime>
@@ -795,38 +969,77 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/UserProfile/ChangePassword.cshtml">
       <publishTime>09/22/2016 23:18:37</publishTime>
     </File>
+    <File Include="Views/UserProfile/ChangePasswordSPMO.cshtml">
+      <publishTime>04/14/2018 16:36:46</publishTime>
+    </File>
     <File Include="Views/UserProfile/EditProfile.cshtml">
       <publishTime>12/11/2016 12:23:26</publishTime>
     </File>
+    <File Include="Views/UserProfile/EditProfileSPMO.cshtml">
+      <publishTime>05/02/2018 00:12:12</publishTime>
+    </File>
     <File Include="Views/UserProfile/EditUser.cshtml">
-      <publishTime>09/10/2016 13:31:25</publishTime>
+      <publishTime>12/19/2016 22:39:25</publishTime>
+    </File>
+    <File Include="Views/UserProfile/EditUserSPMO.cshtml">
+      <publishTime>05/02/2018 00:13:36</publishTime>
     </File>
     <File Include="Views/UserProfile/Index.cshtml">
-      <publishTime>12/19/2016 22:01:13</publishTime>
+      <publishTime>04/10/2018 23:18:52</publishTime>
+    </File>
+    <File Include="Views/UserProfile/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 10:17:39</publishTime>
     </File>
     <File Include="Views/UserProfile/ShowProfile.cshtml">
-      <publishTime>01/15/2017 14:57:27</publishTime>
+      <publishTime>09/13/2017 23:05:06</publishTime>
+    </File>
+    <File Include="Views/UserProfile/ShowProfileSPMO.cshtml">
+      <publishTime>04/30/2018 08:17:35</publishTime>
     </File>
     <File Include="Views/UserProfile/UploadPhotos.cshtml">
       <publishTime>10/23/2016 23:31:12</publishTime>
     </File>
+    <File Include="Views/UserProfile/UploadPhotosSPMO.cshtml">
+      <publishTime>05/06/2018 10:17:39</publishTime>
+    </File>
     <File Include="Views/UserProfile/UserRequests.cshtml">
-      <publishTime>07/30/2017 17:16:30</publishTime>
+      <publishTime>04/15/2018 23:02:26</publishTime>
+    </File>
+    <File Include="Views/UserProfile/UserRequestsSPMO.cshtml">
+      <publishTime>05/06/2018 15:34:50</publishTime>
     </File>
     <File Include="Views/UserProfile/Visitors.cshtml">
       <publishTime>06/19/2016 15:37:28</publishTime>
     </File>
+    <File Include="Views/UserProfile/VisitorsSPMO.cshtml">
+      <publishTime>04/15/2018 23:04:09</publishTime>
+    </File>
+    <File Include="Views/UserRequest/Index.cshtml">
+      <publishTime>05/06/2018 22:20:01</publishTime>
+    </File>
     <File Include="Views/Vendor/Index.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>05/15/2016 12:09:00</publishTime>
+    </File>
+    <File Include="Views/Vendor/IndexSPMO.cshtml">
+      <publishTime>05/06/2018 23:45:08</publishTime>
     </File>
     <File Include="Views/Vendor/RegisterVendor.cshtml">
-      <publishTime>07/02/2017 14:52:22</publishTime>
+      <publishTime>05/02/2018 00:14:34</publishTime>
+    </File>
+    <File Include="Views/Vendor/RegisterVendorSPMO.cshtml">
+      <publishTime>05/06/2018 09:42:08</publishTime>
     </File>
     <File Include="Views/Vendor/Vendors.cshtml">
-      <publishTime>07/04/2017 23:52:00</publishTime>
+      <publishTime>05/06/2018 15:06:45</publishTime>
+    </File>
+    <File Include="Views/Vendor/VendorsSPMO.cshtml">
+      <publishTime>05/06/2018 18:30:55</publishTime>
     </File>
     <File Include="Views/Vendor/_AddVendor.cshtml">
       <publishTime>05/22/2016 21:01:47</publishTime>
+    </File>
+    <File Include="Views/Vendor/_AddVendorSPMO.cshtml">
+      <publishTime>05/06/2018 10:18:03</publishTime>
     </File>
     <File Include="Views/VendorType/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
@@ -841,7 +1054,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/27/2015 22:47:52</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/27/2017 17:53:16</publishTime>
+      <publishTime>05/07/2018 22:10:59</publishTime>
     </File>
   </ItemGroup>
 </Project>

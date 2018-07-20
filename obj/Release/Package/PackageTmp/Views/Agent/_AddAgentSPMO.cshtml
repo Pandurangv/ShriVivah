@@ -1,0 +1,95 @@
+﻿@model ShriVivah.Models.Entities.STP_GetUserDetail
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.HiddenFor(m => m.UserId)
+        @Html.ValidationSummary(true)
+        <div class="form-group" id="contentdiv">
+            <div id="divPersonal">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="FirstName" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="LastName" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">E-Mail</label>
+                    <div class="col-sm-4">
+                        <input type="email" id="EmailId" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Mobile No.</label>
+                    <div class="col-sm-4">
+                        <input type="number" id="ContactNo" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">लॉग-इन नाव.</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="UserName" required="required" class="form-control1" />
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Password.</label>
+                    <div class="col-sm-4">
+                        <input type="password" id="Password" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Re Enter Password.</label>
+                    <div class="col-sm-4">
+                        <input type="password" id="ConfirmPassword" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">City/Town</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="City" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Taluka</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="Taluka" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">District</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="District" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="State" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="Address" required="required" class="form-control1 inputborder" />
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="span_3">
+                <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+                <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+                <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+            </div>
+        </div>
+    </div>
+}
+

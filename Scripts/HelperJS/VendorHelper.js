@@ -27,7 +27,12 @@ $(document).ready(function () {
             success: function (students) {
                 if (students.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    bindUserData(students.VendorList);
+                    if ($("#hdnbranding").val() == "SPMO") {
+                        bindUserData(students.VendorListSPMO);
+                    }
+                    else {
+                        bindUserData(students.VendorList);
+                    }
                 }
                 else {
                     var objShowCustomAlert = new ShowCustomAlert({
@@ -60,12 +65,17 @@ $(document).ready(function () {
             type: "GET",
             async: false,
             data: { prefix: prefix },
-            url: '@Url.Action("SearchVendor", "Vendor")',
+            url: url + "/Vendor/SearchVendor",
             dataType: "json",
             success: function (students) {
                 if (students.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    bindUserData(students.VendorList);
+                    if ($("#hdnbranding").val() == "SPMO") {
+                        bindUserData(students.VendorListSPMO);
+                    }
+                    else {
+                        bindUserData(students.VendorList);
+                    }
                 }
                 else {
                     var objShowCustomAlert = new ShowCustomAlert({
@@ -132,7 +142,12 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    bindUserData(data.VendorList);
+                    if ($("#hdnbranding").val() == "SPMO") {
+                        bindUserData(data.VendorListSPMO);
+                    }
+                    else {
+                        bindUserData(data.VendorList);
+                    }
 
                     var objShowCustomAlert = new ShowCustomAlert({
                         Title: "",
@@ -214,30 +229,44 @@ var bindUserData = function (SubCategory) {
             cell.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         }
         row.appendChild(cell);
-
-        cell = document.createElement("td");
-        var btn = document.createElement("input");
-        btn.id = SubCategorydata.VendorId;
-        $(btn).attr("type", "button");
-        $(btn).addClass("btn-success btn");
-        $(btn).val("बदल करा");
-        $(btn).attr("onclick", "EditVendor(" + SubCategorydata.VendorId + ");")
-        cell.appendChild(btn);
-        row.appendChild(cell);
+        if ($("#hdnbranding").val() != "SPMO") {
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.VendorId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            $(btn).val("बदल करा");
+            $(btn).attr("onclick", "EditVendor(" + SubCategorydata.VendorId + ");")
+            cell.appendChild(btn);
+            row.appendChild(cell);
+        }
 
         cell = document.createElement("td");
         btn = document.createElement("input");
         btn.id = SubCategorydata.VendorId;
         $(btn).attr("type", "button");
         $(btn).addClass("btn-success btn");
-        if (SubCategorydata.IsActive == true || SubCategorydata.IsActive=='true') {
-            $(btn).val("रद्द करा");
-            $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",true,this);")
+        if ($("#hdnbranding").val() == "SPMO") {
+            if (SubCategorydata.IsApproved == true || SubCategorydata.IsApproved == 'true') {
+                $(btn).val("Deactivate");
+                $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",false,this);")
+            }
+            else {
+                $(btn).val("Activate");
+                $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",true,this);")
+            }
         }
         else {
-            $(btn).val("सक्रिय करा");
-            $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",false,this);")
+            if (SubCategorydata.IsActive == true || SubCategorydata.IsActive == 'true') {
+                $(btn).val("रद्द करा");
+                $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",false,this);")
+            }
+            else {
+                $(btn).val("सक्रिय करा");
+                $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",true,this);")
+            }
         }
+        
         cell.appendChild(btn);
 
         row.appendChild(cell);
@@ -311,11 +340,11 @@ function SaveVendor()
     });
 }
 
-function ActiveDeactiveVendor(VendorId, btn) {
-    var IsActive = true;
-    if ($(btn).val() == "रद्द करा") {
-        IsActive = false;
-    }
+function ActiveDeactiveVendor(VendorId, IsActive,btn) {
+    //var IsActive = true;
+    //if ($(btn).val() == "रद्द करा") {
+    //    IsActive = false;
+    //}
     var spinner = new Spinner().spin();
     document.getElementById("contentdiv").appendChild(spinner.el);
     if (VendorId > 0) {
@@ -328,13 +357,25 @@ function ActiveDeactiveVendor(VendorId, btn) {
             dataType: "json",
             success: function (students) {
                 if (students==true) {
-                    if (IsActive==false) {
-                        $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
-                        $(btn).val("सक्रिय करा");
+                    if ($("#hdnbranding").val() == "SPMO") {
+                        if (IsActive == false) {
+                            $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
+                            $(btn).val("Activate");
+                        }
+                        else {
+                            $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
+                            $(btn).val("Deactivate");
+                        }
                     }
                     else {
-                        $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
-                        $(btn).val("रद्द करा");
+                        if (IsActive == false) {
+                            $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
+                            $(btn).val("सक्रिय करा");
+                        }
+                        else {
+                            $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
+                            $(btn).val("रद्द करा");
+                        }
                     }
                 }
                 document.getElementById("contentdiv").removeChild(spinner.el);
@@ -489,7 +530,6 @@ function Upload(ImageType) {
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
             }
-            //var spinner = new Spinner().spin();
             document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (er) {

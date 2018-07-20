@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutNEW.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        SetActiveTab("register");
+    });
+</script>
+@Scripts.Render("~/Scripts/Main/RegisterUserController.js")
+
+<div id="contact" class="section-bg wow fadeInUp" data-ng-app="VarmalaVivahApp" data-ng-controller="RegisterUserController">
+    <div class="container">
+        <div class="section-header">
+            <h3>Sign Up</h3>
+        </div>
+        <div class="form">
+            <input type="hidden" id="pagename" value="registeruser" />
+            <hr />
+            <ng-form class="contactForm">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="text" placeholder="Name*" id="FirstName" maxlength="15" data-ng-blur="ValidateFName()"
+                               class="form-control setMargin" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsFirstName">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="text" placeholder="Father's Name*" id="MiddleName" data-ng-blur="ValidateMName()"
+                               maxlength="15" class="form-control setMargin" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsMiddleName">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="text" placeholder="Surname*" id="LastName" data-ng-blur="ValidateLName()"
+                               maxlength="15" class="form-control setMargin" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsLastName">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="email" id="Email" data-ng-blur="ValidateEmail()"
+                               placeholder="Email Id*"
+                               maxlength="50" class="form-control setMargin emailinput" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsEmail">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <select id="ddlGender" class="form-control setMargin" data-ng-click="ValidateGender()">
+                            <option value="">--Select--</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                        <span class="h3color" data-ng-show="ErrorModel.IsGender">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="number" id="ContactNo" placeholder="Mobile No." class="form-control setMargin"
+                               data-ng-blur="ValidateContactNo()" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsContactNo">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="password" id="Password" data-ng-blur="ValidatePassword()"
+                               placeholder="Password*" maxlength="10" class="form-control setMargin" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsPassword">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span title="Password format should be alphanumeric with Special Charector." class="h3color">?</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="password" id="ConfirmPassword" data-ng-blur="ValidateConfirmPassword()"
+                               placeholder="Re Enter Password*" maxlength="10" class="form-control setMargin" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsConfirmPassword">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        @Html.DropDownList("AgentId", ViewBag.AgentId as SelectList, new { @class = "form-control" })
+                        <span class="h3color" data-ng-show="ErrorModel.IsPanchayatName">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row" data-ng-show="IsRegistrationSuccess">
+                    <div class="form-group col-md-4">
+                        <input type="text" id="OTP"
+                               placeholder="Enter OTP" maxlength="6" class="form-control setMargin" />
+                        <input type="hidden" data-ng-model="OTP" />
+                        <span class="h3color" data-ng-show="ErrorModel.IsOTP">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <input type="checkbox" id="termsandconditions" class="termandconditios" />
+                        <label class="termandconditios" for="termsandconditions">
+                            <a href="#" target="_blank"
+                               class="anchorcolor">I have read and agree to the Terms.</a>
+                        </label>
+                        <span class="h3color" data-ng-show="ErrorModel.IsTerms">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4" style="margin-bottom:30px;">
+                        <input type="button" value="Sign Up" class="btn btn-primary termandconditios" data-ng-click="Save(RegisterModel)">
+                    </div>
+                </div>
+
+            </ng-form>
+            
+        </div>
+    </div>
+</div>
+
+

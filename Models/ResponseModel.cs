@@ -12,6 +12,11 @@ namespace ShriVivah.Models
             //DataResponse = new IQueryable<Object>();
         }
         public IQueryable<Object> DataResponse { get; set; }
+
+        public Object ModelObject { get; set; }
+
+        public string CityList { get; set; }
+
     }
 
     public class Error

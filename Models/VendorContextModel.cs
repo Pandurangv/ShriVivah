@@ -53,6 +53,43 @@ namespace ShriVivah.Models
             return query;
         }
 
+        internal IQueryable<UserRequests_Vendor> GetVendorsSPMO(long vendorTypeID=0)
+        {
+            if (vendorTypeID==0)
+            {
+                var query = from data in objData.viewUserRequests_Vendor
+                            select data;
+                if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()!="ADMIN")
+                {
+                    query = query.Where(p => p.AgentId == SessionManager.GetInstance.ActiveUser.UserId);
+                }
+                return query;
+            }
+            else
+            {
+                var query = from data in objData.viewUserRequests_Vendor
+                            where data.VendorTypeId == vendorTypeID
+                            select data;
+                return query;
+            }
+        }
+
+        internal IQueryable<UserRequests_Vendor> GetVendorsSPMO(int? vendorTypeID, string VendorType, string SearchCity, string SearchText)
+        {
+            var query = (from data in objData.viewUserRequests_Vendor
+                         where data.IsApproved == true
+                         select data).ToList();
+            if (vendorTypeID != 0 || Convert.ToString(VendorType) != "")
+                query = query.Where(s => s.VendorTypeId == vendorTypeID || s.VendorType.Contains(VendorType)).ToList();
+            if (string.IsNullOrEmpty(SearchCity) == false)
+                query = query.Where(v => v.City.Contains(SearchCity)).ToList();
+            if (string.IsNullOrEmpty(SearchText) == false)
+            {
+                query = query.Where(x => (Convert.ToString(x.Country) + " " + Convert.ToString(x.Address) + " " + Convert.ToString(x.OwnerName) + " " + Convert.ToString(x.Pincode)).ToLower().Contains(SearchText.ToLower())).ToList();
+            }
+            return query.AsQueryable();
+        }
+
         public int Save(VendorModel tbl)
         {
             tblVendor vendortype = new tblVendor()
@@ -82,6 +119,25 @@ namespace ShriVivah.Models
             //tbl.IsDelete = false;
             objData.tblVendors.Add(vendortype);
             objData.SaveChanges();
+
+            if (SettingsManager.Instance.Branding=="SPMO")
+            {
+                UserRequests request = new UserRequests()
+                {
+                    IsDelete = false,
+                    IsAdminApproved = false,
+                    IsApproved = false,
+                    IsUserRequest = false,
+                    PanchayatId = tbl.AgentId,
+                    RequestDate = DateTime.Now,
+                    UserId=0,
+                    VendorId=vendortype.VendorId,
+                };
+                //tbl.IsDelete = false;
+                objData.UserRequest.Add(request);
+                objData.SaveChanges();
+            }
+
             if (!string.IsNullOrEmpty(tbl.LogoImage) || !string.IsNullOrEmpty(tbl.ProfileImage) || !string.IsNullOrEmpty(tbl.ProductImage))
             {
                 tbl.VendorId = vendortype.VendorId;
@@ -164,6 +220,19 @@ namespace ShriVivah.Models
                 newobj.AgentId = model.AgentId;
                 objData.SaveChanges();
             }
+        }
+
+        internal bool ActiveDeactiveVendorSPMO(int RequestId, bool IsActive)
+        {
+            bool success = false;
+            UserRequests vendor = objData.UserRequest.Where(p => p.UserRequestId == RequestId).FirstOrDefault();
+            if (vendor != null)
+            {
+                vendor.IsApproved = IsActive;
+                objData.SaveChanges();
+            }
+            success = true;
+            return success;
         }
 
         internal bool ActiveDeactiveVendor(int VendorId, bool IsActive)

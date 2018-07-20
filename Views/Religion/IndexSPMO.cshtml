@@ -1,0 +1,302 @@
+﻿@model IEnumerable<ShriVivah.Models.Entities.tblReligion>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ReligionName").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                if ($("#btnSave").css("display") == "block") {
+                    $("#btnSave").trigger("click");
+                }
+                else {
+                    $("#btnUpdate").trigger("click");
+                }
+            }
+        });
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("ReligionFirst", "Religion")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("ReligionNext", "Religion")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("ReligionPrev", "Religion")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("ReligionLast", "Religion")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.ReligionList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (data)
+                {
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                alert("Please fill search text!");
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "Religion")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.ReligionList);
+                    }
+                    else {
+                        alert(students.ErrorMessage);
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "Religion")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        });
+
+
+        $("#btnSave").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model = $('#frmReligion').serialize();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddReligion", "Religion")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.ReligionList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                }
+            });
+        });
+        $("#btnUpdate").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var model = $('#frmReligion').serialize();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "Religion")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.ReligionList);
+                        //alert(data.ErrorMessage);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                }
+            });
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            $("#ReligionName").val("");
+            $("#ReligionId").val("");
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            $("#BGroup").val("");
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.ReligionId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.ReligionName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.ReligionId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            $(btn).val("Edit")
+            $(btn).attr("onclick", "EditReligion(" + SubCategorydata.ReligionId + ");")
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditReligion(BGId)
+    {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
+        if (BGId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { BGId: BGId },
+                url: '@Url.Action("Edit", "Religion")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#ReligionName").val(students.ReligionName);
+                    $("#ReligionId").val(students.ReligionId);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        }
+    }
+</script>
+<div class="span_3" id="divMain">
+    <input type="hidden" id="pagename" value="religion" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+            <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+        </div>
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table table-bordered" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Religion Name</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="active">
+                        <td>@item.ReligionId</td>
+                        <td>@item.ReligionName</td>
+                        <td>
+                            <input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(@item.ReligionId);" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="createDiv" class="span_3" style="display:none">
+    @Html.Partial("_AddReligionSPMO", new ShriVivah.Models.Entities.tblReligion())
+</div>

@@ -33,6 +33,9 @@
                     <li id="liSearch">
                         <a href="@Url.Action("Search", "Home")">शोध</a>
                     </li>
+                    <li id="liSearch">
+                        <a href="@Url.Action("Married", "Home")">विवाहित</a>
+                    </li>
                     <li class="dropdown" id="liOther">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">लगीनघाई <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -93,6 +96,10 @@
     <div class="container text-center" id="contentdiv">
         @RenderBody()
     </div>
+    <div class="mainLoader" id="rclLoader" style="display: none;">
+        <div class="mainLoaderImg"></div>
+        <div class="lyfBg"></div>
+    </div>
     <footer class="container-fluid text-center">
         <div class="col-md-4">
             <div class="f-mov-list">
@@ -142,7 +149,7 @@
                             <br />
                             <div>
                                 <input type="password" class="form-control" name="Password" required data-ng-model="LoginModel.Password"
-                                       placeholder="पासवर्ड" data-ng-class="{'borderred':frmLogin.Password.$dirty && frmLogin.Password.$error.required}"  />
+                                       placeholder="पासवर्ड" data-ng-class="{'borderred':frmLogin.Password.$dirty && frmLogin.Password.$error.required}" my-enter="ValidateAndLogin()"  />
                                 @*<span ng-show="frmLogin.Password.$dirty && frmLogin.Password.$error.required" style="color:red;font-weight:600;">*</span>*@
                             </div>
                             <hr />

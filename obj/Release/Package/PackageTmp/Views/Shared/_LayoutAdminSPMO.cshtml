@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript">
+        addEventListener("load", function()
+            {
+                setTimeout(hideURLbar, 0);
+            }, false);
+        function hideURLbar(){
+            window.scrollTo(0,1);
+        }
+    </script>
+    @Styles.Render("~/Content/Admincss")
+    @Scripts.Render("~/bundles/Adminjqueryindex")
+    @Scripts.Render("~/bundles/common")
+    @Styles.Render("~/Content/SPMO/UserDashboard/spmostyle.css")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ReadMessgesByUser();
+        })
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <input type="hidden" value="SPMO" id="hdnbranding" />
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">SINDHU PROGRESSIVE
+MATRIMONIAL ORGANISATION</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-nav navbar-right">
+                <li style="margin-top:20px;color:white">
+                    <span>
+                        Welcome - @ViewBag.UserName
+                    </span>
+                </li>
+                <li class="dropdown" style="display:none">
+                    <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-envelope" style="font-size:50px !important;"></span>
+                    </a>
+                    <ul class="dropdown-menu" id="inmsg"></ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                        @if (ViewBag.Gender == "M")
+                        {
+                            <img src="@Url.Content("~/Content/AdminPanel/images/male3.png")">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Content/AdminPanel/images/female1.png")">
+                        }
+                        <span class="badge"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-menu-header text-center"><strong>Account</strong></li>
+                        <li class="m_2" id="lilogout" onclick="Logout();"><a href="#"><i class="fa fa-lock"></i>Log Off</a></li>
+                        <li class="m_2" id="lilogout" onclick="window.location='@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })'"><a href="#"><i class="fa fa-lock"></i>View Profile</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="@Url.Action("Index", "UserProfile")"><i class="fa fa-dashboard fa-fw nav_icon"></i>Dashboard</a>
+                        </li>
+                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "ADMIN")
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-laptop nav_icon"></i>Masters<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("Index","Religion")">Religion</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Country")">Country </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "State")">State</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Cast")">Caste</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","BloodGroup")">Blood Group</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Qualification")">Education</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Oras")">Rashi</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","VendorType")">Business Types</a>
+                                    </li>
+
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-indent nav_icon"></i>Registration<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("Index", "UserProfile")">Candidate Registration</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("NewUsers","UserProfile")">New Registration</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Vendor")">Business Registration</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Agent")">Panchayat</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })">My Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","Feedback")">Feedback</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","PendingUsers")">Pending Users</a>
+                                    </li>
+                                    <li onclick="Logout();"><a href="#">Log Off</a></li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                        }
+                        else if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "USER")
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-laptop nav_icon"></i>Candidate Information<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("EditProfile", "UserProfile")">Change Information</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("UploadPhotos", "UserProfile")">Upload Photo</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "UserProfile")">Search Partner</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Visitors", "UserProfile")">Visitors</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })">My Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ChangePassword","UserProfile")">Change Password</a>
+                                    </li>
+                                    <li onclick="Logout();"><a href="#">Log Off</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "AGENT")
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-laptop nav_icon"></i>Candidate Information<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                    </li>
+                                    <li onclick="Logout();"><a href="#">Log Off</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="graphs">
+                <div class="col_3">
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa groomicon icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.BridesCount</strong></h5>
+                                <span>Girls</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa brideicon icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.GroomCount</strong></h5>
+                                <span>Boys</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget widget1">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa fa-users user1 icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.VisitorCount</strong></h5>
+                                <span><a href="@Url.Action("Visitors", "UserProfile")">Visitors</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 widget">
+                        <div class="r3_counter_box">
+                            <i class="pull-left fa icon-rounded"></i>
+                            <div class="stats">
+                                <h5><strong>@ViewBag.TotalUsers</strong></h5>
+                                <span>Registered Users</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="content_bottom" id="contentdiv">
+                    @RenderBody()
+                    <div class="col-md-4 span_4">
+                        <div class="popup-box chat-popup" id="qnimate">
+                            <div class="popup-head" id="touserid">
+                                <div class="popup-head-left pull-left">
+                                    <span id="chatuser">User Name</span>
+                                </div>
+                                <div class="popup-head-right pull-right">
+                                    <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+                                        <i class="glyphicon glyphicon-off"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="popup-messages">
+                                <div class="direct-chat-messages" id="msguser">
+                                </div>
+                            </div>
+                            <div class="popup-messages-footer">
+                                <input id="status_message" type="text" placeholder="Type a message..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="mainLoader" id="rclLoader" style="display: none;">
+                    <div class="mainLoaderImg"></div>
+                    <div class="lyfBg"></div>
+                </div>
+                <div class="copy">
+                    <p>Shree Soft Solutions-Pune.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/Scripts/AdminPanel/bootstrap.min.js")
+    <script type="text/javascript">
+        $(function () {
+            $("#addClass").click(function () {
+                $('#qnimate').addClass('popup-box-on');
+            });
+            $("#removeClass").click(function () {
+                $('#qnimate').removeClass('popup-box-on');
+            });
+        })
+    </script>
+</body>
+</html>

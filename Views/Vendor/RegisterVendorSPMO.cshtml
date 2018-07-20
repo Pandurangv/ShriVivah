@@ -1,0 +1,217 @@
+﻿@model ShriVivah.Models.ContextModel.VendorModel
+@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+}
+@Scripts.Render("~/bundles/HelperJs/VendorHelper")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#VendorName").focus();
+        $("#btnRegisterVendor").click(function () {
+            if ($("#VendorName").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill company name.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#VendorName").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#OwnerName").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill owner name.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#OwnerName").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+
+            //
+            if ($("#Address").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill Address.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#Address").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#City").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill City.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#City").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#ContactNo").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill City.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#ContactNo").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#EmailId").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill Email.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#EmailId").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#Pincode").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill Pincode.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#Pincode").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#VendorTypeId").val() == "0") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please select Business type.",
+                    Type: "alert",
+                    OnOKClick: function () {
+                        $("#VendorTypeId").focus();
+                    },
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            SaveVendor();
+        });
+    });
+
+
+</script>
+<section id="services">
+    <div class="col-md-12 innerDiv" id="contentdiv">
+        <h4 class="title"><a href="#">Business Registration</a></h4>
+        <hr />
+        <input type="hidden" value="registervendor" id="pagename">
+        <div class="col-md-6" id="formcontainer">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group" id="basicinfo">
+                    @Html.ValidationSummary(true)
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.VendorName, new { @placeholder = "Business Name.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.BusinessDescription, new { @placeholder = "Business Information.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.DropDownList("AgentId", ViewBag.AgentId as SelectList, new { @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.OwnerName, new { @placeholder = "Businessman Name.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.Address, new { @placeholder = "Address.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.City, new { @placeholder = "City.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.Taluka, new { @placeholder = "Taluka.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.District, new { @placeholder = "Dist.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Mobile Number.", @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.EmailId, new { @placeholder = "E-Mail.", @class = "form-control emailinput" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10 divMargin">
+                        <input class="form-control inputdesign" id="Pincode" name="Pincode" placeholder="Pincode." type="number" maxlength="6" value="">
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10 divMargin">
+                        @Html.DropDownList("VendorTypeId", ViewBag.VendorTypeId as SelectList, new { @class = "form-control inputdesign" })
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        <input type="file" id="logoImage" class="form-control" />
+                        <br />
+                        <input type="hidden" id="logoImagehidden" />
+                        @*<input type="button" value="Logo Image" class="btn btn-primary" onclick="Upload('LP')" />*@
+                        <br />
+                    </div>
+
+                    @*<div class="col-sm-10">
+                        <input type="file" id="ProfileImage" class="form-control" />
+                        <br />
+                        <input type="hidden" id="ProfileImagehidden" />
+                        <input type="button" value="Main Image " class="btn btn-primary" onclick="Upload('LP')" />
+                        <br />
+                    </div>
+
+                    <div class="col-sm-10">
+                        <input type="file" id="productImage" class="form-control" />
+                        <br />
+                        <input type="hidden" id="productImagehidden" />
+                        <input type="button" value="Other" class="btn btn-primary" onclick="Upload('LP')" />
+                        <br />
+                    </div>*@
+
+                    <div class="col-sm-10">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" value="Register" id="btnRegisterVendor" class="btn btn-primary" style="margin-bottom:20px" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

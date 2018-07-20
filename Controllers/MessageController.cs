@@ -1,5 +1,6 @@
 ﻿using ShriVivah.Models;
 using ShriVivah.Models.ContextModel;
+using ShriVivah.Models.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ShriVivah.Controllers
         ShriVivah.Models.Entities.ShreeVivahDbContext objData = new Models.Entities.ShreeVivahDbContext();
         // GET: Message
         [MyAuthorizeAttribute(IsAdmin=false)]
+        [CustomView]
         public ActionResult Index(int? UserId)
         {
             this.LoadIsAdmin();
@@ -30,7 +32,7 @@ namespace ShriVivah.Controllers
             ViewBag.UserId = lst;
             ViewBag.SelectedUserId = UserId==null?0:UserId;
             ViewBag.ActiveUserId = SessionManager.GetInstance.ActiveUser.UserId;
-            return View();
+            return View("Index");
         }
 
         public ActionResult SendMessage(int fromUserId,int toUserId,string msg)

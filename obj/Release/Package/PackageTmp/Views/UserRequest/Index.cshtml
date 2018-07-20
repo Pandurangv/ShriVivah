@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+<div class="span_3" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="">
+    <div class="span_3">
+        <input type="hidden" id="pagename" value="vendor" />
+        <input type="text" id="txtSearch" />
+        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+        <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+        <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+

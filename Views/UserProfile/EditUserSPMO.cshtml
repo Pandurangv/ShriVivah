@@ -1,0 +1,387 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+@Styles.Render("~/Content/AdminPanel/jquery.timepicker.css")
+@Scripts.Render("~/Scripts/HelperJS/jquery.timepicker.js")
+@Scripts.Render("~/bundles/EditUserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#TimeofBirth').timepicker({step:'1'});
+        bindData();
+        DisableControls();
+    })
+</script>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(m => m.UserId)
+
+        @Html.ValidationSummary(true)
+        <input type="hidden" value="@ViewBag.UserDetails" id="UserDetails" />
+        <input type="hidden" id="userid" />
+        <input type="hidden" id="pagename" value="edituser" />
+        <div class="form-group" id="contentdiv">
+            <div id="divPersonal">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Gender<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="gender" id="rdoMale" value="Male" required="required" /> Male</label></div>
+                        <div class="radio block"><label><input type="radio" name="gender" id="rdoFemale" value="Female" required="required" />Female</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Marrital Status<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoUnmarried" value="Unmarried" required="required" />Unmarried</label></div>
+                        <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoWidow" value="Widow" required="required" />Widow</label></div>
+                        <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoDivorcee" value="Divorcee" required="required" />Divorcee</label></div>
+                        <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoSeparated" value="Separated" required="required" />Separated</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">No of Childrens</label>
+                    <div class="col-sm-8"><input type="number" min="1" max="4" id="noofchilds" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Where Is your children?</label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildLWM" value="true" />With Me</label></div>
+                        <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildNLWM" value="false" />Not With Me</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Date of Birth<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8"><input type="date" id="DOB" required="required" name="bday" format="dd/MM/yyyy" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Religion<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">@Html.DropDownList("ReligionId", ViewBag.ReligionId as SelectList, new { @class = "form-control1", required = "required" })</div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Cast<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">@Html.DropDownList("CasteId", ViewBag.CasteId as SelectList, new { @class = "form-control1", required = "required" })</div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Nuck</label>
+                    <div class="col-sm-8"><input type="text" id="Subcaste" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Birth Place</label>
+                    <div class="col-sm-8"><input type="text" id="PlaceOfBirth" required="required" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Birth Time<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8"><input type="text" id="TimeofBirth" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Birth Name</label>
+                    <div class="col-sm-8"><input type="text" id="txtBirthName" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Address<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8"><input type="text" id="txtAddress" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">City</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="City" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Taluka</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="Taluka" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">District</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="District" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("StateId", ViewBag.StateId as SelectList, new { @class = "form-control1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Country</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("CountryId", ViewBag.CountryId as SelectList, new { @class = "form-control1" })
+                    </div>
+                </div>
+            </div>
+
+            <div id="divSocio">
+                <h3>Description</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Moonsign</label>
+                    <div class="col-sm-8">@Html.DropDownList("OrasId", ViewBag.OrasId as SelectList, new { @class = "form-control1", required = "required" })</div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Gotra</label>
+                    <div class="col-sm-8"><input type="text" id="gotradesc" class="form-control1" maxlength="50" /></div>
+                </div>
+            </div>
+
+            <div id="divPhysical">
+                <h3>Physical Information</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Height<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">@Html.DropDownList("HeightId", ViewBag.HeightId as SelectList, new { @class = "form-control1", required = "required" })</div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Weight</label>
+                    <div class="col-sm-8"><input type="number" min="40" max="140" id="weight" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Blood Group</label>
+                    <div class="col-sm-8">@Html.DropDownList("BloodGroupId", ViewBag.BloodGroupId as SelectList, new { @class = "form-control1", required = "required" })</div>
+                </div>
+                <div class="form-group">
+                    <label for="checkbox" class="col-sm-2 control-label">Health Information?</label>
+                    <div class="col-sm-8">
+                        <div class="checkbox-inline1">
+                            <label>
+                                <input type="checkbox" name="handicappedstatus" id="rdoIsHandicapped" value="Handicapped" />Are You Handicapped
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-8"><input type="text" id="disabledesc" class="form-control1" maxlength="150" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Color</label>
+                    <div class="col-sm-8">
+                        <select id="cmbColor" class="form-control1" name="txtComplexion" required="required">
+                            <option selected="" value="0">- Complexion -</option>
+                            <option value="Very Fair">Very Fair</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Brown">Brown</option>
+                            <option value="Light Brown">Light Brown</option>
+                            <option value="Medium Fair ">Medium Fair</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Body Type</label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="bodytype" id="rdoSlim" value="Thin" required="required" />Thin </label></div>
+                        <div class="radio block"><label><input type="radio" name="bodytype" id="rdoAverage" value="Medium" required="required" />Medium</label></div>
+                        <div class="radio block"><label><input type="radio" name="bodytype" id="rdoAtheletic" value="Healthy" required="required" />Healthy</label></div>
+                        <div class="radio block"><label><input type="radio" name="bodytype" id="rdoHeavy" value="Fat" required="required" />Fat</label></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divProfessional">
+                <h3>Business Information</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Education<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">
+                        <input id="QualificationId" type="text" class="form-control" />
+                        @*@Html.DropDownList("QualificationId", ViewBag.QualificationId as SelectList, new { @class = "form-control1" })*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="radio" class="col-sm-2 control-label">Business</label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="occuption" id="rdoJob" value="Job" /> Job</label></div>
+                        <div class="radio block"><label><input type="radio" name="occuption" id="rdoBusiness" value="Business" />Business</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Job Information</label>
+                    <div class="col-sm-8"><input type="text" id="txtCompanyName" class="form-control1" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Job Location</label>
+                    <div class="col-sm-8"><input type="text" id="txtCompanyLocation" class="form-control1" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Hobbies</label>
+                    <div class="col-sm-8"><input type="text" id="txtHobbies" class="form-control1" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="checkbox" class="col-sm-2 control-label">Ready for Intercast</label>
+                    <div class="col-sm-8">
+                        <div class="checkbox-inline1">
+                            <label>
+                                <input type="checkbox" name="Intercaststatus" id="rdoIsInterCast" value="Intercast" />Yes
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="focusedinput">Annual Income<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8">
+                        <select id="cmbIncome" class="form-control1" name="txtIncome" required="required">
+                            <option selected="selected" value="">Annual Income</option>
+                            <option value="Under   Rs.50,000">Less than Rs.50,000</option>
+                            <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                            <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                            <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                            <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                            <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                            <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                            <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                            <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divFamilyDetails">
+                <h3>Family Information</h3>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Father Name<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8"><input type="text" id="txtFatherName" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Mother Name<span style="color:red;font-size:x-large">*</span></label>
+                    <div class="col-sm-8"><input type="text" id="txtMotherName" class="form-control1" required="required" maxlength="30" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Brother</label>
+                    <div class="col-sm-8"><input type="text" id="txtNoofBrothers" class="form-control1" required="required" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Sister</label>
+                    <div class="col-sm-8"><input type="text" id="txtNoofSisters" class="form-control1" required="required" /></div>
+                </div>
+                <div class="form-group" style="display:none">
+                    <label for="radio" class="col-sm-2 control-label">Fathers Occupation</label>
+                    <div class="col-sm-8">
+                        <div class="radio block"><label><input type="radio" name="foccuption" id="rdofJob" value="Job" /> Job</label></div>
+                        <div class="radio block"><label><input type="radio" name="foccuption" id="rdofBusiness" value="Business" />Business</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Job Information</label>
+                    <div class="col-sm-8"><input type="text" id="txtFCompanyName" class="form-control1" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Fathers Income</label>
+                    <div class="col-sm-8">
+                        <select id="cmbFIncome" class="form-control1" name="txtIncome" required="required">
+                            <option selected="selected" value="">Annual Income</option>
+                            <option value="Under   Rs.50,000">Less than Rs.50,000</option>
+                            <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                            <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                            <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                            <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                            <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                            <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                            <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                            <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                            <option value="No Income">No Income</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divRelativeDetails">
+                <h3>Contact Information </h3>
+                <div class="form-group" style="display:none">
+                    <label for="focusedinput" class="col-sm-2 control-label">Mobile No</label>
+                    <div class="col-sm-8"><input type="number" id="MobileNo" class="form-control1" required="required" maxlength="10" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">E-Mail</label>
+                    <div class="col-sm-8"><input type="email" class="form-control1" id="Email" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-8"><input type="text" id="txtAddress" class="form-control1" required="required" maxlength="50" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">City/Town</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="City" class="form-control1" required="required" maxlength="50" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Taluka </label>
+                    <div class="col-sm-8"><input type="text" class="form-control1" id="Taluka" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">District</label>
+                    <div class="col-sm-8"><input type="text" class="form-control1" id="District" /></div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("StateId", ViewBag.StateId as SelectList, new { @class = "form-control1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="focusedinput" class="col-sm-2 control-label">Country</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("CountryId", ViewBag.CountryId as SelectList, new { @class = "form-control1" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divRelativeDetails">
+            <h3>Relative Information</h3>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Uncle Name</label>
+                <div class="col-sm-8"><input type="text" id="txtUncleName" class="form-control1" required="required" maxlength="50" /></div>
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-8"><input type="text" id="txtUncleAddress" class="form-control1" required="required" maxlength="50" /></div>
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Uncles Mobile Number</label>
+                <div class="col-sm-8"><input type="text" id="txtUContactNo" class="form-control1" required="required" maxlength="150" /></div>
+            </div>
+            <div class="span_3">
+                <input type="button" value="Uncle's Information..." class="btn btn-default" id="btnAddFamilyDetails" />
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Relative</label>
+                <div class="col-sm-8">
+                    <select id="cmbRelations" class="form-control1" name="cmbRelations">
+                        <option selected="selected" value="">Select Relation</option>
+                        <option value="Mothers Brother">Mothers Brother</option>
+                        <option value="Fathers Sister">Fathers Sister</option>
+                        <option value="Mothers Sister">Mothers Sister</option>
+                        <option value="Sitsres Husband">Sitsres Husband</option>
+                        <option value="Grandfather">Grandfather</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Relative Name</label>
+                <div class="col-sm-8"><input type="text" id="txtRelativeName" class="form-control1" required="required" maxlength="150" /></div>
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Relative Address</label>
+                <div class="col-sm-8"><input type="text" id="txtRelativeAddress" class="form-control1" required="required" maxlength="150" /></div>
+            </div>
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Mobile Number.</label>
+                <div class="col-sm-8"><input type="number" id="txtRContactNo" class="form-control1" required="required" maxlength="10" /></div>
+            </div>
+            <div class="span_3">
+                <input type="button" value="Add More.." class="btn btn-default" id="btnAddRelativeDetails" />
+            </div>
+
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="सेव करा" class="btn btn-default" id="btnSave" />
+            <input type="button" value="रद्द करा" class="btn btn-default" id="btnCancel" onclick="window.location='@Url.Action("IndexSPMO","UserProfile")'" />
+        </div>
+    </div>
+}

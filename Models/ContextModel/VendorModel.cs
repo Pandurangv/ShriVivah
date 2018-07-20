@@ -66,5 +66,7 @@ namespace ShriVivah.Models.ContextModel
     public class VendorDetails : Error
     {
         public IQueryable<VendorModel> VendorList { get; set; }
+
+        public IQueryable<UserRequests_Vendor> VendorListSPMO { get; set; }
     }
 }

@@ -2790,6 +2790,9 @@ span.btn_7{
 .txtSearchWidth {
     width: 100%;
 }
+.divPadding {
+    padding:15px;
+}
 .topSet {
     padding-top:15px;
 }
@@ -2804,12 +2807,23 @@ span.btn_7{
 .showprofile {
     margin-left:40%;
 }
+.mediaprofilestrong {
+    color: #2E32BF;
+    font-weight: bold;
+    font-size:14px;
+}
+
 .mediaprofile {
     color: #2E32BF;
-        font-weight: bold;
+    font-weight: normal;
+    font-size:14px;
 }
 .spanStyle {
-    font-size: 22px;
+    font-size: 16px;
+}
+.btnStyle {
+    padding: 3px !important;
+    font-size: 12px !important;
 }
 .spanupload {
 	padding-left:190px;
@@ -3119,4 +3133,82 @@ span.btn_7{
     margin: 5px 0 0 50px;
     padding: 5px 10px;
     position: relative;
+}
+.mainLoader{
+    z-index: 100000;
+    width: 100%;
+    height: calc(100% - 93px);
+    top: 50px;
+    
+    position: absolute;
+        }
+     .mainInnerLoader{
+    z-index: 100000;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right:50%;
+    position: absolute;
+        }
+        .lyfBg{
+             background-color: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    height: 180%;
+    position: absolute;
+        }
+        .mainLoaderImg {
+            position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -26px 0 0 -26px;
+    background: url(../images/varmalaloader.gif) no-repeat #fff 10px 10px;
+    width: 52px;
+    height: 52px;
+    z-index: 1;
+    border-radius: 8px;
+        }
+
+        .divPadding {
+   padding: 15px;
+   box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.2);
+   background-color: #fff;
+   margin-top: 15px;
+}
+
+.mediaprofile {
+   color: #2E32BF;
+   font-weight: normal;
+   font-size: 14px;
+   padding-top: 10px;
+   padding-bottom: 10px;
+}
+
+
+input.btn.btn-default.btnStyle {
+   background-color: #9358ac;
+}
+
+.btnStyle {
+   padding: 5px !important;
+   font-size: 12px !important;
+}
+.divPadding input.btn.btn-default.btnStyle {
+   color: #fff;
+}
+.topSet {
+   padding-top: 10px;
+   padding-bottom: 10px;
+   margin-bottom: 15px;
+   border-style: solid;
+   border-width: 1px;
+   font-size: 14px;
+   }
+
+ .topSet  input.btn.btn-default {
+   background-color: #9358ac;
+   color: #fff;
+}
+
+select#MarritalStatus {
+   font-size: 14px;
 }

@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Favicons -->
+    <link href="img/favicon.png" rel="icon">
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+    @Styles.Render("~/Content/commoncss")
+    <!-- JavaScript Libraries -->
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/jquery.min.js")
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/jquery-migrate.min.js")
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/bootstrap.bundle.min.js")
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/easing.min.js")
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/hoverIntent.js")
+    @Scripts.Render("~/Scripts/SPMO/FRontUI/superfish.min.js")
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/Scripts/Main/datehelper.js")
+    @Scripts.Render("~/Scripts/Main/angular.min.js")
+    @Scripts.Render("~/Scripts/Main/App.js")
+    @Scripts.Render("~/Scripts/Main/VendorTypesController.js")
+    @Scripts.Render("~/Scripts/FrontUI/jquery.flexslider.js")
+    @Styles.Render("~/Content/FrontUI/flexslider.css")
+</head>
+<body data-ng-app="VarmalaVivahApp" data-ng-controller="VendorTypesController">
+    <input type="hidden" id="loginStatus" value="@ViewBag.IsLogin" />
+    <input type="hidden" id="hdnVendorType" value="@ViewBag.VendorTypes" />
+    <input type="hidden" id="branding" value="@SettingsManager.Instance.Branding" />
+    <header id="header">
+            <div class="container-fluid">
+                <div id="logo" class="pull-left">
+                    <a href="@Url.Action("Index","Home")"> <h5 style="color:#000;">@ShriVivah.SettingsManager.Instance.Title</h5></a>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li><a href="@Url.Action("Panchayat","Agent")">Panchayat</a></li>
+                        <li data-ng-class="{'menu-has-children':VendorTypes.length>0}"><a href="@Url.Action("Vendors","Vendor")">Services</a>
+                            <ul>
+                                <li data-ng-repeat="vtype in VendorTypes"><a href="~/Vendor/Vendors?VendorTypeId={{vtype.VendorTypeId}}">{{vtype.VendorType}}</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Parechay Samelan</a></li>
+                        <li><a href="@Url.Action("Register","Account")">Registration</a></li>
+                        <li data-ng-click="lnkShowModal()" data-toggle="modal" data-target="#loginPage" data-backdrop="static" data-keyboard="false"><a href="#">Login</a></li>
+                        <li><a href="@Url.Action("Contact","Home")">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    <div class="container" id="contentdivbody">
+        <div class="modal fade" id="loginPage" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="pull-left">
+                            <h4 class="modal-title" style="color:#460f0f;font-weight:bold">Login</h4>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <ng-form name="frmLogin" novalidate>
+                            <div id="divLogin">
+                                <div>
+                                    <input type="number" class="form-control" name="MobileNo" required data-ng-model="LoginModel.MobileNo" maxlength="10" placeholder="Mobile No"
+                                           data-ng-class="{'borderred':frmLogin.MobileNo.$dirty && frmLogin.MobileNo.$error.required}" />
+                                </div>
+                                <br />
+                                <div>
+                                    <input type="password" class="form-control" name="Password" required data-ng-model="LoginModel.Password"
+                                           placeholder="Password" data-ng-class="{'borderred':frmLogin.Password.$dirty && frmLogin.Password.$error.required}" my-enter="ValidateAndLogin()" />
+                                </div>
+                                <hr />
+                                <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="frmLogin.$invalid==true" id="btnLogin" data-ng-click="ValidateAndLogin()">Log In</button>
+                                <br />
+                                <a class="h3color h3back1" data-ng-click="lnkForgotPasswordClick()">Forgot Password</a>
+
+                            </div>
+                            <div id="forGotPassword" style="display:none">
+                                <div>
+                                    <input type="text" class="form-control" id="UserLoginId" placeholder="Mobile No." />
+                                </div>
+                                <br />
+                                <button type="button" class="btn btn-primary btn-sm" id="btnForgot" data-ng-click="ForgotPassword()">Submit</button>
+                                <br />
+                                <a class="h3color h3back1" data-ng-click="lnkLoginClick()">Login</a>
+                            </div>
+                            <br />
+                            <a class="h3color h3back1" href="@Url.Action("Register","Account")">New User?</a>
+                        </ng-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="modal fade" id="registrationPage" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Registration</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="slider">
+        <div class="flexslider">
+            <ul class="slides">
+                <li>
+                    <img src="@Url.Content("~/Content/SPMO/FrontUI/images/22.png")" style="width:100%" alt="" />
+                </li>
+                <li>
+                    <img src="@Url.Content("~/Content/SPMO/FrontUI/images/11.png")" style="width:100%" alt="" />
+                </li>
+                <li>
+                    <img src="@Url.Content("~/Content/SPMO/FrontUI/images/33.png")" style="width:100%" alt="" />
+                </li>
+                <li>
+                    <img src="@Url.Content("~/Content/SPMO/FrontUI/images/11.png")" style="width:100%" alt="" />
+                </li>
+
+            </ul>
+        </div>
+    </section>
+    <main id="main">
+        <div class="col-md-12" style="margin-top:50px;" data-ng-show="HideEvents">
+            <marquee style="color:#fff;background:#0094ff">{{UpcomingEvents}}</marquee>
+        </div>
+        @RenderBody()
+    </main>
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <h4>@SettingsManager.Instance.Title</h4>
+                        <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Home</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">About us</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Services</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Terms of service</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4>Contact Us</h4>
+                        <p>
+                            @SettingsManager.Instance.Address<br>
+                            <strong>Mobile:</strong> +91  @SettingsManager.Instance.MobileNo<br>
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                            <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-newsletter">
+                        <h4>Our Newsletter</h4>
+                        <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza.</p>
+                        <form action="" method="post">
+                            <input type="email" name="email"><input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong>@SettingsManager.Instance.Title</strong>. All Rights Reserved
+            </div>
+        </div>
+    </footer>
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                start: function (slider) {
+                    $('body').removeClass('loading');
+                }
+            });
+            var lst = $("#hdnVendorType").val();
+            lst = JSON.parse(lst);
+            var html = "";
+            $("#liOtherMenus").html(html);
+
+            $.each(lst, function (i, item) {
+                html += "<li><a href='@Url.Action("Vendors","Vendor")'>" + item.VendorType + "</a></li>";
+            });
+            $("#liOtherMenus").html(html);
+            
+        });
+    </script>
+    <div class="mainInnerLoader" id="rclLoader" style="display: none;">
+        <div class="mainLoaderImg"></div>
+        <div class="lyfBg"></div>
+    </div>
+</body>
+</html>

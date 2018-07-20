@@ -22,7 +22,9 @@ namespace ShriVivah.Models.Entities
         public bool? IsDelete { get; set; }
     }
 
-    [Table("varmalavivah.tblContactUs")]
+
+
+    [Table("tblContactUs")]
     public class tblContactDetails
     {
         [Key]
@@ -50,6 +52,32 @@ namespace ShriVivah.Models.Entities
         public bool? MailSendingStatus { get; set; }
 
         public string Description { get; set; }
+    }
+
+    [Table("EventManagement")]
+    public class EventManagement
+    {
+        [Key]
+        public int? EventId { get; set; }
+
+        public string EventName { get; set; }
+
+        public string EventLocation { get; set; }
+
+        public DateTime? EventDate { get; set; }
+
+        public string EventDistrict { get; set; }
+
+        public string EventState { get; set; }
+
+        public int OrganizedBy { get; set; }
+
+        public string ContactPerson { get; set; }
+
+        public string MobileNo { get; set; }
+
+        public bool IsDelete { get; set; }
+
     }
 
     [Table("tblVendor")]
@@ -184,6 +212,8 @@ namespace ShriVivah.Models.Entities
         public string JobBusinessInfo { get; set; }
 
         public string JobBusinessInfo1 { get; set; }
+
+        public string GrandFatherName { get; set; }
     }
 
     [Table("tblVendorType")]
@@ -259,6 +289,62 @@ namespace ShriVivah.Models.Entities
         public string FirstName { get; set; }
 
         public string LName { get; set; }
+    }
+
+    public class SP_GetAgentDetails
+    {
+        public int? UserId { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string Address { get; set; }
+
+        public string LName { get; set; }
+
+        public string City { get; set; }
+
+        public string UserType { get; set; }
+
+        public string Password { get; set; }
+
+        public string MailId { get; set; }
+
+        public string MobileNo { get; set; }
+
+        public string State { get; set; }
+
+        public string PanchayatCode { get; set; }
+
+        public string District { get; set; }
+
+        public string Taluka { get; set; }
+    }
+
+    [Table("UserRequests")]
+    public class UserRequests
+    {
+        [Key]
+        public long UserRequestId { get; set; }
+
+        public int? UserId { get; set; }
+
+        public int? PanchayatId { get; set; }
+
+        public int? VendorId { get; set; }
+
+        public bool? IsUserRequest { get; set; }
+
+        public DateTime? RequestDate { get; set; }
+
+        public bool? IsApproved { get; set; }
+
+        public bool? IsDelete { get; set; }
+
+        public bool? IsAdminApproved { get; set; }
+
+        public DateTime? ApproveDate { get; set; }
+
+        public DateTime? AdminApproveDate { get; set; }
     }
 
     public class STP_GetUserDetail
@@ -417,6 +503,18 @@ namespace ShriVivah.Models.Entities
 
         public int? ismarried { get; set; }
 
+        public string BirthCountry { get; set; }
+
+        public string BirthDistrict { get; set; }
+
+        public string BirthState { get; set; }
+
+        public string PanchayatCode { get; set; }
+
+        public string Name { get; set; }
+
+        public int? PanchayatId { get; set; }
+
     }
 
     [Table("tblUser")]
@@ -540,6 +638,14 @@ namespace ShriVivah.Models.Entities
         public string District { get; set; }
 
         public int? ismarried { get; set; }
+
+        public string BirthCountry { get; set; }
+
+        public string BirthDistrict { get; set; }
+
+        public string BirthState { get; set; }
+
+        public string PanchayatCode { get; set; }
     }
 
     [Table("tblJobDetails")]
@@ -571,6 +677,22 @@ namespace ShriVivah.Models.Entities
         //public string JobBusinessInfo { get; set; }
 
         //public string JobBusinessInfo1 { get; set; }
+    }
+
+    [Table("ProfileImage")]
+    public class ProfileImage
+    {
+        [Key]
+        public long? ProfileImageId { get; set; }
+
+        public int? UserId { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        public string ImagePath { get; set; }
+
+        public string Caption { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 
     [Table("tblQualification")]
@@ -713,6 +835,43 @@ namespace ShriVivah.Models.Entities
         public string StateName { get; set; }
 
         public bool? IsDelete { get; set; }
+    }
+
+    [Table("SPMO_VIEW_UserRequests_Vendor")]
+    public class UserRequests_Vendor
+    {
+        [Key]
+        public long UserRequestID { get; set; }
+        public int? UserID { get; set; }
+        public int? PanchayatId { get; set; }
+        public int? VendorId { get; set; }
+        public bool IsUserRequest { get; set; }
+        public DateTime? RequestDate { get; set; }
+        public bool IsApproved { get; set; }
+        public bool IsDelete { get; set; }
+        public bool IsAdminApproved { get; set; }
+        public string VendorName { get; set; }
+        public string BusinessDescription { get; set; }
+        public DateTime? RegistrationDate { get; set; }
+        public string LogoImage { get; set; }
+        public string ProfileImage { get; set; }
+        public string ProductImage { get; set; }
+        public int? ValidDays { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+        public string OwnerName { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string ContactNo { get; set; }
+        public string EmailId { get; set; }
+        public string Pincode { get; set; }
+        public string District { get; set; }
+        public string Taluka { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public int? AgentId { get; set; }
+        public int? VendorTypeId { get; set; }
+
+        public string VendorType { get; set; }
     }
 
     [Table("tblOras")]

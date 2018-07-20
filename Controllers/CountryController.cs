@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ShriVivah.Models.Filters;
 
 namespace ShriVivah.Controllers
 {
@@ -23,6 +24,7 @@ namespace ShriVivah.Controllers
         // GET: Country
         // GET: BloodGroup
         [MyAuthorizeAttribute(IsAdmin = true)]
+        [CustomViewAttribute]
         public ActionResult Index()
         {
             this.LoadIsAdmin();
@@ -70,7 +72,7 @@ namespace ShriVivah.Controllers
                 CountryDetails obj = new CountryDetails()
                 {
                     Status = false,
-                    ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -111,7 +113,7 @@ namespace ShriVivah.Controllers
                     CountryDetails obj = new CountryDetails()
                     {
                         Status = false,
-                        ErrorMessage = "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -147,7 +149,7 @@ namespace ShriVivah.Controllers
                     CountryDetails obj = new CountryDetails()
                     {
                         Status = false,
-                        ErrorMessage = "तुम्ही पहिल्याच पानावर आहात.",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "तुम्ही पहिल्याच पानावर आहात.",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -194,12 +196,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 objReligion.Save(model);
             }
             int pageindex = 0;
@@ -220,12 +222,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = "माहितीमध्ये बदल करण्यात आला आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
                 objReligion.Update(model);
             }
             int pageindex = 0;
