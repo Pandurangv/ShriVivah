@@ -80,7 +80,7 @@
                     </nav>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-control1 inputborder" id="PageSizeUp" >
+                    <select class="form-control1 inputborder" id="PageSizeUp"  >
                         <option value="10" selected="selected">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>
@@ -127,7 +127,8 @@
                         @if (ViewBag.IsAdmin == true)
                         {
                             <input type="button" value="Send Password" data-ng-click="SendSMS(user.UserId)" class="btn btn-default btnStyle" />
-                                <input type="button" value="Get Married" class="btn btn-default btnStyle" data-ng-click="MarriageDone(user.UserId)" />
+                            <input type="button" value="Get Married" class="btn btn-default btnStyle" data-ng-click="MarriageDone(user.UserId)" />
+                            <input type="button" value="Login" class="btn btn-default btnStyle" data-ng-click="LoginUser(user.UserId)" />
                         }
                         <input type="button" value="View Profile." data-ng-click="ViewProfile(user.UserId)" class="btn btn-default btnStyle" /> &nbsp;&nbsp;
                         <input type="button" value="Send Message" class="btn btn-default btnStyle" data-ng-click="SendMessage(user.UserId)" />

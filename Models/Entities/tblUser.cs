@@ -515,6 +515,16 @@ namespace ShriVivah.Models.Entities
 
         public int? PanchayatId { get; set; }
 
+        public int? IsOwnHouse { get; set; }
+
+        public string Achievements { get; set; }
+
+        public string Pincode { get; set; }
+
+        public string ReferenceName { get; set; }
+
+        public string ReferenceContact { get; set; }
+
     }
 
     [Table("tblUser")]
@@ -646,6 +656,16 @@ namespace ShriVivah.Models.Entities
         public string BirthState { get; set; }
 
         public string PanchayatCode { get; set; }
+
+        public int? IsOwnHouse { get; set; }
+
+        public string Achievements { get; set; }
+
+        public string Pincode { get; set; }
+
+        public string ReferenceName { get; set; }
+
+        public string ReferenceContact { get; set; }
     }
 
     [Table("tblJobDetails")]

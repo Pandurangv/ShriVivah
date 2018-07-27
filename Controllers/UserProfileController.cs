@@ -133,6 +133,73 @@ namespace ShriVivah.Controllers
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
+        public ActionResult VerifyAndLogin(int UserId)
+        {
+            STP_GetUserDetail user = null;
+            if (SettingsManager.Instance.Branding != "SPMO")
+            {
+                user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId==UserId).FirstOrDefault();
+            }
+            else
+            {
+                user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId==UserId).FirstOrDefault();
+            }
+            if (user != null)
+            {
+                SessionManager.GetInstance.AdminUserId = SessionManager.GetInstance.ActiveUser.UserId;
+                if (Convert.ToBoolean(user.IsActive) && user.UserType.ToUpper() != "AGENT")
+                {
+                    SessionManager.GetInstance.ActiveUser = user;
+                    var lst = new List<RegisterViewModel>();
+                    lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender, UserType = user.UserType });
+                    return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                }
+                else if (!Convert.ToBoolean(user.IsActive) && user.UserType.ToUpper() == "USER" && user.DateOfBirth == null)
+                {
+                    SessionManager.GetInstance.ActiveUser = user;
+                    var lst = new List<RegisterViewModel>();
+                    lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender, UserType = "USER" });
+                    return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    if (user.UserType.ToUpper() == "ADMIN")
+                    {
+                        SessionManager.GetInstance.ActiveUser = user;
+                        var lst = new List<RegisterViewModel>();
+                        lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender, UserType = "ADMIN" });
+                        return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        if (user.UserType.ToUpper() == "AGENT")
+                        {
+                            if (SettingsManager.Instance.Branding == "SPMO")
+                            {
+                                SessionManager.GetInstance.ActiveUser = user;
+                                var lst = new List<RegisterViewModel>();
+                                lst.Add(new RegisterViewModel() { UserId = user.UserId, FirstName = user.FirstName, Gender = user.Gender, UserType = "AGENT" });
+                                return Json(new ResponseModel() { Status = true, ErrorMessage = "", DataResponse = lst.AsQueryable() }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AgentLogin : "प्रतिनिधी लॉगिन साठी अद्याप सुविधा नाहीत." }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                        else
+                        {
+                            return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AccountActivate : "आपले खाते 48 तासांच्या आत सक्रिय होईल ." }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "अवैध लॉग-इन नाव किंवा पासवर्ड." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [MyAuthorizeAttribute(IsAdmin = false)]
         [CustomView]
         public ActionResult ChangePassword()
         {
@@ -622,6 +689,7 @@ namespace ShriVivah.Controllers
         public ActionResult ShowProfile(int ProfileId)
         {
             this.LoadIsAdmin();
+            ViewBag.ActiveUserId = ProfileId;
             if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()!="ADMIN" && SessionManager.GetInstance.ActiveUser.UserId!=ProfileId)
             {
                 objUser.InsertVisitorDetails(ProfileId);

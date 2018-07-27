@@ -206,6 +206,34 @@ namespace ShriVivah
             }
         }
 
+        public string MsgLogin
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["MsgLogin"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgLogin"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string MsgPassword
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["MsgPassword"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgPassword"]);
+                }
+                return Branding;
+            }
+        }
+
+
+
         public string SenderId
         {
             get

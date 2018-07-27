@@ -232,8 +232,8 @@ $(document).ready(function () {
     })
 
     //var maxdate = dtcurrent.setDate(dtcurrent.getFullYear() - 22);
-    $("#DOB").attr("min", mindate);
-    $("#DOB").attr("max", maxdate);
+    //$("#DOB").attr("min", mindate);
+    //$("#DOB").attr("max", maxdate);
     $("#ReligionId").change(function () {
         
         var ReligionId = $(this).val();
@@ -536,6 +536,8 @@ $(document).ready(function () {
             var txtCompanyLocation = $("#txtCompanyLocation").val();
             var IdentificationMark = $("#IdentificationMark").val(); var PANNO = $("#PANNO").val(); var MobileNo = $("#MobileNo").val();
             var txtHobbies = $("#txtHobbies").val();
+            var txtActivities = $("#txtActivities").val();
+
             var City = $("#City").val();
             var State = $("#StateId").find(":selected").text();
             var Country = $("#CountryId").find(":selected").text();
@@ -566,6 +568,12 @@ $(document).ready(function () {
                     State: State,
                     Taluka: $("#Taluka").val(),
                     District: $("#District").val(),
+                    Achievements: txtActivities,
+                    Pincode: $("#Pincode").val(),
+                    IsOwnHouse: $("#IsOwnHouse").val(),
+                    ReferenceName: $("#ReferenceName").val(),
+                    ReferenceContact: $("#ReferenceContact").val(),
+
                 };
 
             var colorlist = [];
@@ -792,6 +800,7 @@ function LoadCasts(ReligionId)
             });
             $("#CasteId").append(items1);
             document.getElementById("contentdiv").removeChild(spinner.el);
+            $("#CasteId").val(1);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert('Error during process: \n' + xhr.responseText);
@@ -1456,9 +1465,9 @@ function UploadA()
     var spinner = new Spinner().spin();
     document.getElementById("contentdiv").appendChild(spinner.el);
     var data = new FormData();
-    var files = $("#profileMainImage").get(0).files;
+    var files = $("#AdhaarImage").get(0).files;
     if (files.length > 0) {
-        data.append("profileMainImage", files[0]);
+        data.append("AdhaarImage", files[0]);
     }
     $.ajax({
         url: "../UserProfile/UploadA",
@@ -1467,14 +1476,13 @@ function UploadA()
     contentType: false,
     data: data,
     success: function (response) {
-        if (response==true) {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: $("#hdnbranding").val() == "SPMO" ? "Image uploaded successfully." : "फोटो दाखल केला.",
-                Type: "alert",
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
-        }
+        var objShowCustomAlert = new ShowCustomAlert({
+            Title: "",
+            Message: $("#hdnbranding").val() == "SPMO" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+            Type: "alert",
+        });
+        objShowCustomAlert.ShowCustomAlertBox();
+        $("#AdhaarImagehidden").val(response)
         //var spinner = new Spinner().spin();
         document.getElementById("contentdiv").removeChild(spinner.el);
     },
@@ -1490,9 +1498,9 @@ function UploadB() {
     var spinner = new Spinner().spin();
     document.getElementById("contentdiv").appendChild(spinner.el);
     var data = new FormData();
-    var files = $("#KundaliImage").get(0).files;
+    var files = $("#PANImage").get(0).files;
     if (files.length > 0) {
-        data.append("KundaliImage", files[0]);
+        data.append("PANImage", files[0]);
     }
     $.ajax({
         url: "../UserProfile/UploadB",
@@ -1501,14 +1509,13 @@ function UploadB() {
     contentType: false,
     data: data,
     success: function (response) {
-        if (response == true) {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: $("#hdnbranding").val() == "SPMO" ? "Image uploaded successfully." : "फोटो दाखल केला.",
-                Type: "alert",
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
-        }
+        var objShowCustomAlert = new ShowCustomAlert({
+            Title: "",
+            Message: $("#hdnbranding").val() == "SPMO" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+            Type: "alert",
+        });
+        objShowCustomAlert.ShowCustomAlertBox();
+        $("#AdhaarImagehidden").val(response)
         //var spinner = new Spinner().spin();
         document.getElementById("contentdiv").removeChild(spinner.el);
     },

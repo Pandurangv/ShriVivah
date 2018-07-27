@@ -17,6 +17,10 @@
         return $http.post(urlBase + "/PendingUsers/SendSMS", { UserId: UserId });
     };
 
+    ReportService.VerifyAndLogin = function (UserId) {
+        return $http.post(urlBase + "/userprofile/VerifyAndLogin", { UserId: UserId });
+    };
+
     return ReportService;
 }]);
 
@@ -46,21 +50,46 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
         window.location =$scope.RootUrl + "/UserProfile/ShowProfile?ProfileId=" + RequestFrom;
     }
 
+    $scope.LoginUser = function (UserId)
+    {
+        ShowLoader();
+        UserService.VerifyAndLogin(UserId)
+           .success(function (response) {
+               HideLoader();
+               var url = GetVirtualDirectory();
+               if (response.Status == true) {
+                   if (response.DataResponse[0].UserType.toUpperCase() == "USER" || response.DataResponse[0].UserType.toUpperCase() == "ADMIN") {
+                       window.open(url + "/UserProfile/Index", '_blank');
+                   }
+                   else if (response.DataResponse[0].UserType.toUpperCase() == "AGENT") {
+                       window.open(url + "/UserProfile/Index", '_blank');
+                   }
+               }
+               else {
+                   var objShowCustomAlert = new ShowCustomAlert({
+                       Title: "",
+                       Message: response.ErrorMessage,
+                       Type: "alert",
+                   });
+                   objShowCustomAlert.ShowCustomAlertBox();
+               }
+           }).error(function (error) {
+               HideLoader();
+               findAndCallErrorBox("", response.Error.Message, "alert", null, null);
+           });
+    }
+
     $scope.First = function () {
         $scope.CurruntIndex = 0;
         $scope.SearchUserList = $filter('limitTo')($scope.UserList, $scope.Paging, 0);
         if ($scope.UserList.length==0) {
             $scope.SearchUserList = $scope.UserList;
         }
-        try {
-            setTimeout($scope.$apply(), 3000);
-        } catch (e) {
-
-        }
+        window.setTimeout(function () { $scope.$apply(); }, 3000);
     }
 
     $scope.FilterPageSize = function (PageSize) {
-        $scope.Paging = PageSize;
+        $scope.Paging = parseInt(PageSize);
         $scope.First();
     }
 

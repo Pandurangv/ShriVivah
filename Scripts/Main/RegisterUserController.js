@@ -377,6 +377,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
                 if ($("#branding").val() == "SPMO") {
                     $scope.IsRegistrationSuccess = true;
                     $scope.OTP = response.data.ModelObject.OTP;
+                    console.log($scope.OTP);
                     $scope.SaveWithOTP();
                 }
                 else {

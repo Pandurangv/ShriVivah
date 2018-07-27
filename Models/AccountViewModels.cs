@@ -117,6 +117,15 @@ namespace ShriVivah.Models
 
         public string Height { get; set; }
 
+        public int? IsOwnHouse { get; set; }
+
+
+        public string Pincode { get; set; }
+
+        public string ReferenceName { get; set; }
+
+        public string ReferenceContact { get; set; }
+
         [Required(ErrorMessage = "*")]
         [Display(Name = "User name")]
         public string UserName { get; set; }
@@ -262,6 +271,7 @@ namespace ShriVivah.Models
         public bool? IsActive { get; set; }
 
         public string District { get; set; }
+        public string Achievements { get; internal set; }
     }
 
     public class MessageModel

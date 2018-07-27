@@ -85,6 +85,8 @@ namespace ShriVivah.Models
             }
             set { HttpContext.Current.Session["ActiveUser"]=value; }
         }
+
+        public int? AdminUserId { get; internal set; }
     }
 
 

@@ -5,9 +5,17 @@
 
 @Styles.Render("~/Content/AdminPanel/jquery.timepicker.css")
 @Scripts.Render("~/Scripts/HelperJS/jquery.timepicker.js")
-@Scripts.Render("~/bundles/UserProfile")
 @Scripts.Render("~/Scripts/Main/jquery.date-dropdowns.min.js")
-
+@Scripts.Render("~/bundles/UserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#TimeofBirth').timepicker({ step: '1' });
+        var minAge = $("#hdnMinAge").val();
+        $("#DOB").dateDropdowns({
+            minAge: minAge
+        });
+    });
+</script>
 
 @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile" }))
 {
@@ -21,7 +29,7 @@
         <div class="form-group" id="contentdiv">
             <div id="divPersonal">
                 <div class="col-md-12 divPadding">
-                    <h3>Personal Information</h3>
+                    <div class="headerdiv">Personal Information</div>
                     <div class="form-group">
                         <label for="radio" class="col-sm-2 control-label">Marrital Status<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4">
@@ -53,7 +61,7 @@
                         <div class="col-sm-4">@Html.DropDownList("CasteId", ViewBag.CasteId as SelectList, new { @class = "form-control1 inputborder", required = "required" })</div>
                     </div>
                     <div class="form-group">
-                        <label for="focusedinput" class="col-sm-2 control-label">Nuck</label>
+                        <label for="focusedinput" class="col-sm-2 control-label">Nuck/Gotra</label>
                         <div class="col-sm-4"><input type="text" class="form-control1 inputborder" id="Subcaste" maxlength="50" /></div>
                     </div>
                     <div class="form-group">
@@ -62,7 +70,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 divPadding">
-                    <h3>Birth Information</h3>
+                    <div class="headerdiv">Birth Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Date of Birth<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4"><input type="hidden" id="DOB" /></div>
@@ -93,11 +101,26 @@
                     </div>*@
                 </div>
                 <div class="col-md-12 divPadding">
-                    <h3>Contact Information</h3>
+                    <div class="headerdiv">Contact Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">City/Address</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control1 inputborder" id="City" required="required" maxlength="50" />
+                            <textarea  class="form-control1 inputborder" id="City" required="required" maxlength="50" rows="3" ></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Pincode</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control1 inputborder" id="Pincode" required="required" maxlength="6"  />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Is Own House?</label>
+                        <div class="col-sm-4">
+                            <select class="form-control1 inputborder" id="IsOwnHouse">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -124,12 +147,24 @@
                             @Html.DropDownList("CountryId", ViewBag.CountryId as SelectList, new { @class = "form-control1 inputborder" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Reference Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control1 inputborder" id="ReferenceName" required="required" maxlength="50" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Reference Contact</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control1 inputborder" id="ReferenceContact" required="required" maxlength="10" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div id="divPhysical">
                 <div class="col-md-12 divPadding">
-                    <h3>Physical Information</h3>
+                    <div class="headerdiv">Physical Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Height<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4">@Html.DropDownList("HeightId", ViewBag.HeightId as SelectList, new { @class = "form-control1 inputborder", required = "required" })</div>
@@ -182,7 +217,7 @@
             </div>
             <div id="divProfessional">
                 <div class="col-md-12 divPadding">
-                    <h3>Occupation Information</h3>
+                    <div class="headerdiv">Occupation Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Education<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4">
@@ -208,11 +243,11 @@
                         <label for="focusedinput" class="col-sm-2 control-label">Hobbies</label>
                         <div class="col-sm-4"><input type="text" class="form-control1 inputborder" id="txtHobbies" /></div>
                     </div>
-
                     <div class="form-group">
-                        <label for="focusedinput" class="col-sm-2 control-label">Expectation</label>
-                        <div class="col-sm-4"><input type="text" class="form-control1 inputborder" id="txtUserExpectation" /></div>
+                        <label for="focusedinput" class="col-sm-2 control-label">Activities</label>
+                        <div class="col-sm-4"><textarea class="form-control1 inputborder" id="txtActivities" rows="2"></textarea> </div>
                     </div>
+                    
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="focusedinput">Annual Income<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4">
@@ -235,7 +270,7 @@
 
             <div id="divFamilyDetails">
                 <div class="col-md-12 divPadding">
-                    <h3>Family Information</h3>
+                    <div class="headerdiv">Family Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Father Name<span style="color:red;font-size:x-large">*</span></label>
                         <div class="col-sm-4"><input type="text" class="form-control1 inputborder" id="txtFatherName" required="required" maxlength="50" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.MName" /></div>
@@ -309,12 +344,14 @@
 
             <div id="divRelativeDetails">
                 <div class="col-md-12 divPadding">
-                    <h3>Relative Information</h3>
+                    <div class="headerdiv">Relative Information</div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Relative</label>
                         <div class="col-sm-4">
                             <select id="cmbRelations" class="form-control1 inputborder" name="cmbRelations">
                                 <option selected="selected" value="">Select Relation</option>
+                                <option value="Mothers Brother">Brother</option>
+                                <option value="Mothers Brother">Sister</option>
                                 <option value="Mothers Brother">Mothers Brother</option>
                                 <option value="Fathers Sister">Fathers Sister</option>
                                 <option value="Mothers Sister">Mothers Sister</option>
@@ -342,7 +379,11 @@
             </div>
             <div id="divUserExpection">
                 <div class="col-md-12 divPadding">
-                    <h3>Expectation Information</h3>
+                    <div class="headerdiv">Expectation Information</div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Expectation</label>
+                        <div class="col-sm-4"><input type="text" class="form-control1 inputborder" id="txtUserExpectation" /></div>
+                    </div>
                     <div class="form-group">
                         <label for="focusedinput" class="col-sm-2 control-label">Complexion</label>
                         <div class="col-sm-4">
@@ -378,12 +419,3 @@
         </div>
     </div>
 }
-<script type="text/javascript">
-    $(function () {
-        $('#TimeofBirth').timepicker({ step: '1' });
-        var minAge=$("#hdnMinAge").val();
-        $("#DOB").dateDropdowns({
-            minAge: minAge
-        });
-    });
-</script>

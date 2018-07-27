@@ -19,6 +19,16 @@
     text-align: center;
 }
 
+.headerdiv {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    background: #81c3e0;
+    border-radius: 9px;
+    color: #fff;
+    margin-bottom:15px;
+}
+
 .example:first-of-type {
     position: relative;
     bottom: 35px;

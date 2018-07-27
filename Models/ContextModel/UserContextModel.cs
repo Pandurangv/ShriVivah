@@ -206,12 +206,15 @@ namespace ShriVivah.Models.ContextModel
             }
             //Prepare you post parameters
             StringBuilder sbPostData = new StringBuilder();
-            sbPostData.AppendFormat("authkey={0}", authKey);
-            sbPostData.AppendFormat("&mobiles={0}", mobileNumber);
-            sbPostData.AppendFormat("&message={0}", message);
+            sbPostData.AppendFormat("tranxid={0}", authKey);
+            sbPostData.AppendFormat("&login={0}", SettingsManager.Instance.MsgLogin);
+            sbPostData.AppendFormat("&psw={0}", SettingsManager.Instance.MsgPassword);
+
             sbPostData.AppendFormat("&sender={0}", senderId);
-            sbPostData.AppendFormat("&route={0}", "4");
-            sbPostData.AppendFormat("&country={0}", "91");
+            sbPostData.AppendFormat("&mobile={0}", mobileNumber);
+
+            sbPostData.AppendFormat("&message={0}", message);
+            sbPostData.AppendFormat("&ack={0}", "YES");
 
             try
             {
@@ -646,6 +649,11 @@ namespace ShriVivah.Models.ContextModel
                     obju.Taluka = model.Taluka;
                     obju.District = model.District;
                     obju.IsActive = true;
+                    obju.Achievements = model.Achievements;
+                    obju.Pincode = model.Pincode;
+                    obju.IsOwnHouse = model.IsOwnHouse;
+                    obju.ReferenceName = model.ReferenceName;
+                    obju.ReferenceContact = model.ReferenceContact;
                     objData.SaveChanges();
                 }
             }
@@ -731,6 +739,11 @@ namespace ShriVivah.Models.ContextModel
                     obju.Income = model.Income;
                     obju.Gotra = model.GotraName;
                     obju.IsActive = true;
+                    obju.Pincode = model.Pincode;
+                    obju.Achievements = model.Achievements;
+                    obju.IsOwnHouse = model.IsOwnHouse;
+                    obju.ReferenceName = model.ReferenceName;
+                    obju.ReferenceContact = model.ReferenceContact;
                     if (SettingsManager.Instance.Branding != "SPMO")
                     {
                         obju.IsActive = false;

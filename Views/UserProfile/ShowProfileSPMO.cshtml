@@ -25,7 +25,6 @@
         }
         $("#divrelative").html("");
         $("#divrelative").html(html);
-
     })
     
 </script>
@@ -44,7 +43,14 @@
                         }
                         else
                         {
-                            <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            if (ViewBag.ActiveUserId == ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
+                            {
+                                <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                            }
+                            else
+                            {
+                                <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            }
                         }
                     }
                     else
@@ -339,15 +345,35 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Address</td>
+                    <td>Is Own House?</td>
                     <td>
-                        <span>Mr. @Model.Address</span>
+                        @if (@Model.IsOwnHouse == 0)
+                        {
+                            <span>No</span>
+                        }
+                        else
+                        {
+                            <span>Yes</span>
+                        }
                     </td>
                 </tr>
                 <tr>
-                    <td>City</td>
+                    <td>Address</td>
                     <td>
-                        <span>@Model.City</span>
+                        <span>@Model.Address</span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Pincode</td>
+                    <td>
+                        <span>@Model.Pincode</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <span>@Model.Address</span>
                     </td>
                 </tr>
                 <tr>
@@ -380,6 +406,24 @@
                         <span>@Model.Hobbies</span>
                     </td>
                 </tr>
+                <tr>
+                    <td>Activities</td>
+                    <td>
+                        <span>@Model.Achievements</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Reference Name</td>
+                    <td>
+                        <span>@Model.ReferenceName</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Reference Contact</td>
+                    <td>
+                        <span>@Model.ReferenceContact</span>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -410,7 +454,14 @@
                         }
                         else
                         {
-                            <img class="media-object" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            if (ViewBag.ActiveUserId == ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
+                            {
+                                <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                            }
+                            else
+                            {
+                                <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            }
                         }
                     }
                     else

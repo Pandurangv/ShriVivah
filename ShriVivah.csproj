@@ -186,6 +186,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\BarrierController.cs" />
     <Compile Include="Controllers\BloodGroupController.cs" />
     <Compile Include="Controllers\CastController.cs" />
     <Compile Include="Controllers\CityController.cs" />
@@ -586,6 +587,7 @@
     <Folder Include="Content\ProfileImage\" />
     <Folder Include="Content\VendorImages\Temp\" />
     <Folder Include="Log\" />
+    <Folder Include="Views\Barrier\" />
     <Folder Include="Views\Settings\" />
   </ItemGroup>
   <ItemGroup>
