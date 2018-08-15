@@ -107,6 +107,8 @@ namespace ShriVivah
                    "~/Scripts/HelperJs/ValidationHelper.js"
                ));
 
+            bundles.Add(new ScriptBundle("~/bundles/Main/BarrierController").Include("~/Scripts/Main/BarrierController.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/SignalR").Include(
                    "~/Scripts/jquery.signalR-2.2.0.min.js",
                    //"~/SignalR/hubs"
@@ -155,6 +157,7 @@ namespace ShriVivah
         {
 
         }
+
 
         public static SettingsManager Instance
         {
@@ -296,6 +299,84 @@ namespace ShriVivah
                 if (ConfigurationManager.ConnectionStrings["MobileNo"] != null)
                 {
                     Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MobileNo"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string MID
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["MID"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MID"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string WEBSITE
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["WEBSITE"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["WEBSITE"]);
+                }
+                return Branding;
+            }
+        }
+
+        public int Charges
+        {
+            get
+            {
+                int Branding=500;
+                if (ConfigurationManager.ConnectionStrings["Charges"] != null)
+                {
+                    Branding = Convert.ToInt32(ConfigurationManager.ConnectionStrings["Charges"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string CHANNEL_ID
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["CHANNEL_ID"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["CHANNEL_ID"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string INDUSTRY_TYPE_ID
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["INDUSTRY_TYPE_ID"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["INDUSTRY_TYPE_ID"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string MERCHANT_KEY
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["MERCHANT_KEY"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MERCHANT_KEY"]);
                 }
                 return Branding;
             }

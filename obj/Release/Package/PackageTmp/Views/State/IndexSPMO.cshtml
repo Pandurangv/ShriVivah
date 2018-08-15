@@ -167,12 +167,10 @@
                         });
                         objShowCustomAlert.ShowCustomAlertBox();
                     }
-                    //var spinner = new Spinner().spin();
                     document.getElementById("contentdiv").removeChild(spinner.el);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Error during process: \n' + xhr.responseText);
-                    //var spinner = new Spinner().spin();
                     document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
@@ -184,7 +182,7 @@
             $("#divMain").show();
             $("#StateId").val("");
             $("#StateName").val("");
-            $("#CountryId").val("0");
+            $("#CountryId").val("1");
             return false;
         });
         $("#btnAdd").click(function () {
@@ -192,7 +190,7 @@
             $("#divMain").hide();
             $("#StateId").val("");
             $("#StateName").val("");
-            $("#CountryId").val("0");
+            $("#CountryId").val("1");
             $("#btnSave").show();
             $("#btnUpdate").hide();
             return false;
@@ -266,14 +264,18 @@
     }
 </script>
 <div class="span_3" id="divMain">
-    <div class="span_3">
-        <input type="text" id="txtSearch" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
-        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+            <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th>Id</th>

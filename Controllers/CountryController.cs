@@ -36,6 +36,13 @@ namespace ShriVivah.Controllers
             return View("Index", filter);
         }
 
+        
+        public ActionResult GetCountries()
+        {
+            var countries = objReligion.GetCountrys();
+            return Json(countries,JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult CountryFirst()
         {
             IQueryable<tblCountry> users = (IQueryable<tblCountry>)Session["users"];
@@ -72,7 +79,7 @@ namespace ShriVivah.Controllers
                 CountryDetails obj = new CountryDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -113,7 +120,7 @@ namespace ShriVivah.Controllers
                     CountryDetails obj = new CountryDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -149,7 +156,7 @@ namespace ShriVivah.Controllers
                     CountryDetails obj = new CountryDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "तुम्ही पहिल्याच पानावर आहात.",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InvalidUserNamePassword : "तुम्ही पहिल्याच पानावर आहात.",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -196,12 +203,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 objReligion.Save(model);
             }
             int pageindex = 0;
@@ -222,12 +229,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
                 objReligion.Update(model);
             }
             int pageindex = 0;

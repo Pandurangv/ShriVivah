@@ -1,26 +1,26 @@
 ﻿@{
     ViewBag.Title = "Register";
-    Layout = "~/Views/Shared/_LayoutNEW.cshtml";
+    Layout = "~/Views/Shared/_LayoutPageSPMO.cshtml";
 }
 <script type="text/javascript">
     $(document).ready(function () {
         SetActiveTab("register");
     });
 </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script>
 @Scripts.Render("~/Scripts/Main/RegisterUserController.js")
-
 <div id="contact" class="section-bg wow fadeInUp" data-ng-app="VarmalaVivahApp" data-ng-controller="RegisterUserController">
     <div class="container">
         <div class="section-header">
             <h3>Sign Up</h3>
         </div>
         <div class="form">
-            <input type="hidden" id="pagename" value="registeruser" />
+            <input type = "hidden" id="pagename" value="registeruser" />
             <hr />
             <ng-form class="contactForm">
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <input type="text" placeholder="Name*" id="FirstName" maxlength="15" data-ng-blur="ValidateFName()"
+                        <input type = "text" placeholder="Name*" id="FirstName" maxlength="15" data-ng-blur="ValidateFName()"
                                class="form-control setMargin" />
                         <span class="h3color" data-ng-show="ErrorModel.IsFirstName">
                             {{ErrorMessage}}
@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <input type="text" placeholder="Father's Name*" id="MiddleName" data-ng-blur="ValidateMName()"
+                        <input type = "text" placeholder="Father's Name*" id="MiddleName" data-ng-blur="ValidateMName()"
                                maxlength="15" class="form-control setMargin" />
                         <span class="h3color" data-ng-show="ErrorModel.IsMiddleName">
                             {{ErrorMessage}}
@@ -39,7 +39,7 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <input type="text" placeholder="Surname*" id="LastName" data-ng-blur="ValidateLName()"
+                        <input type = "text" placeholder="Surname*" id="LastName" data-ng-blur="ValidateLName()"
                                maxlength="15" class="form-control setMargin" />
                         <span class="h3color" data-ng-show="ErrorModel.IsLastName">
                             {{ErrorMessage}}
@@ -49,12 +49,9 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <input type="email" id="Email" data-ng-blur="ValidateEmail()"
-                               placeholder="Email Id*"
+                        <input type = "email" id="Email"
+                               placeholder="Email Id"
                                maxlength="50" class="form-control setMargin emailinput" />
-                        <span class="h3color" data-ng-show="ErrorModel.IsEmail">
-                            {{ErrorMessage}}
-                        </span>
                     </div>
                 </div>
                 <div class="form-row">
@@ -64,6 +61,7 @@
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
+                        
                         <span class="h3color" data-ng-show="ErrorModel.IsGender">
                             {{ErrorMessage}}
                         </span>
@@ -81,20 +79,35 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <input type="password" id="Password" data-ng-blur="ValidatePassword()"
-                               placeholder="Password*" maxlength="10" class="form-control setMargin" />
+                               placeholder="Password*" maxlength="10" class="form-control setMargin" title="Password format should be numeric with minimum length 8 digit."  />
                         <span class="h3color" data-ng-show="ErrorModel.IsPassword">
                             {{ErrorMessage}}
                         </span>
                     </div>
                     <div class="col-md-1">
-                        <span title="Password format should be alphanumeric with Special Charector." class="h3color">?</span>
+                        <span toggle="#password-field" class="glyphicon glyphicon-eye-open toggle-password"></span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <input type="password" id="ConfirmPassword" data-ng-blur="ValidateConfirmPassword()"
-                               placeholder="Re Enter Password*" maxlength="10" class="form-control setMargin" />
+                               placeholder="Re Enter Password*" maxlength="10" class="form-control setMargin" data-toggle="password"/>
                         <span class="h3color" data-ng-show="ErrorModel.IsConfirmPassword">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <select class="form-control" id="BehalfOf">
+                            <option value="Self">Self</option>
+                            <option value="Son">Son</option>
+                            <option value="Daughter">Daughter</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Sister">Sister</option>
+                            <option value="Relative">Relative</option>
+                        </select>
+                        <span class="h3color" data-ng-show="ErrorModel.IsBehalfOf">
                             {{ErrorMessage}}
                         </span>
                     </div>
@@ -135,6 +148,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4" style="margin-bottom:30px;">
                         <input type="button" value="Sign Up" class="btn btn-primary termandconditios" data-ng-click="Save(RegisterModel)">
+                        <input type="button" value="Resend OTP" class="btn btn-primary termandconditios" data-ng-show="IsDisplayResend" data-ng-click="ResendOTP(RegisterModel)">
                     </div>
                 </div>
 
@@ -143,5 +157,4 @@
         </div>
     </div>
 </div>
-
 

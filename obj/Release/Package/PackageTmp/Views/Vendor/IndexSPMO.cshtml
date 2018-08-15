@@ -6,15 +6,17 @@
 
 @Scripts.Render("~/bundles/HelperJs/VendorHelper")
 <div class="span_3" id="divMain">
-    <div class="span_3">
-        <input type="hidden" id="pagename" value="vendor" />
-        <input type="text" id="txtSearch" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
-        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-responsive table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th style="display:none">Id</th>
@@ -41,13 +43,13 @@
                         @if (@item.IsApproved)
                         {
                             <td>
-                                <input type="button" class="btn-success btn" value="Deactivate" onclick="ActiveDeactiveVendor(@item.UserRequestID , this);" />
+                                <input type="button" class="btn-success btn" value="Deactivate" onclick="ActiveDeactiveVendor(@item.UserRequestID , false,this);" />
                             </td>
                         }
                         else
                         {
                             <td>
-                                <input type="button" class="btn-success btn" value="Activate" onclick="ActiveDeactiveVendor(@item.UserRequestID ,this);" />
+                                <input type="button" class="btn-success btn" value="Activate" onclick="ActiveDeactiveVendor(@item.UserRequestID ,true,this);" />
                             </td>
                         }
                     </tr>

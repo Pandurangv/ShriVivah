@@ -30,10 +30,10 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.CountryName, Value = tbl.CountryId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Country---" : "---देश निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Country---" : "---देश निवडा---", Value = "0" });
             ViewBag.CountryId = lstData;
             lstData = new List<SelectListItem>();
-            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select State---" : "---राज्य निवडा---", Value = "0" });
+            lstData.Add(new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select State---" : "---राज्य निवडा---", Value = "0" });
             ViewBag.StateId = lstData;
             var countries = objCity.GetCities();
             int pageindex = 0;
@@ -79,7 +79,7 @@ namespace ShriVivah.Controllers
                 CityDetails obj = new CityDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

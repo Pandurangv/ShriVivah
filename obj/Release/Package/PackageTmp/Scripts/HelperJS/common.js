@@ -110,6 +110,14 @@ function GetAllMessgaes(userid, touserid)
     }, 15000);
 }
 
+function parseJsonDate(jsondate) {
+    var date = new Date(parseInt(jsondate.substr(6)));
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+
+    return date.getFullYear() + "-" + (month) + "-" + (day);
+}
+
 function bindUserMessges(students)
 {
     var htmlin = "";

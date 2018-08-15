@@ -111,6 +111,10 @@ namespace ShriVivah.Models
 
         public int? Age { get; set; }
 
+        public bool? IsOwnShop { get; set; }
+
+
+
         public int AgentId { get; set; }
 
         public string OTP { get; set; }
@@ -119,6 +123,7 @@ namespace ShriVivah.Models
 
         public int? IsOwnHouse { get; set; }
 
+        public string BehalfOf { get; set; }
 
         public string Pincode { get; set; }
 
@@ -272,6 +277,7 @@ namespace ShriVivah.Models
 
         public string District { get; set; }
         public string Achievements { get; internal set; }
+        public bool? IsSpec { get; internal set; }
     }
 
     public class MessageModel

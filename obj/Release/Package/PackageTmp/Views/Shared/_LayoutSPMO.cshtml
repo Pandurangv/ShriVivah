@@ -14,9 +14,12 @@
     <!-- Bootstrap CSS File -->
     @Styles.Render("~/Content/commoncss")
     @Styles.Render("~/Content/css")
+
     @Scripts.Render("~/bundles/Main")
     @Scripts.Render("~/bundles/common")
     @Scripts.Render("~/Scripts/SPMO/bootstrap.bundle.min")
+   
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </head>
     <body data-ng-app="VarmalaVivahApp" data-ng-controller="VendorTypesController" id="contentdivbody">
         <input type="hidden" id="loginStatus" value="@ViewBag.IsLogin" />
@@ -25,13 +28,13 @@
         <header id="header">
             <div class="container-fluid">
                 <div id="logo" class="pull-left">
-                    <a href="@Url.Action("Index","Home")"> <h5 style="color:#000;">SINDHU  PROGRESSIVE <br /> MATRIMONIAL ORGANISATION</h5></a>
+                    <a href="@Url.Action("Index","Home")"> <h5 style="color:#000;">@SettingsManager.Instance.Title</h5></a>
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active"><a href="@Url.Action("Index","Home")">Home</a></li>
                         <li><a href="@Url.Action("Index","Home")">Panchayat</a></li>
-                        <li data-ng-class="{'menu-has-children':VendorTypes.length>0}"><a href="#">Services</a>
+                        <li data-ng-class="{'menu-has-children':VendorTypes.length>0}"><a href="@Url.Action("Vendors","Vendor")">Services</a>
                             <ul>
                                 <li data-ng-repeat="vtype in VendorTypes"><a href="~/Vendor/Vendors?VendorTypeId={{vtype.VendorTypeId}}">{{vtype.VendorType}}</a></li>
                             </ul>
@@ -113,7 +116,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-md-6 footer-info">
-                            <h4>SINDHU  PROGRESSIVE <br /> MATRIMONIAL ORGANISATION</h4>
+                            <h4>@SettingsManager.Instance.Title</h4>
                             <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
                         </div>
                         <div class="col-lg-3 col-md-6 footer-links">
@@ -154,7 +157,7 @@
             </div>
             <div class="container">
                 <div class="copyright">
-                    &copy; Copyright <strong>SINDHU  PROGRESSIVE MATRIMONIAL ORGANISATION</strong>. All Rights Reserved
+                    &copy; Copyright <strong>@SettingsManager.Instance.Title</strong>. All Rights Reserved
                 </div>
             </div>
         </footer><!-- #footer -->

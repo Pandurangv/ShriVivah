@@ -36,8 +36,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index","Home")">SINDHU PROGRESSIVE
-MATRIMONIAL ORGANISATION</a>
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">@ShriVivah.SettingsManager.Instance.Title</a>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-nav navbar-right">
@@ -106,7 +105,9 @@ MATRIMONIAL ORGANISATION</a>
                                     <li>
                                         <a href="@Url.Action("Index","VendorType")">Business Types</a>
                                     </li>
-
+                                    <li>
+                                        <a href="@Url.Action("Index","Barrier")">Packages</a>
+                                    </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -114,10 +115,7 @@ MATRIMONIAL ORGANISATION</a>
                                 <a href="#"><i class="fa fa-indent nav_icon"></i>Registration<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="@Url.Action("Index", "UserProfile")">Candidate Registration</a>
-                                    </li>
-                                    <li>
-                                        <a href="@Url.Action("NewUsers","UserProfile")">New Registration</a>
+                                        <a href="@Url.Action("RegisterFromAdmin","UserProfile")">New Registration</a>
                                     </li>
                                     <li>
                                         <a href="@Url.Action("Index","Vendor")">Business Registration</a>
@@ -133,6 +131,15 @@ MATRIMONIAL ORGANISATION</a>
                                     </li>
                                     <li>
                                         <a href="@Url.Action("Index","PendingUsers")">Pending Users</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index","EventManagement")">Event Management</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("PanAdhaar", "UserProfile")">Adhaar & Pan</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "LoginDetails")">Login Tracking</a>
                                     </li>
                                     <li onclick="Logout();"><a href="#">Log Off</a></li>
                                 </ul>
@@ -153,15 +160,19 @@ MATRIMONIAL ORGANISATION</a>
                                     <li>
                                         <a href="@Url.Action("Index", "UserProfile")">Search Partner</a>
                                     </li>
-                                    <li>
-                                        <a href="@Url.Action("Visitors", "UserProfile")">Visitors</a>
-                                    </li>
+                                    @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender.ToUpper() == "F")
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("Visitors", "UserProfile")">Visitors</a>
+                                        </li>
+                                    }
                                     <li>
                                         <a href="@Url.Action("ShowProfile", "UserProfile", new { @ProfileId=ViewBag.UserId })">My Profile</a>
                                     </li>
                                     <li>
                                         <a href="@Url.Action("ChangePassword","UserProfile")">Change Password</a>
                                     </li>
+                                    
                                     <li onclick="Logout();"><a href="#">Log Off</a></li>
                                 </ul>
                             </li>
@@ -172,13 +183,13 @@ MATRIMONIAL ORGANISATION</a>
                                 <a href="#"><i class="fa fa-laptop nav_icon"></i>Candidate Information<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                        <a href="@Url.Action("Index", "Vendor")">Vendor Requests</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                        <a href="@Url.Action("Index","Event")">Event Management</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action("ApprovedRequests", "UserProfile")">Change Information</a>
+                                        <a href="@Url.Action("Index", "PendingUsers")">User Requests</a>
                                     </li>
                                     <li onclick="Logout();"><a href="#">Log Off</a></li>
                                 </ul>
@@ -216,7 +227,16 @@ MATRIMONIAL ORGANISATION</a>
                             <i class="pull-left fa fa-users user1 icon-rounded"></i>
                             <div class="stats">
                                 <h5><strong>@ViewBag.VisitorCount</strong></h5>
-                                <span><a href="@Url.Action("Visitors", "UserProfile")">Visitors</a></span>
+                                <span>
+                                    @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F")
+                                    {
+                                        <a href="@Url.Action("Visitors", "UserProfile")">Visitors</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">Visitors</a>
+                                    }
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -225,7 +245,7 @@ MATRIMONIAL ORGANISATION</a>
                             <i class="pull-left fa icon-rounded"></i>
                             <div class="stats">
                                 <h5><strong>@ViewBag.TotalUsers</strong></h5>
-                                <span>Registered Users</span>
+                                <span>Users</span>
                             </div>
                         </div>
                     </div>
@@ -261,7 +281,7 @@ MATRIMONIAL ORGANISATION</a>
                     <div class="lyfBg"></div>
                 </div>
                 <div class="copy">
-                    <p>Shree Soft Solutions-Pune.</p>
+                    <p>SINDHI HINDU</p>
                 </div>
             </div>
         </div>

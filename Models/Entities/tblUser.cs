@@ -263,6 +263,30 @@ namespace ShriVivah.Models.Entities
         public bool? IsDelete { get; set; }
 
         public int VisitedUserId { get; set; }
+
+        public bool? IsSendRequest { get; set; }
+
+        public bool? ApprovedImage { get; set; }
+
+        public bool? ApprovedImageWithContact { get; set; }
+    }
+
+    [Table("LoginDetails")]
+    public class LoginDetails
+    {
+        [Key]
+        public int LoginId { get; set; }
+
+        public DateTime? LoginDate { get; set; }
+
+        public string LoginIP { get; set; }
+
+        public string Location { get; set; }
+
+        public string RequestDetails { get; set; }
+
+        public int? UserId { get; set; }
+
     }
 
     [Table("tblRequest")]
@@ -352,6 +376,8 @@ namespace ShriVivah.Models.Entities
         public string ReligionName { get; set; } 
 
         public string CastName { get; set; }
+
+        public bool? IsOwnShop { get; set; }
 
         public int? ReligionId { get; set; }
 
@@ -525,6 +551,10 @@ namespace ShriVivah.Models.Entities
 
         public string ReferenceContact { get; set; }
 
+        public string BehalfOf { get; set; }
+
+        public bool? IsSpec { get; set; }
+
     }
 
     [Table("tblUser")]
@@ -533,11 +563,17 @@ namespace ShriVivah.Models.Entities
         [Key]
         public int? UserId { get; set; }
 
+        public bool? IsOwnShop { get; set; }
+
         public string FirstName { get; set; }
 
         public string MName { get; set; }
 
         public string LName { get; set; }
+
+        public bool? IsSpec { get; set; }
+
+        public string BehalfOf { get; set; }
 
         public int? BloodGroupId { get; set; }
 
@@ -697,6 +733,70 @@ namespace ShriVivah.Models.Entities
         //public string JobBusinessInfo { get; set; }
 
         //public string JobBusinessInfo1 { get; set; }
+    }
+
+    [Table("PackageMaster")]
+    public class PackageMaster
+    {
+        [Key]
+        public long? PackageId { get; set; }
+
+        public string PackageName { get; set; }
+
+        public decimal? Price { get; set; }
+
+        public string Gender { get; set; }
+
+        public int AccessUsers { get; set; }
+
+        public int Validity { get; set; }
+
+        public bool? IsDelete { get; set; }
+    }
+
+    [Table("UserPackage")]
+    public class UserPackage
+    {
+        [Key]
+        public long? UserPackageId { get; set; }
+
+        public long? PackageId { get; set; }
+
+        public decimal? Amount { get; set; }
+
+        public DateTime? PackageDate { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public int UserId { get; set; }
+
+        public bool? IsDelete { get; set; }
+    }
+
+
+    [Table("Receipt")]
+    public class Receipt
+    {
+        [Key]
+        public long? ReceiptNo { get; set; }
+
+        public DateTime? ReceiptDate { get; set; }
+
+        public int? PaymentMethod { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
+
+        public decimal? Amount { get; set; }
+
+        public string OnlinePaymentFailure { get; set; }
+
+        public int UserId { get; set; }
+
+        public string FailureLog { get; set; }
+
+        public DateTime? LoginDate { get; set; }
+
+        public bool? IsDelete { get; set; }
     }
 
     [Table("ProfileImage")]

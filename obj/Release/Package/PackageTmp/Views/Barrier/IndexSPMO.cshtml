@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+@Scripts.Render("~/bundles/Main/BarrierController")
+<div class="span_3" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="BarrierController">
+    <div class="headerdiv">Package Information</div>
+    <div class="row" data-ng-show="Details==true">
+        <div class="col-md-12 divPadding1">
+            <div class="col-md-9">
+                <input type="text" id="txtSearch" class="form-control1 inputborder" />
+            </div>
+            <div class="col-md-3">
+                <input type="button" value="Search" class="btn btn-default" data-ng-click="FilterList()" />
+                <input type="button" value="New" class="btn btn-default" data-ng-click="AddNewUI()" />
+                <input type="button" value=" Reset " class="btn btn-default" data-ng-click="Reset()" />
+            </div>
+        </div>
+        <div class="bs-example1" data-example-id="contextual-table">
+            <table class="table table-responsive table-bordered" id="SubCategoryInfo">
+                <thead>
+                    <tr>
+                        <th style="display:none">Id</th>
+                        <th>Package Id</th>
+                        <th>Package Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="active" data-ng-repeat="item in SearchBarrierList">
+                        <td style="display:none">{{item.PackageId}}</td>
+                        <td>{{item.PackageName}}</td>
+                        <td>{{item.Price}}</td>
+                        <td><button class="btn btn-primary" data-ng-click="EditClick(item)">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 page_1">
+            <nav>
+                <ul class="pagination">
+                    <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                    <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                    <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                    <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div data-ng-show="Add==true || Edit==true" class="col-md-12 divPadding1">
+        <div class="form-group">
+            <input type="hidden" id="BarrierModel.PackageId" />
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" placeholder="Package Name*" maxlength="50" minlength="2" data-ng-model="BarrierModel.PackageName"
+                                   class="form-control1 inputborder" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-ng-show="ErrorModel.IsSelectPackage==true">
+                    <span>{{ErrorMessage}}</span>
+                </div>
+            </div>
+            <br />
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="number" placeholder="Package Amount" max="4000" min="20" data-ng-model="BarrierModel.Price"
+                                   class="form-control1 inputborder" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-ng-show="ErrorModel.IsPrice==true">
+                    <span>{{ErrorMessage}}</span>
+                </div>
+            </div>
+            <br />
+
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <select class="form-control1 inputborder" id="ddlGender">
+                                <option value="">---Select Gender---</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-ng-show="ErrorModel.IsGender==true">
+                    <span>{{ErrorMessage}}</span>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
+            <button type="button" class="btn btn-primary" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+            <button type="button" class="btn btn-primary" data-ng-click="CancelClick()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+

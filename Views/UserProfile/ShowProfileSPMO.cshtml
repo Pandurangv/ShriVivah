@@ -96,6 +96,13 @@
                 <button type="button" class="btn btn-default" onclick="RemoveUser(@Model.UserId)">Remove</button>
                 <button type="button" class="btn btn-default" onclick="EditUser(@Model.UserId)">Change Information</button>
             }
+            else
+            {
+                 if (@Model.UserId != ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId && ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender=="M")
+                 {
+                    <button type="button" class="btn btn-default" onclick="ExpressInterest(@Model.UserId)">Express Interest</button>
+                 }
+            }
         </div>
 
     </div>
@@ -134,7 +141,7 @@
                         @switch (Model.MarritalStatus)
                         {
                             case 1:
-                                <span>Unmarried</span>
+                                <span>Never Married</span>
                                 break;
                             case 2:
                                 <span>Widow</span>
@@ -144,6 +151,9 @@
                                 break;
                             case 4:
                                 <span>Separated</span>
+                                break;
+                            case 5:
+                                <span>Annulled</span>
                                 break;
                         }
                     </td>
@@ -282,14 +292,17 @@
                         <span>@Model.Income</span>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Mobile No
-                    </td>
-                    <td>
-                        <span>@Model.MobileNo</span>
-                    </td>
-                </tr>
+                @if (Model.Gender != "F" && Model.UserId != ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
+                {
+                    <tr>
+                        <td>
+                            Mobile No
+                        </td>
+                        <td>
+                            <span>@Model.MobileNo</span>
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
     </div>
@@ -412,18 +425,22 @@
                         <span>@Model.Achievements</span>
                     </td>
                 </tr>
-                <tr>
-                    <td>Reference Name</td>
-                    <td>
-                        <span>@Model.ReferenceName</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Reference Contact</td>
-                    <td>
-                        <span>@Model.ReferenceContact</span>
-                    </td>
-                </tr>
+                @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType=="Admin" || ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Agent")
+                {
+                    <tr>
+                        <td>Reference Name</td>
+                        <td>
+                            <span>@Model.ReferenceName</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Reference Contact</td>
+                        <td>
+                            <span>@Model.ReferenceContact</span>
+                        </td>
+                    </tr>
+                }
+                
             </tbody>
         </table>
     </div>

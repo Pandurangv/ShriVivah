@@ -1,6 +1,6 @@
 ﻿@model ShriVivah.Models.ContextModel.VendorModel
 @{
-    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 @Scripts.Render("~/bundles/HelperJs/VendorHelper")
 <script type="text/javascript">
@@ -172,7 +172,7 @@
                     </div>
 
                     <div class="col-sm-10 divMargin">
-                        @Html.TextBoxFor(model => model.Pincode, new { @placeholder = "Pincode.", @class = "form-control inputdesign" })
+                        <input class="form-control inputdesign" id="Pincode" name="Pincode" placeholder="Pincode." type="number" maxlength="6" value="">
                         <br />
                     </div>
 

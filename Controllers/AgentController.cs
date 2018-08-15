@@ -31,7 +31,7 @@ namespace ShriVivah.Controllers
             var filter = countries.OrderBy(p => p.UserId).Skip(pageindex * PageSize).Take(PageSize);
             Session["users"] = countries;
             Session["pageindex"] = 0;
-          //  string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "IndexSPMO" : "Index";
+          //  string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "IndexSPMO" : "Index";
             return View("Index", filter);
         }
 
@@ -96,7 +96,7 @@ namespace ShriVivah.Controllers
                 UserDetails obj = new UserDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -136,7 +136,7 @@ namespace ShriVivah.Controllers
                     UserDetails obj = new UserDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -172,7 +172,7 @@ namespace ShriVivah.Controllers
                     UserDetails obj = new UserDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -219,12 +219,12 @@ namespace ShriVivah.Controllers
             try
             {
                 var checkexist=countries.Where(p => p.MobileNo.ToUpper()==model.MobileNo.ToUpper());
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "माहिती सेव केली आहे.";
                 if (checkexist.Count()==0)
                 {
                     model.IsActive = true;
                     model.UserType = "Agent";
-                    obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+                    obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                     objUser.SaveAgent(model);
                 }
                 else
@@ -241,7 +241,7 @@ namespace ShriVivah.Controllers
             catch (Exception)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FailedToSave : "माहिती सेव करू शकत नाही";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FailedToSave : "माहिती सेव करू शकत नाही";
             }
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -254,7 +254,7 @@ namespace ShriVivah.Controllers
             //var test = countries.Where(p => p.Agent.ToUpper() == model.Agent.ToUpper()).FirstOrDefault();
             UserDetails obj = new UserDetails();
             obj.Status = true;
-            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
             objUser.UpdateAgent(model);
             int pageindex = 0;
             var filter = objUser.GetAgentDetails().OrderBy(p => p.UserId).Skip(pageindex * PageSize).Take(PageSize);

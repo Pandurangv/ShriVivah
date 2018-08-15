@@ -1,7 +1,7 @@
 ﻿@model IQueryable<ShriVivah.Models.VendorTypeModel>
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+    Layout = ShriVivah.SettingsManager.Instance.Branding=="SPMO"? "~/Views/Shared/_LayoutAdminSPMO.cshtml" : "~/Views/Shared/_LayoutAdminPanel.cshtml";
 }
 <script type="text/javascript">
     $(document).ready(function () {

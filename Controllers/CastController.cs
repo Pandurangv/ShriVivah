@@ -33,7 +33,7 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.ReligionName, Value = tbl.ReligionId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Religion---" : "---धर्म निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Religion---" : "---धर्म निवडा---", Value = "0" });
             ViewBag.ReligionId = lstData;
 
             
@@ -89,7 +89,7 @@ namespace ShriVivah.Controllers
                 CastDetails obj = new CastDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "आणखी माहिती उपलब्ध नाही."
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InvalidUserNamePassword : "आणखी माहिती उपलब्ध नाही."
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -129,7 +129,7 @@ namespace ShriVivah.Controllers
                     CastDetails obj = new CastDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -165,7 +165,7 @@ namespace ShriVivah.Controllers
                     CastDetails obj = new CastDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -212,12 +212,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 objCast.Save(model);
             }
             int pageindex = 0;
@@ -238,12 +238,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "हि माहिती आधीपासून उपलब्ध आहे.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 objCast.Update(model);
             }
             int pageindex = 0;

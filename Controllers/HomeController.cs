@@ -29,6 +29,11 @@ namespace ShriVivah.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult NewUI()
+        {
+            return View("NewUISPMO");
+        }
+
         public ActionResult Married()
         {
             this.loadViewBag();
@@ -47,11 +52,18 @@ namespace ShriVivah.Controllers
             this.loadViewBag();
             return View("Index");
         }
-
+        [CustomView]
         public ActionResult Contact()
         {
             this.loadViewBag();
-            return string.IsNullOrEmpty(SettingsManager.Instance.Branding)?View():View("ContactUs");
+            return View("ContactUs");
+        }
+
+        [CustomView]
+        public ActionResult About()
+        {
+            this.loadViewBag();
+            return View("About");
         }
 
         public ActionResult PrivacyPolicy()

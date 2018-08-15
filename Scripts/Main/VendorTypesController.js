@@ -57,6 +57,15 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         })
     }
 
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
     $scope.ValidateAndLogin = function ()
     {
         if ($scope.LoginModel.$invalid) {
@@ -68,8 +77,8 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             objShowCustomAlert.ShowCustomAlertBox();
         }
         else {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdivbody").appendChild(spinner.el);
+        //var spinner = new Spinner().spin();
+        //document.getElementById("contentdivbody").appendChild(spinner.el);
             var url = GetVirtualDirectory();
             var req = {
                 method: 'POST',
@@ -98,7 +107,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdivbody").removeChild(spinner.el);
+                //document.getElementById("contentdivbody").removeChild(spinner.el);
             }, 
             function (response) {
                 var objShowCustomAlert = new ShowCustomAlert({
@@ -107,7 +116,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdivbody").removeChild(spinner.el);
+                //document.getElementById("contentdivbody").removeChild(spinner.el);
             });
         }
     }

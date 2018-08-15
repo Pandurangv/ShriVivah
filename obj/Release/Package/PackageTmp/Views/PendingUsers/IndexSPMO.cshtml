@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast,#btnReset").click(function () {
             var spinner = new Spinner().spin();
             document.getElementById("contentdiv").appendChild(spinner.el);
             var btnId = $(this).attr("id");
@@ -23,6 +23,9 @@
             if (btnId == "btnLast") {
                 urluse = '@Url.Action("PendingUsersLast", "PendingUsers")';
             }
+            if (btnId == "btnReset") {
+                urluse = '@Url.Action("Reset", "PendingUsers")';
+            }
             $.ajax({
                 cache: false,
                 type: "GET",
@@ -30,17 +33,24 @@
                 url: urluse,
                 dataType: "json",
                 success: function (students) {
-                    if (students.Status == true) {
+                    if (btnId == "btnReset") {
+                        $("#txtSearch").val("");
                         $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                        bindUserData(students.UserList);
+                        bindUserData(students);
                     }
                     else {
-                        var objShowCustomAlert = new ShowCustomAlert({
-                            Title: "",
-                            Message: students.ErrorMessage,
-                            Type: "alert",
-                        });
-                        objShowCustomAlert.ShowCustomAlertBox();
+                        if (students.Status == true) {
+                            $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                            bindUserData(students.UserList);
+                        }
+                        else {
+                            var objShowCustomAlert = new ShowCustomAlert({
+                                Title: "",
+                                Message: students.ErrorMessage,
+                                Type: "alert",
+                            });
+                            objShowCustomAlert.ShowCustomAlertBox();
+                        }
                     }
                     document.getElementById("contentdiv").removeChild(spinner.el);
                 },
@@ -68,7 +78,7 @@
                 success: function (students) {
                     if (students.Status == true) {
                         $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                        bindUserData(students.ContactList);
+                        bindUserData(students.UserList);
                     }
                     else {
                         var objShowCustomAlert = new ShowCustomAlert({
@@ -86,25 +96,7 @@
                 }
             });
         });
-
-        $("#btnReset").click(function () {
-            var spinner = new Spinner().spin();
-            document.getElementById("contentdiv").appendChild(spinner.el);
-            $.ajax({
-                cache: false,
-                type: "GET",
-                async: false,
-                url: '@Url.Action("Reset", "PendingUsers")',
-                dataType: "json",
-                success: function (students) {
-                    $("#txtSearch").val("");
-                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    bindUserData(students);
-                    //var spinner = new Spinner().spin();
-                    document.getElementById("contentdiv").removeChild(spinner.el);
-                }
-            });
-        });
+        
     });
 
     var bindUserData = function (SubCategory) {
@@ -122,10 +114,6 @@
             row.appendChild(cell);
 
             cell = document.createElement("td");
-            cell.innerHTML = SubCategorydata.MName;
-            row.appendChild(cell);
-
-            cell = document.createElement("td");
             cell.innerHTML = SubCategorydata.LName;
             row.appendChild(cell);
 
@@ -133,22 +121,79 @@
             cell.innerHTML = SubCategorydata.MailId;
             row.appendChild(cell);
 
+            var dob = SubCategorydata.DateOfBirth == null || SubCategorydata.DateOfBirth == "" || SubCategorydata.DateOfBirth===undefined ? "" : parseJsonDate(SubCategorydata.DateOfBirth);
+            cell = document.createElement("td");
+            cell.innerHTML = dob;
+            row.appendChild(cell);
+
             cell = document.createElement("td");
             cell.innerHTML = "<span class='glyphicon glyphicon-envelope' title='Mail' onclick=\"SendMail('" + SubCategorydata.UserId + "')\"></span>";
             row.appendChild(cell);
 
             cell = document.createElement("td");
-            cell.innerHTML = SubCategorydata.MobileNo;
+            cell.innerHTML = "<span class='glyphicon glyphicon-envelope' title='SMS' onclick='SendSMS(" + SubCategorydata.UserId + ")'></span>";
             row.appendChild(cell);
 
             cell = document.createElement("td");
-            cell.innerHTML = "<span class='glyphicon glyphicon-envelope' title='Mail' onclick='SendSMS(" + SubCategorydata.UserId + ")'></span>";
+            
+            if (SubCategorydata.IsActive) {
+                //cell.innerHTML = "<span class='glyphicon glyphicon-remove' title='Deactivate' onclick='ActivateDeactivateUser('" + SubCategorydata.UserId + "',this)' data-item='" + dob + "'>Deactivate</span>";
+            }
+            else {
+                cell.innerHTML = "<span class='glyphicon glyphicon-ok' title='Activate' onclick='ActivateDeactivateUser(\"" + SubCategorydata.UserId + "\",this)' data-item='" + dob + "'></span>";
+            }
             row.appendChild(cell);
 
             tbody.appendChild(row);
             table.appendChild(tbody);
         });
     };
+
+    function ActivateDeactivateUser(UserId, element)
+    {
+        var dobexistornot = $(element).attr("data-item");
+        if (dobexistornot=="") {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Due to incomplete information. Account will not activated.",
+                Type: "alert",
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+        }
+        else {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
+            var url = '@Url.Action("ActivateUser", "PendingUsers")';
+            url = url + "?UserId=" + UserId;// + "&Name=" + Name;
+            $.ajax({
+                cache: false,
+                type: "Post",
+                async: false,
+                url: url,
+                dataType: "json",
+                success: function (students) {
+                    var objShowCustomAlert = new ShowCustomAlert({
+                        Title: "",
+                        Message: "User Activated successfully.",
+                        Type: "alert",
+                    });
+                    objShowCustomAlert.ShowCustomAlertBox();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                },
+                error: function (data) {
+                    var objShowCustomAlert = new ShowCustomAlert({
+                        Title: "",
+                        Message: "Not able to send mail." + data.responseText,
+                        Type: "alert",
+                    });
+                    objShowCustomAlert.ShowCustomAlertBox();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
+                }
+            });
+        }
+    }
 
     function SendMail(UserId) {
         var spinner = new Spinner().spin();
@@ -217,24 +262,27 @@
     }
 </script>
 <div class="span_3" id="divMain">
-    <div class="span_3">
-        <input type="text" id="txtSearch" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
-        <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>First Name</th>
-                    <th>Middle Name</th>
                     <th>Last Name</th>
                     <th>Mail Id</th>
-                    <th>Send Mail</th>
-                    <th>Mobile No</th>
-                    <th>Send SMS</th>
+                    <th>DOB</th>
+                    <th>Mail</th>
+                    <th>SMS</th>
+                    <th><span class="glyphicon glyphicon-ok" title="Activate"></span></th>
                 </tr>
             </thead>
             <tbody>
@@ -243,12 +291,21 @@
                     <tr class="active">
                         <td>@item.UserId</td>
                         <td>@item.FirstName</td>
-                        <td>@item.MName</td>
                         <td>@item.LName</td>
                         <td>@item.MailId</td>
+                        <td>@String.Format("{0:dd-MM-yyyy}", item.DateOfBirth)</td>
                         <td><span class="glyphicon glyphicon-envelope" title="Mail" onclick="SendMail('@item.UserId')"></span></td>
-                        <td>@item.MobileNo</td>
                         <td><span class="glyphicon glyphicon-comment" title="SMS" onclick="SendSMS(@item.UserId)"></span></td>
+                        <td>
+                            @if (item.IsActive == true)
+                            {
+                                //<span class="glyphicon glyphicon-remove" title="Deactivate" onclick="ActivateDeactivateUser('@item.UserId',this)" data-item="@item.DateOfBirth"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-ok" title="Activate" onclick="ActivateDeactivateUser('@item.UserId',this)" data-item="@item.DateOfBirth"></span>
+                            }
+                            </td>
                     </tr>
                 }
             </tbody>

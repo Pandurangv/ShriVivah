@@ -60,3 +60,4 @@ F:\MyApplication\ShriVivah\ShriVivah\bin\Microsoft.Owin.Security.MicrosoftAccoun
 F:\MyApplication\ShriVivah\ShriVivah\obj\Release\ShriVivah.dll
 F:\MyApplication\ShriVivah\ShriVivah\obj\Release\ShriVivah.pdb
 F:\MyApplication\ShriVivah\ShriVivah\obj\Release\ShriVivah.csprojResolveAssemblyReference.cache
+F:\MyApplication\ShriVivah\ShriVivah\bin\paytm.dll

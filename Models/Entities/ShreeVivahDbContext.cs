@@ -52,6 +52,10 @@ namespace ShriVivah.Models.Entities
 
         public DbSet<tblVisitorDetails> tblVisitorDetailss { get; set; }
 
+        public DbSet<PackageMaster> PackageMasters { get; set; }
+
+        public DbSet<LoginDetails> LoginDetailss { get; set; }
+
         public DbSet<tblOTP> tblOTPs { get; set; }
         //public DbSet<aspnet_UsersInRole> aspnet_UsersInRoles { get; set; }
 

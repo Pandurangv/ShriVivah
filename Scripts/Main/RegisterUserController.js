@@ -8,7 +8,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         IsFirstName: false,
         IsMiddleName: false,
         IsLastName: false,
-        IsEmail: false,
+        //IsEmail: false,
         IsUserName: false,
         IsPassword: false,
         IsConfirmPassword: false,
@@ -38,12 +38,12 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
     }
 
-    $scope.ValidateEmail = function ()
-    {
-        if ($("#Email").val() != "") {
-            $scope.ErrorModel.IsEmail = false;
-        }
-    }
+    //$scope.ValidateEmail = function ()
+    //{
+    //    if ($("#Email").val() != "") {
+    //        $scope.ErrorModel.IsEmail = false;
+    //    }
+    //}
 
     $scope.ValidateUserName = function ()
     {
@@ -116,24 +116,24 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             return false;
         }
 
-        if ($("#Email").val() == "") {
-            $scope.ErrorModel.IsEmail = true;
-            $scope.ErrorMessage = "Email should be filled.";
-            return false;
-        }
-        reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        if (reg.test($("#Email").val()) == false) {
-            $scope.ErrorModel.IsEmail = true;
-            $scope.ErrorMessage = "Please fill valid mail id.";
-            return false;
-        }
+        //if ($("#Email").val() == "") {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Email should be filled.";
+        //    return false;
+        //}
+        //reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        //if (reg.test($("#Email").val()) == false) {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Please fill valid mail id.";
+        //    return false;
+        //}
         if ($("#UserName").val() == "") {
             $scope.ErrorModel.IsUserName = true;
             $scope.ErrorMessage = "User Name should be filled.";
             return false;
         }
         reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)(?![a-zA-Z0-9]*$)[a-zA-Z0-9@#$%&!]+$/g);
-        if ($("#branding").val() != "SPMO") {
+        if ($("#branding").val() != "SINDHI") {
             if (!reg.test($("#UserName").val())) {
                 $scope.ErrorModel.IsUserName = true;
                 $scope.ErrorMessage = "User Name should be alphanumeric.";
@@ -166,7 +166,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
         if (!reg.test($("#Password").val())) {
             $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password should be alphanumeric with special charector (@#$%&!).";
+            $scope.ErrorMessage = "Password should be numeric with minimum eight digit length";
             return false;
         }
 
@@ -245,6 +245,8 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         });
     }
 
+    $scope.IsDisplayResend = false;
+
     $scope.Save = function (model)
     {
         var reg = new RegExp("[a-zA-Z]");
@@ -271,24 +273,25 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             return false;
         }
         
-        if ($("#Email").val() == "") {
-            $scope.ErrorModel.IsEmail = true;
-            $scope.ErrorMessage = "Email should be filled.";
-            return false;
-        }
-        reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        if (reg.test($("#Email").val()) == false) {
-            $scope.ErrorModel.IsEmail = true;
-            $scope.ErrorMessage = "Please fill valid mail id.";
-            return false;
-        }
+        //if ($("#Email").val() == "") {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Email should be filled.";
+        //    return false;
+        //}
+        //reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        //if (reg.test($("#Email").val()) == false) {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Please fill valid mail id.";
+        //    return false;
+        //}
         if ($("#UserName").val() == "") {
             $scope.ErrorModel.IsUserName = true;
             $scope.ErrorMessage = "User Name should be filled.";
             return false;
         }
-        reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)(?![a-zA-Z0-9]*$)[a-zA-Z0-9@#$%&!]+$/g);
-        if ($("#branding").val()!="SPMO") {
+        //reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)(?![a-zA-Z0-9]*$)[a-zA-Z0-9@#$%&!]+$/g);
+        reg = new RegExp('^[0-9]+$');
+        if ($("#branding").val()!="SINDHI") {
             if (!reg.test($("#UserName").val())) {
                 $scope.ErrorModel.IsUserName = true;
                 $scope.ErrorMessage = "User Name should be alphanumeric.";
@@ -309,9 +312,14 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             $scope.ErrorMessage = "Password should be filled.";
             return false;
         }
+        if ($("#Password").val().length<8) {
+            $scope.ErrorModel.IsPassword = true;
+            $scope.ErrorMessage = "Password length should be greater than.";
+            return false;
+        }
         if (!reg.test($("#Password").val())) {
             $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password should be alphanumeric with special charector (@#$%&!).";
+            $scope.ErrorMessage = "Password format should be numeric with minimum length 8 digit.";
             return false;
         }
         
@@ -357,7 +365,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         };
         if ($scope.IsRegistrationSuccess==false) {
             var url = GetVirtualDirectory();
-            if ($("#branding").val() == "SPMO") {
+            if ($("#branding").val() == "SINDHI") {
                 url = url + '/account/RegisterUserForOTP';
             }
             else {
@@ -374,11 +382,12 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
 
             $http(req).then(function (response) {
                 HideLoader();
-                if ($("#branding").val() == "SPMO") {
+                if ($("#branding").val() == "SINDHI") {
                     $scope.IsRegistrationSuccess = true;
                     $scope.OTP = response.data.ModelObject.OTP;
                     console.log($scope.OTP);
                     $scope.SaveWithOTP();
+                    $scope.IsDisplayResend = true
                 }
                 else {
                     if (response.data.Status == true) {
@@ -417,6 +426,176 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
     }
 
+    $scope.ResendOTP = function () {
+        $scope.IsDisplayResend = false;
+        var reg = new RegExp("[a-zA-Z]");
+        if ($("#AgentId").val() == "0") {
+            $scope.ErrorModel.IsPanchayatName = true;
+            $scope.ErrorMessage = "Please select Panchayat.";
+            return false;
+        }
+        if ($("#FirstName").val() == "") {
+            $scope.ErrorModel.IsFirstName = true;
+            $scope.ErrorMessage = "First name should be filled.";
+            return false;
+        }
+
+        if ($("#MiddleName").val() == "") {
+            $scope.ErrorModel.IsMiddleName = true;
+            $scope.ErrorMessage = "Middle name should be filled.";
+            return false;
+        }
+
+        if ($("#LastName").val() == "") {
+            $scope.ErrorModel.IsLastName = true;
+            $scope.ErrorMessage = "Last name should be filled.";
+            return false;
+        }
+
+        //if ($("#Email").val() == "") {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Email should be filled.";
+        //    return false;
+        //}
+        //reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        //if (reg.test($("#Email").val()) == false) {
+        //    $scope.ErrorModel.IsEmail = true;
+        //    $scope.ErrorMessage = "Please fill valid mail id.";
+        //    return false;
+        //}
+        if ($("#UserName").val() == "") {
+            $scope.ErrorModel.IsUserName = true;
+            $scope.ErrorMessage = "User Name should be filled.";
+            return false;
+        }
+        //reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)(?![a-zA-Z0-9]*$)[a-zA-Z0-9@#$%&!]+$/g);
+        reg = new RegExp('^[0-9]+$');
+        if ($("#branding").val() != "SINDHI") {
+            if (!reg.test($("#UserName").val())) {
+                $scope.ErrorModel.IsUserName = true;
+                $scope.ErrorMessage = "User Name should be alphanumeric.";
+                return false;
+            }
+        }
+
+        if ($("#ddlGender").val() == "") {
+            $scope.ErrorModel.IsGender = true;
+            $scope.ErrorMessage = "Please select gender.";
+            return false;
+        }
+        else {
+            $scope.ErrorModel.IsGender = false;
+        }
+        if ($("#Password").val() == "") {
+            $scope.ErrorModel.IsPassword = true;
+            $scope.ErrorMessage = "Password should be filled.";
+            return false;
+        }
+        if ($("#Password").val().length <= 8) {
+            $scope.ErrorModel.IsPassword = true;
+            $scope.ErrorMessage = "Password length should be greater than.";
+            return false;
+        }
+        if (!reg.test($("#Password").val())) {
+            $scope.ErrorModel.IsPassword = true;
+            $scope.ErrorMessage = "Password format should be numeric with minimum length 8 digit.";
+            return false;
+        }
+
+        if ($("#ConfirmPassword").val() == "") {
+            $scope.ErrorModel.IsConfirmPassword = true;
+            $scope.ErrorMessage = "Confirm Password should be filled.";
+            return false;
+        }
+        if ($("#ContactNo").val() == "") {
+            $scope.ErrorModel.IsContactNo = true;
+            $scope.ErrorMessage = "Contact No should be filled!";
+            return false;
+        }
+        if ($("#ContactNo").val().length > 10) {
+            $scope.ErrorModel.IsContactNo = true;
+            $scope.ErrorMessage = "Invalid contact number.";
+            return false;
+        }
+        if ($("#Password").val().toLowerCase() != $("#ConfirmPassword").val().toLowerCase()) {
+            $scope.ErrorModel.IsConfirmPassword = true;
+            $scope.ErrorMessage = "Password and Confirm Password should be same!";
+            return false;
+        }
+        if ($("#termsandconditions").is(':checked') == false) {
+            $scope.ErrorModel.IsTerms = true;
+            $scope.ErrorMessage = "Please select terms and conditions.";
+            return false;
+        }
+
+        $("#spanvalidate").hide();
+        ShowLoader();
+        $scope.RegisterModel = {
+            FirstName: $("#FirstName").val().toUpperCase(),
+            MiddleName: $("#MiddleName").val().toUpperCase(),
+            LastName: $("#LastName").val().toUpperCase(),
+            Email: $("#Email").val(),
+            UserName: $("#UserName").val(),
+            Password: $("#Password").val(),
+            ConfirmPassword: $("#ConfirmPassword").val(),
+            MobileNo: $("#ContactNo").val().toUpperCase(),
+            AgentId: $("#AgentId").val(),
+            Gender: $("#ddlGender").val().toUpperCase()
+        };
+
+        var url = GetVirtualDirectory();
+        url = url + '/account/RegisterUserForOTP';
+        var req = {
+            method: 'POST',
+            url: url,
+            headers: {
+                'Content-Type': "application/json"
+            },
+            data: $scope.RegisterModel,
+        }
+
+        $http(req).then(function (response) {
+            HideLoader();
+            if ($("#branding").val() == "SINDHI") {
+                $scope.IsRegistrationSuccess = true;
+                $scope.OTP = response.data.ModelObject.OTP;
+                console.log($scope.OTP);
+                $scope.SaveWithOTP();
+                $scope.IsDisplayResend = true;
+            }
+            else {
+                if (response.data.Status == true) {
+                    var objShowCustomAlert = new ShowCustomAlert({
+                        Title: "",
+                        Message: response.data.ErrorMessage,
+                        Type: "alert",
+                        OnOKClick: function () {
+                            window.location = url + "/UserProfile/Index";
+                        },
+                    });
+                    objShowCustomAlert.ShowCustomAlertBox();
+                }
+                else {
+                    var objShowCustomAlert = new ShowCustomAlert({
+                        Title: "",
+                        Message: response.data.ErrorMessage,
+                        Type: "alert",
+                    });
+                    objShowCustomAlert.ShowCustomAlertBox();
+                }
+            }
+        },
+        function (response) {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: response.data.ErrorMessage,
+                Type: "alert",
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            HideLoader();
+        });
+    }
+
     $scope.SaveWithOTP = function () {
         if ($("#OTP").val() == "") {
             $scope.ErrorModel.IsOTP = true;
@@ -442,7 +621,8 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             ConfirmPassword: $("#ConfirmPassword").val(),
             MobileNo: $("#ContactNo").val(),
             Gender: $("#ddlGender").val(),
-            AgentId:$("#AgentId").val(),
+            AgentId: $("#AgentId").val(),
+            BehalfOf:$("#BehalfOf").val()
         };
         var newurl = url + '/account/RegisterUser';
         var req = {

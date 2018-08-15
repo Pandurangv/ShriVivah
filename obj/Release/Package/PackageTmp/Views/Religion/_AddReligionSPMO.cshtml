@@ -8,9 +8,9 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ReligionId)
-        <div class="span_3">
+        <div class="col-md-4">
             <span>Religion Name :</span>
-            @Html.TextBoxFor(model => model.ReligionName)
+            @Html.TextBoxFor(model => model.ReligionName,new {@class= "form-control1 inputborder" })
             @Html.ValidationMessageFor(model => model.ReligionName)
         </div>
         <br />

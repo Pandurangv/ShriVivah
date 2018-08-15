@@ -10,15 +10,15 @@
         @Html.ValidationSummary(true)
         @Html.HiddenFor(m=>m.CastId)
         <div class="form-group">
-            <div class="col-md-10">
+            <div class="col-md-6">
                 <span>Religion Name</span>
-                @Html.DropDownList("ReligionId", ViewBag.ReligionId as SelectList)
+                @Html.DropDownList("ReligionId", ViewBag.ReligionId as SelectList, new { @class = "form-control1 inputborder" })
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-10">
+            <div class="col-md-6">
                 <span>Cast Name</span>
-                @Html.EditorFor(model => model.CastName)
+                @Html.TextBoxFor(model => model.CastName, new { @class = "form-control1 inputborder" })
                 @Html.ValidationMessageFor(model => model.CastName)
             </div>
         </div>

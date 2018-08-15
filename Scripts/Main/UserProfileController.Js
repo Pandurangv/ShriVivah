@@ -215,7 +215,7 @@ VarmalaVivahApp.controller("UserController", ['$scope', '$http', '$filter','User
     $scope.FilterListQ = function (Qualification) {
         var regqualification = new RegExp(Qualification.DegreeName.toLowerCase());
         $scope.UserList = $scope.MainUserList.filter(function (actype) {
-            return regqualification.test(actype.Qualification==null?"":actype.Qualification.toLowerCase());
+            return regqualification.test(actype.Qualification);
         });
         $scope.First();
     }

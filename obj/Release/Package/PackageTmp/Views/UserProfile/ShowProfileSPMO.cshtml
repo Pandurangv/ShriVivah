@@ -15,38 +15,18 @@
         }
         var html = "";
         for (var i = 0; i < uniqueNames.length; i++) {
-            html += "<li><h4>" + uniqueNames[i] + "</h4></li>";
+            html += "<tr><td colspan='2'>" + uniqueNames[i] + "</td></tr>";
             for (var j = 0; j < lstRelative.length; j++) {
                 if (uniqueNames[i]==lstRelative[j].Relation) {
-                    html += "<li style='height:40px'><div class='text-success pull-right'>Mr. " + lstRelative[j].RelativeName + "</div></li>";
-                    html += "<li style='height:40px'><div class='text-success pull-right'>" + lstRelative[j].RelativeAddress + "</div></li>";
+                    html += "<tr><td>Name</td><td>Mr. " + lstRelative[j].RelativeName + "</td></tr>";
+                    html += "<tr><td>Address</td><td>" + lstRelative[j].RelativeAddress + "</td></tr>";
                 }
             }
         }
         $("#divrelative").html("");
         $("#divrelative").html(html);
-
     })
-    function Rotate()
-    {
-        var currunt = parseInt($("#Img1").attr("data"));
-        if (currunt==360) {
-            currunt = 0;
-        }
-        currunt=currunt+90;
-        $("#Img1").css({
-            "-webkit-transform": "rotate(" + currunt + "deg)",
-            "-moz-transform": "rotate(" + currunt + "deg)",
-            "transform": "rotate(" + currunt + "deg)" /* For modern browsers(CSS3)  */
-        });
-        $("#profileImage").css({
-            "-webkit-transform": "rotate(" + currunt + "deg)",
-            "-moz-transform": "rotate(" + currunt + "deg)",
-            "transform": "rotate(" + currunt + "deg)" /* For modern browsers(CSS3)  */
-        });
-        $("#Img1").attr("data", currunt);
-        $("#profileImage").attr("data", currunt);
-    }
+    
 </script>
 @Scripts.Render("~/Scripts/HelperJs/UserProfileHelper.js")
 <h2>Bride/Groom Information</h2>
@@ -57,17 +37,31 @@
                 <a href="#">
                     @if (!string.IsNullOrEmpty(Model.Img1))
                     {
-                        <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                        if ((ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F" || ViewBag.IsAdmin))
+                        {
+                            <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                        }
+                        else
+                        {
+                            if (ViewBag.ActiveUserId == ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
+                            {
+                                <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                            }
+                            else
+                            {
+                                <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            }
+                        }
                     }
                     else
                     {
                         if (Model.Gender == "M")
                         {
-                            <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_male.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                             <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_male.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
                         }
                         else
                         {
-                            <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                             <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
                         }
                     }
                 </a>
@@ -76,16 +70,15 @@
                 {
                     <input type="file" id="fileprofileImage" class="form-control1" required="required" />
                     <button type="button" class="btn btn-default" onclick="Upload(@Model.UserId)">Upload</button>
-
                 }
             </div>
         </div>
     </div>
     <div class="col-md-12 noPadding">
         <div class="follow">
-            <div class="col-xs-6 two religiondiv">
-                <span>@Model.ReligionName</span>-
-                <span>@Model.CastName</span>
+            <div class="col-xs-12 two">
+                <div class="col-md-1"><span>@Model.ReligionName</span></div>
+                <div class="col-md-6 pull-left"><span>@Model.CastName</span></div>
             </div>
             <div class="clearfix"> </div>
             <button type="button" class="btn btn-default" onclick="SendMessage(@Model.UserId)">Send SMS</button>
@@ -103,150 +96,390 @@
                 <button type="button" class="btn btn-default" onclick="RemoveUser(@Model.UserId)">Remove</button>
                 <button type="button" class="btn btn-default" onclick="EditUser(@Model.UserId)">Change Information</button>
             }
+            else
+            {
+                 if (@Model.UserId != ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId && ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender=="M")
+                 {
+                    <button type="button" class="btn btn-default" onclick="ExpressInterest(@Model.UserId)">Express Interest</button>
+                 }
+            }
         </div>
 
     </div>
-    <div class="col-md-4 stats-info stats-info1">
+    <div class="col-md-6 stats-info stats-info1">
         <div class="panel-heading">
             <h4 class="panel-title">Personal Information</h4>
         </div>
-        <div class="panel-body panel-body2">
-            <ul class="list-unstyled">
-                @if (!string.IsNullOrEmpty(Model.Gender))
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        Name 
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.Gender))
+                        {
+                            if (Model.Gender == "M")
+                            {
+                                <span>Mr.  @Model.FirstName @Model.LName</span>
+                            }
+                            else
+                            {
+                                <span>Miss. @Model.FirstName @Model.LName</span>
+                            }
+                        }
+                        else
+                        {
+                            @Model.FirstName @Model.LName
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Marrital Status :
+                    </td>
+                    <td>
+                        @switch (Model.MarritalStatus)
+                        {
+                            case 1:
+                                <span>Never Married</span>
+                                break;
+                            case 2:
+                                <span>Widow</span>
+                                break;
+                            case 3:
+                                <span>Divorcee</span>
+                                break;
+                            case 4:
+                                <span>Separated</span>
+                                break;
+                            case 5:
+                                <span>Annulled</span>
+                                break;
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Date of Birth :
+                    </td>
+                    <td>
+                        @if (@Model.DateOfBirth != null)
+                        {
+                            <span>@string.Format("{0:dd-MM-yyyy}", Model.DateOfBirth.Value)</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Birth Time :
+                    </td>
+                    <td>
+                         <span>@Model.TimeofBirth</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Birth Place
+                    </td>
+                    <td>
+                         <span>@Model.PlaceofBirth</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Moonsign
+                    </td>
+                    <td>
+                        <span>@Model.OrasName</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Education
+                    </td>
+                    <td>
+                        <span>@Model.Qualification</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Height
+                    </td>
+                    <td>
+                        <span>@Model.Height</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Weight
+                    </td>
+                    <td>
+                        <span>@Model.Weight</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Blood Group
+                    </td>
+                    <td>
+                        <span>@Model.BloodGroupName</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Body Type
+                    </td>
+                    <td>
+                        <span>@Model.BodyType</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Color
+                    </td>
+                    <td>
+                        @if (@Model.Color == "0")
+                        {
+                            <span>--</span>
+                        }
+                        else
+                        {
+                            <span>@Model.Color</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Job/Business
+                    </td>
+                    <td>
+                       @if (Model.IsJobOrBusiness != null && Model.IsJobOrBusiness == true)
+                       {
+                        <span>Job</span>
+                       }
+                       else if (Model.IsJobOrBusiness != null && Model.IsJobOrBusiness == false)
+                       {
+                        <span>Business</span>
+                       }
+                       else if (Model.IsJobOrBusiness == null)
+                       {
+                        <span>--</span>
+                       }                         
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        Job Location
+                    </td>
+                    <td>
+                        <span>@Model.JobLocation</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Job Information
+                    </td>
+                    <td>
+                        <span>@Model.CompanyName</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Annual Income
+                    </td>
+                    <td>
+                        <span>@Model.Income</span>
+                    </td>
+                </tr>
+                @if (Model.Gender != "F" && Model.UserId != ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
                 {
-                    if (Model.Gender == "M")
-                    {
-                        <li>Name<div class="text-success pull-right"><h4>Mr. @Model.FirstName @Model.LName</h4></div></li>
-                    }
-                    else
-                    {
-                        <li>Name<div class="text-success pull-right"><h4>Miss. @Model.FirstName @Model.LName</h4></div></li>
-                    }
+                    <tr>
+                        <td>
+                            Mobile No
+                        </td>
+                        <td>
+                            <span>@Model.MobileNo</span>
+                        </td>
+                    </tr>
                 }
-                else
-                {
-                    <li>Name<div class="text-success pull-right"><h4>@Model.FirstName @Model.LName</h4></div></li>
-                }
-                @switch (Model.MarritalStatus)
-                {
-                    case 1:
-                        <li>Marrital Status<div class="text-success pull-right"><h4>Unmarried</h4></div></li>
-                        break;
-                    case 2:
-                        <li>Marrital Status<div class="text-success pull-right"><h4>Widow</h4></div></li>
-                        break;
-                    case 3:
-                        <li>Marrital Status<div class="text-success pull-right"><h4>Divorcee</h4></div></li>
-                        break;
-                    case 4:
-                        <li>Marrital Status<div class="text-success pull-right"><h4>Separated</h4></div></li>
-                        break;
-                }
-                @if (@Model.DateOfBirth != null)
-                {
-                    <li>Date of Birth<div class="text-success pull-right">@string.Format("{0:dd-MM-yyyy}", Model.DateOfBirth.Value)</div></li>
-                }
-
-                <li>Birth Time<div class="text-success pull-right">@Model.TimeofBirth</div></li>
-                <li>Birth Place<div class="text-success pull-right">@Model.PlaceofBirth</div></li>
-                <li>Moonsign<div class="text-success pull-right">@Model.OrasName</div></li>
-                <li>Gotra<div class="text-success pull-right">@Model.Gotra</div></li>
-                <li>Birth Name<div class="text-success pull-right">@Model.BirthName</div></li>
-                <li>Education <div class="text-success pull-right">@Model.Qualification</div></li>
-                <li>Height<div class="text-success pull-right">@Model.Height</div></li>
-                <li>Weight<div class="text-success pull-right">@Model.Weight</div></li>
-                <li>Blood Group<div class="text-success pull-right">@Model.BloodGroupName</div></li>
-                <li>Body Type<div class="text-success pull-right">@Model.BodyType</div></li>
-                @if (Model.Color == "0")
-                {
-                    <li>Color<div class="text-success pull-right">--</div></li>
-                }
-                else
-                {
-                    <li>Color<div class="text-success pull-right">@Model.Color</div></li>
-                }
-                @if (Model.IsJobOrBusiness != null && Model.IsJobOrBusiness == true)
-                {
-                    <li>Job/Business<div class="text-success pull-right">नोकरी</div></li>
-                }
-                else if (Model.IsJobOrBusiness != null && Model.IsJobOrBusiness == false)
-                {
-                    <li>Job/Business<div class="text-success pull-right">व्यवसाय</div></li>
-                }
-                else if (Model.IsJobOrBusiness == null)
-                {
-                    <li>Job/Business<div class="text-success pull-right">--</div></li>
-                }
-                <li>Job Location<div class="text-success pull-right">@Model.JobLocation</div></li>
-                <li>Job Information<div class="text-success pull-right">@Model.CompanyName</div></li>
-                <li>Annual Income<div class="text-success pull-right">@Model.Income</div></li>
-
-                <li>Mobile No<div class="text-success pull-right">@Model.MobileNo</div></li>
-            </ul>
+            </table>
         </div>
     </div>
-    <div class="col-md-4 stats-info stats-info1">
+    <div class="col-md-6 stats-info stats-info1">
         <div class="panel-heading">
             <h4 class="panel-title">Family Information</h4>
         </div>
-        <div class="panel-body panel-body2">
-            <ul class="list-unstyled">
-                @if (!string.IsNullOrEmpty(Model.FathersName))
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>Fathers Name</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.FathersName))
+                        {
+                            <span>Mr. @Model.FathersName</span>
+                        }
+                        else
+                        {
+                            <span>--</span>
+                        }
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Mothers Name</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.MothersName))
+                        {
+                            <span>Mr. @Model.MothersName</span>
+                        }
+                        else
+                        {
+                            <span>--</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fathers Income</td>
+                    <td>
+                        <span>Mr. @Model.FathersIncome</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Brother's</td>
+                    <td>
+                        <span>@Model.BotherInfo</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sister's</td>
+                    <td>
+                        <span>@Model.FathersIncome</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Is Own House?</td>
+                    <td>
+                        @if (@Model.IsOwnHouse == 0)
+                        {
+                            <span>No</span>
+                        }
+                        else
+                        {
+                            <span>Yes</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <span>@Model.Address</span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Pincode</td>
+                    <td>
+                        <span>@Model.Pincode</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <span>@Model.Address</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Taluka</td>
+                    <td>
+                        <span>@Model.Taluka</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>District</td>
+                    <td>
+                        <span>@Model.District</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No</td>
+                    <td>
+                        <span>@Model.Expr2</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Expectation</td>
+                    <td>
+                        <span>@Model.Expectation</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hobbies</td>
+                    <td>
+                        <span>@Model.Hobbies</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Activities</td>
+                    <td>
+                        <span>@Model.Achievements</span>
+                    </td>
+                </tr>
+                @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType=="Admin" || ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Agent")
                 {
-                    <li>Fathers Name<div class="text-success pull-right">श्री @Model.FathersName</div></li>
-                }
-                else
-                {
-                    <li>Fathers Name<div class="text-success pull-right">--</div></li>
-                }
-                @if (!string.IsNullOrEmpty(Model.MothersName))
-                {
-                    <li>Mothers Name<div class="text-success pull-right">@Model.MothersName</div></li>
-                }
-                else
-                {
-                    <li>Mothers Name<div class="text-success pull-right">--</div></li>
+                    <tr>
+                        <td>Reference Name</td>
+                        <td>
+                            <span>@Model.ReferenceName</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Reference Contact</td>
+                        <td>
+                            <span>@Model.ReferenceContact</span>
+                        </td>
+                    </tr>
                 }
                 
-                <li>Fathers Income<div class="text-success pull-right">@Model.FathersIncome</div></li>
-                <li>Brother<div class="text-success pull-right">@Model.BotherInfo</div></li>
-                <li>Sister<div class="text-success pull-right">@Model.SisterInfo</div></li>
-                <li>Address<div class="text-success pull-right">@Model.Address</div></li>
-                <li>City<div class="text-success pull-right">@Model.City</div></li>
-                <li>Taluka<div class="text-success pull-right">@Model.Taluka</div></li>
-                <li>District<div class="text-success pull-right">@Model.District</div></li>
-                <li>Mobile No<div class="text-success pull-right">@Model.Expr2</div></li>
-                <li>Expectation<div class="text-success pull-right">@Model.Expectation</div></li>
-                <li>Hobbies<div class="text-success pull-right">@Model.Hobbies</div></li>
-            </ul>
-        </div>
+            </tbody>
+        </table>
     </div>
-
-
-
-    <div class="col-md-4 stats-info stats-info1">
+    <div class="col-md-6 stats-info stats-info1">
         <div class="panel-heading">
             <h4 class="panel-title">Relative Information</h4>
         </div>
-        <div class="panel-body panel-body2">
-            <input type="hidden" id="relativeinfo" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RelativeDetails)" />
-            <ul class="list-unstyled" id="divrelative"></ul>
-        </div>
+        <input type="hidden" id="relativeinfo" value="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RelativeDetails)" />
+        <table class="table table-bordered">
+            <tbody id="divrelative"></tbody>
+        </table>
     </div>
     <div class="clearfix"> </div>
-</div>
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;overflow-y:hidden">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel">×</button>
                 <h2 class="modal-title">Image</h2>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;max-height: 450px;">
                 <p>
                     @if (!string.IsNullOrEmpty(Model.Img1))
                     {
-                        <img class="img-responsive" id="Img1" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" data="0">
+                        if ((ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F" || ViewBag.IsAdmin))
+                        {
+                            <img class="img-responsive" id="Img1" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" data="0">
+                        }
+                        else
+                        {
+                            if (ViewBag.ActiveUserId == ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId)
+                            {
+                                <img class="img-responsive profilepicture showprofile" src="@Url.Content(String.Format("~/{0}", Model.Img1))" alt="" id="btnShowPopup" data="0">
+                            }
+                            else
+                            {
+                                <img class="media-object profilepicture showprofile" src="@Url.Content("~/Content/Images/User_female.png")" data-holder-rendered="true" style="width: 150px; height: 150px;">
+                            }
+                        }
                     }
                     else
                     {

@@ -75,8 +75,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Owin.dll">
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
+    <File Include="bin/paytm.dll">
+      <publishTime>04/06/2017 22:31:00</publishTime>
+    </File>
     <File Include="bin/ShriVivah.dll">
-      <publishTime>05/07/2018 22:10:57</publishTime>
+      <publishTime>08/14/2018 11:05:07</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>01/28/2015 04:02:42</publishTime>
@@ -115,7 +118,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/17/2013 17:03:52</publishTime>
     </File>
     <File Include="Content/AdminPanel/bootstrap.min.css">
-      <publishTime>03/13/2016 12:48:21</publishTime>
+      <publishTime>05/14/2018 00:21:57</publishTime>
     </File>
     <File Include="Content/AdminPanel/clndr.css">
       <publishTime>10/18/2015 11:45:16</publishTime>
@@ -223,7 +226,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/18/2015 11:45:16</publishTime>
     </File>
     <File Include="Content/AdminPanel/style.css">
-      <publishTime>05/06/2018 15:36:30</publishTime>
+      <publishTime>08/01/2018 09:19:20</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>09/09/2017 23:36:11</publishTime>
@@ -505,10 +508,235 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/07/2018 16:22:18</publishTime>
     </File>
     <File Include="Content/SPMO/FrontUI/style.css">
-      <publishTime>05/06/2018 16:19:17</publishTime>
+      <publishTime>05/22/2018 22:34:38</publishTime>
     </File>
     <File Include="Content/SPMO/FrontUI/UI.css">
       <publishTime>04/06/2018 21:48:11</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/bootstrap-3.1.1.min.css">
+      <publishTime>08/12/2018 22:55:28</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/bootstrap.min.css">
+      <publishTime>08/12/2018 22:55:28</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/flexslider.css">
+      <publishTime>08/12/2018 22:55:28</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/font-awesome.css">
+      <publishTime>08/12/2018 22:55:28</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/popup.css">
+      <publishTime>08/12/2018 22:55:28</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/css/style.css">
+      <publishTime>08/13/2018 22:44:46</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/fontawesome-webfont.eot">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/fontawesome-webfont.svg">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/fontawesome-webfont.ttf">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/fontawesome-webfont.woff">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/fontawesome-webfont.woff2">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/fonts/FontAwesome.otf">
+      <publishTime>08/10/2018 04:23:04</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/1.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/10.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/11.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/12.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/13.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/14.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/15.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/2.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/3.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/4.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/5.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/6.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/7.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/8.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/9.jpg">
+      <publishTime>08/12/2018 23:41:37</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a1.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a2.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a3.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a4.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a5.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a6.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a7.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/a8.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/arrow1.png">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/bg.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Add.xlsx">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Founder.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Gen_Secretary.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Parmanand_Jhamtani_President.PNG">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/President.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Shri_Jawahar_Kotwani_Gen_Secretary .JPG">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Shri_Kumar_Motwani _Treasurer.PNG">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Smt.Kala_Bhagia_Vice_President.JPG">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Top_Late_Shri_Naraiendas_Khubchandani_Founder.JPG">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Treasurer.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/Vice_President.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/Directors/~%24Add.xlsx">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/img_sprite.png">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/logo.png">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p1.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p10.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p11.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p12.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p13.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p14.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p15.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p16.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p17.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p2.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p3.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p4.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p5.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p6.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p7.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p8.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/p9.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/s1.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/s2.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/s3.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/spmologo.png">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/spmologo1.png">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/v1.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
+    </File>
+    <File Include="Content/SPMO/SINDHI/images/wed.jpg">
+      <publishTime>08/12/2018 23:41:38</publishTime>
     </File>
     <File Include="Content/SPMO/UserDashboard/AdminLTE.min.css">
       <publishTime>04/10/2018 22:25:51</publishTime>
@@ -520,7 +748,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/10/2018 22:24:05</publishTime>
     </File>
     <File Include="Content/SPMO/UserDashboard/spmostyle.css">
-      <publishTime>05/06/2018 13:53:14</publishTime>
+      <publishTime>07/27/2018 00:09:32</publishTime>
     </File>
     <File Include="Content/SPMO/UserDashboard/style.css">
       <publishTime>04/10/2018 22:22:27</publishTime>
@@ -640,7 +868,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/13/2015 23:34:42</publishTime>
     </File>
     <File Include="Scripts/HelperJS/common.js">
-      <publishTime>05/05/2018 16:51:37</publishTime>
+      <publishTime>05/17/2018 16:25:17</publishTime>
     </File>
     <File Include="Scripts/HelperJS/FontHelper.js">
       <publishTime>07/02/2017 19:45:27</publishTime>
@@ -664,19 +892,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/22/2015 13:02:29</publishTime>
     </File>
     <File Include="Scripts/HelperJS/UserEditHelper.js">
-      <publishTime>05/02/2018 00:09:35</publishTime>
+      <publishTime>08/13/2018 01:43:42</publishTime>
     </File>
     <File Include="Scripts/HelperJS/UserProfileHelper.js">
-      <publishTime>05/06/2018 10:09:07</publishTime>
+      <publishTime>08/13/2018 01:44:29</publishTime>
     </File>
     <File Include="Scripts/HelperJS/ValidationHelper.js">
       <publishTime>04/02/2016 19:02:06</publishTime>
     </File>
     <File Include="Scripts/HelperJS/VendorHelper.js">
-      <publishTime>05/07/2018 21:52:32</publishTime>
+      <publishTime>05/14/2018 00:02:30</publishTime>
     </File>
     <File Include="Scripts/HelperJS/VisitorHelper.js">
-      <publishTime>06/18/2016 18:20:28</publishTime>
+      <publishTime>08/03/2018 09:20:23</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>02/27/2015 22:48:07</publishTime>
@@ -715,31 +943,58 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2016 17:33:56</publishTime>
     </File>
     <File Include="Scripts/Main/App.js">
-      <publishTime>09/16/2017 15:06:22</publishTime>
+      <publishTime>06/15/2018 15:09:28</publishTime>
+    </File>
+    <File Include="Scripts/Main/BarrierController.js">
+      <publishTime>08/03/2018 10:01:05</publishTime>
     </File>
     <File Include="Scripts/Main/bootstrap.min.js">
       <publishTime>09/24/2016 17:33:56</publishTime>
     </File>
+    <File Include="Scripts/Main/datehelper.js">
+      <publishTime>06/16/2018 01:02:25</publishTime>
+    </File>
+    <File Include="Scripts/Main/EventController.js">
+      <publishTime>06/16/2018 00:55:08</publishTime>
+    </File>
+    <File Include="Scripts/Main/jquery.date-dropdowns.min.js">
+      <publishTime>06/17/2018 00:25:29</publishTime>
+    </File>
+    <File Include="Scripts/Main/jquery.liMarquee.js">
+      <publishTime>06/15/2018 23:40:40</publishTime>
+    </File>
     <File Include="Scripts/Main/jquery.min.js">
       <publishTime>09/24/2016 17:33:56</publishTime>
+    </File>
+    <File Include="Scripts/Main/LoginDetailsController.js">
+      <publishTime>08/04/2018 16:48:00</publishTime>
     </File>
     <File Include="Scripts/Main/MarriedController.js">
       <publishTime>09/24/2017 18:12:14</publishTime>
     </File>
+    <File Include="Scripts/Main/PanAdhaarController.js">
+      <publishTime>07/30/2018 00:25:29</publishTime>
+    </File>
+    <File Include="Scripts/Main/PanchayatController.js">
+      <publishTime>06/23/2018 22:47:00</publishTime>
+    </File>
     <File Include="Scripts/Main/RegisterUserController.js">
-      <publishTime>05/01/2018 16:37:27</publishTime>
+      <publishTime>08/13/2018 01:18:53</publishTime>
     </File>
     <File Include="Scripts/Main/SearchController.js">
       <publishTime>09/26/2017 23:33:24</publishTime>
     </File>
+    <File Include="Scripts/Main/UserInfoController.js">
+      <publishTime>08/04/2018 15:04:17</publishTime>
+    </File>
     <File Include="Scripts/Main/UserProfileController.Js">
-      <publishTime>04/14/2018 18:55:54</publishTime>
+      <publishTime>08/04/2018 15:03:06</publishTime>
     </File>
     <File Include="Scripts/Main/VendorListController.js">
-      <publishTime>05/06/2018 18:31:05</publishTime>
+      <publishTime>05/09/2018 01:45:50</publishTime>
     </File>
     <File Include="Scripts/Main/VendorTypesController.js">
-      <publishTime>04/15/2018 09:45:00</publishTime>
+      <publishTime>08/13/2018 02:00:46</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.6.2.js">
       <publishTime>02/27/2015 22:48:19</publishTime>
@@ -768,11 +1023,53 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/SPMO/bootstrap.bundle.min.js">
       <publishTime>04/08/2018 00:56:06</publishTime>
     </File>
+    <File Include="Scripts/SPMO/FrontUI/bootstrap.bundle.min.js">
+      <publishTime>05/13/2018 14:49:37</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/easing.min.js">
+      <publishTime>05/13/2018 14:50:11</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/hoverIntent.js">
+      <publishTime>05/13/2018 15:14:37</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/jquery-migrate.min.js">
+      <publishTime>05/13/2018 14:45:02</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/jquery.min.js">
+      <publishTime>05/13/2018 14:45:02</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/main.js">
+      <publishTime>05/13/2018 15:32:56</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/owl.carousel.min.js">
+      <publishTime>05/13/2018 15:17:40</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/superfish.min.js">
+      <publishTime>05/13/2018 14:50:42</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/FrontUI/wow.min.js">
+      <publishTime>05/13/2018 14:51:08</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/SINDHI/bootstrap.min.js">
+      <publishTime>08/12/2018 22:56:26</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/SINDHI/jquery.flexisel.js">
+      <publishTime>08/12/2018 22:56:26</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/SINDHI/jquery.flexslider.js">
+      <publishTime>08/12/2018 22:56:26</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/SINDHI/jquery.magnific-popup.js">
+      <publishTime>08/12/2018 22:56:26</publishTime>
+    </File>
+    <File Include="Scripts/SPMO/SINDHI/jquery.min.js">
+      <publishTime>08/12/2018 22:56:26</publishTime>
+    </File>
     <File Include="Scripts/timer.js">
       <publishTime>05/11/2016 23:44:20</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>04/10/2018 23:53:44</publishTime>
+      <publishTime>08/12/2018 22:56:27</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
       <publishTime>02/27/2015 22:48:24</publishTime>
@@ -789,8 +1086,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/Register.cshtml">
       <publishTime>03/08/2017 23:28:50</publishTime>
     </File>
+    <File Include="Views/Account/RegisterSINDHI.cshtml">
+      <publishTime>08/13/2018 01:57:45</publishTime>
+    </File>
     <File Include="Views/Account/RegisterSPMO.cshtml">
-      <publishTime>05/01/2018 16:03:54</publishTime>
+      <publishTime>08/13/2018 00:03:28</publishTime>
     </File>
     <File Include="Views/Account/_ChangePasswordPartial.cshtml">
       <publishTime>02/27/2015 22:48:23</publishTime>
@@ -808,31 +1108,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/08/2018 14:30:57</publishTime>
     </File>
     <File Include="Views/Agent/IndexSPMO.cshtml">
-      <publishTime>05/05/2018 18:27:38</publishTime>
+      <publishTime>06/24/2018 15:18:35</publishTime>
+    </File>
+    <File Include="Views/Agent/PanchayatSPMO.cshtml">
+      <publishTime>06/23/2018 22:37:30</publishTime>
     </File>
     <File Include="Views/Agent/_AddAgent.cshtml">
       <publishTime>06/25/2016 20:04:22</publishTime>
     </File>
     <File Include="Views/Agent/_AddAgentSPMO.cshtml">
-      <publishTime>05/05/2018 14:56:07</publishTime>
+      <publishTime>05/10/2018 22:24:24</publishTime>
+    </File>
+    <File Include="Views/Barrier/IndexSPMO.cshtml">
+      <publishTime>08/03/2018 00:55:27</publishTime>
     </File>
     <File Include="Views/BloodGroup/Index.cshtml">
       <publishTime>05/06/2018 10:34:19</publishTime>
     </File>
+    <File Include="Views/BloodGroup/IndexSPMO.cshtml">
+      <publishTime>05/28/2018 22:29:35</publishTime>
+    </File>
     <File Include="Views/BloodGroup/_AddBloodGroup.cshtml">
-      <publishTime>11/08/2015 17:21:05</publishTime>
+      <publishTime>05/10/2018 22:48:04</publishTime>
+    </File>
+    <File Include="Views/BloodGroup/_AddBloodGroupSPMO.cshtml">
+      <publishTime>05/17/2018 20:58:11</publishTime>
     </File>
     <File Include="Views/Cast/Index.cshtml">
       <publishTime>05/15/2016 12:13:56</publishTime>
     </File>
     <File Include="Views/Cast/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:14:16</publishTime>
+      <publishTime>05/28/2018 22:28:48</publishTime>
     </File>
     <File Include="Views/Cast/_AddCast.cshtml">
       <publishTime>05/14/2016 23:07:07</publishTime>
     </File>
     <File Include="Views/Cast/_AddCastSPMO.cshtml">
-      <publishTime>05/06/2018 10:14:16</publishTime>
+      <publishTime>05/10/2018 22:47:26</publishTime>
     </File>
     <File Include="Views/City/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
@@ -844,16 +1156,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
     <File Include="Views/Country/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:14:39</publishTime>
+      <publishTime>05/28/2018 22:26:54</publishTime>
     </File>
     <File Include="Views/Country/_AddCountry.cshtml">
-      <publishTime>05/14/2016 22:32:54</publishTime>
+      <publishTime>05/10/2018 22:41:34</publishTime>
     </File>
     <File Include="Views/Country/_AddCountrySPMO.cshtml">
-      <publishTime>05/06/2018 10:14:39</publishTime>
+      <publishTime>05/10/2018 22:44:12</publishTime>
+    </File>
+    <File Include="Views/EventManagement/IndexSPMO.cshtml">
+      <publishTime>06/17/2018 00:28:44</publishTime>
     </File>
     <File Include="Views/Feedback/Index.cshtml">
       <publishTime>08/27/2017 18:34:25</publishTime>
+    </File>
+    <File Include="Views/Feedback/IndexSPMO.cshtml">
+      <publishTime>05/27/2018 14:48:05</publishTime>
     </File>
     <File Include="Views/Gan/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
@@ -870,14 +1188,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Home/About.cshtml">
       <publishTime>02/27/2015 22:47:52</publishTime>
     </File>
+    <File Include="Views/Home/AboutSINDHI.cshtml">
+      <publishTime>08/13/2018 00:34:26</publishTime>
+    </File>
     <File Include="Views/Home/Contact.cshtml">
       <publishTime>03/09/2017 22:08:49</publishTime>
     </File>
     <File Include="Views/Home/ContactUs.cshtml">
-      <publishTime>04/11/2018 08:04:26</publishTime>
+      <publishTime>05/13/2018 17:26:55</publishTime>
+    </File>
+    <File Include="Views/Home/ContactUsSINDHI.cshtml">
+      <publishTime>08/13/2018 00:20:47</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>04/19/2018 23:37:54</publishTime>
+      <publishTime>05/13/2018 13:34:10</publishTime>
+    </File>
+    <File Include="Views/Home/IndexSINDHI.cshtml">
+      <publishTime>08/13/2018 00:14:40</publishTime>
+    </File>
+    <File Include="Views/Home/IndexSPMO.cshtml">
+      <publishTime>08/13/2018 00:09:51</publishTime>
     </File>
     <File Include="Views/Home/MailTest.cshtml">
       <publishTime>04/07/2016 21:46:26</publishTime>
@@ -894,38 +1224,68 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Home/Terms.cshtml">
       <publishTime>10/23/2016 21:48:43</publishTime>
     </File>
+    <File Include="Views/LoginDetails/IndexSPMO.cshtml">
+      <publishTime>08/04/2018 16:21:56</publishTime>
+    </File>
     <File Include="Views/Message/Index.cshtml">
       <publishTime>06/19/2016 14:50:31</publishTime>
+    </File>
+    <File Include="Views/Message/IndexSPMO.cshtml">
+      <publishTime>05/14/2018 23:35:53</publishTime>
     </File>
     <File Include="Views/Oras/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
+    <File Include="Views/Oras/IndexSPMO.cshtml">
+      <publishTime>05/28/2018 22:37:18</publishTime>
+    </File>
     <File Include="Views/Oras/_AddOras.cshtml">
-      <publishTime>05/14/2016 23:45:10</publishTime>
+      <publishTime>05/17/2018 21:32:40</publishTime>
+    </File>
+    <File Include="Views/Oras/_AddOrasSPMO.cshtml">
+      <publishTime>05/17/2018 21:32:34</publishTime>
+    </File>
+    <File Include="Views/Payment/IndexSPMO.cshtml">
+      <publishTime>08/08/2018 00:40:39</publishTime>
+    </File>
+    <File Include="Views/Payment/PaymentPage.cshtml">
+      <publishTime>08/08/2018 00:41:19</publishTime>
+    </File>
+    <File Include="Views/Payment/PaytmResponse.cshtml">
+      <publishTime>08/08/2018 00:43:49</publishTime>
+    </File>
+    <File Include="Views/Payments/PaytmResponse.cshtml">
+      <publishTime>08/08/2018 09:05:42</publishTime>
     </File>
     <File Include="Views/PendingUsers/Index.cshtml">
       <publishTime>04/16/2017 11:40:28</publishTime>
     </File>
     <File Include="Views/PendingUsers/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:15:32</publishTime>
+      <publishTime>06/16/2018 11:38:22</publishTime>
     </File>
     <File Include="Views/Qualification/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
+    <File Include="Views/Qualification/IndexSPMO.cshtml">
+      <publishTime>05/28/2018 22:30:14</publishTime>
+    </File>
     <File Include="Views/Qualification/_AddQualification.cshtml">
       <publishTime>04/04/2016 22:56:16</publishTime>
+    </File>
+    <File Include="Views/Qualification/_AddQualificationSPMO.cshtml">
+      <publishTime>05/18/2018 01:42:11</publishTime>
     </File>
     <File Include="Views/Religion/Index.cshtml">
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
     <File Include="Views/Religion/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:16:00</publishTime>
+      <publishTime>05/28/2018 22:25:43</publishTime>
     </File>
     <File Include="Views/Religion/_AddReligion.cshtml">
       <publishTime>05/14/2016 17:14:43</publishTime>
     </File>
     <File Include="Views/Religion/_AddReligionSPMO.cshtml">
-      <publishTime>05/06/2018 10:16:00</publishTime>
+      <publishTime>05/10/2018 22:38:32</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>02/27/2015 22:48:23</publishTime>
@@ -940,10 +1300,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/15/2018 22:43:05</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutAdminSPMO.cshtml">
-      <publishTime>05/06/2018 14:00:32</publishTime>
+      <publishTime>08/04/2018 16:35:09</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutNew.cshtml">
+      <publishTime>08/13/2018 01:29:53</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutPageSINDHI.cshtml">
+      <publishTime>08/14/2018 10:26:07</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutSPMO.cshtml">
-      <publishTime>05/06/2018 18:08:06</publishTime>
+      <publishTime>08/09/2018 19:42:45</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/27/2015 22:48:24</publishTime>
@@ -955,13 +1321,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2016 12:13:50</publishTime>
     </File>
     <File Include="Views/State/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:16:47</publishTime>
+      <publishTime>05/28/2018 22:11:54</publishTime>
     </File>
     <File Include="Views/State/_AddState.cshtml">
       <publishTime>05/14/2016 22:50:47</publishTime>
     </File>
     <File Include="Views/State/_AddStateSPMO.cshtml">
-      <publishTime>05/06/2018 10:16:47</publishTime>
+      <publishTime>05/10/2018 22:45:51</publishTime>
     </File>
     <File Include="Views/User/Register.cshtml">
       <publishTime>03/01/2015 23:06:53</publishTime>
@@ -970,49 +1336,67 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/22/2016 23:18:37</publishTime>
     </File>
     <File Include="Views/UserProfile/ChangePasswordSPMO.cshtml">
-      <publishTime>04/14/2018 16:36:46</publishTime>
+      <publishTime>05/18/2018 07:55:53</publishTime>
     </File>
     <File Include="Views/UserProfile/EditProfile.cshtml">
       <publishTime>12/11/2016 12:23:26</publishTime>
     </File>
     <File Include="Views/UserProfile/EditProfileSPMO.cshtml">
-      <publishTime>05/02/2018 00:12:12</publishTime>
+      <publishTime>05/30/2018 23:29:06</publishTime>
     </File>
     <File Include="Views/UserProfile/EditUser.cshtml">
-      <publishTime>12/19/2016 22:39:25</publishTime>
+      <publishTime>05/26/2018 18:32:12</publishTime>
     </File>
     <File Include="Views/UserProfile/EditUserSPMO.cshtml">
-      <publishTime>05/02/2018 00:13:36</publishTime>
+      <publishTime>05/30/2018 23:23:51</publishTime>
     </File>
     <File Include="Views/UserProfile/Index.cshtml">
       <publishTime>04/10/2018 23:18:52</publishTime>
     </File>
+    <File Include="Views/UserProfile/IndexSINDHI.cshtml">
+      <publishTime>08/13/2018 01:50:14</publishTime>
+    </File>
     <File Include="Views/UserProfile/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 10:17:39</publishTime>
+      <publishTime>08/12/2018 17:07:12</publishTime>
+    </File>
+    <File Include="Views/UserProfile/MyPhotos.cshtml">
+      <publishTime>06/02/2018 14:26:46</publishTime>
+    </File>
+    <File Include="Views/UserProfile/PanAdhaarSPMO.cshtml">
+      <publishTime>08/04/2018 14:59:40</publishTime>
+    </File>
+    <File Include="Views/UserProfile/RegisterFromAdminSPMO.cshtml">
+      <publishTime>06/23/2018 00:02:30</publishTime>
     </File>
     <File Include="Views/UserProfile/ShowProfile.cshtml">
       <publishTime>09/13/2017 23:05:06</publishTime>
     </File>
     <File Include="Views/UserProfile/ShowProfileSPMO.cshtml">
-      <publishTime>04/30/2018 08:17:35</publishTime>
+      <publishTime>08/05/2018 13:26:06</publishTime>
     </File>
     <File Include="Views/UserProfile/UploadPhotos.cshtml">
       <publishTime>10/23/2016 23:31:12</publishTime>
     </File>
+    <File Include="Views/UserProfile/UploadPhotosSINDHI.cshtml">
+      <publishTime>08/13/2018 01:50:50</publishTime>
+    </File>
     <File Include="Views/UserProfile/UploadPhotosSPMO.cshtml">
-      <publishTime>05/06/2018 10:17:39</publishTime>
+      <publishTime>08/05/2018 18:49:44</publishTime>
     </File>
     <File Include="Views/UserProfile/UserRequests.cshtml">
-      <publishTime>04/15/2018 23:02:26</publishTime>
+      <publishTime>06/16/2018 12:10:31</publishTime>
+    </File>
+    <File Include="Views/UserProfile/UserRequestsSINDHI.cshtml">
+      <publishTime>08/14/2018 10:23:50</publishTime>
     </File>
     <File Include="Views/UserProfile/UserRequestsSPMO.cshtml">
-      <publishTime>05/06/2018 15:34:50</publishTime>
+      <publishTime>08/09/2018 20:32:36</publishTime>
     </File>
     <File Include="Views/UserProfile/Visitors.cshtml">
-      <publishTime>06/19/2016 15:37:28</publishTime>
+      <publishTime>08/03/2018 08:45:02</publishTime>
     </File>
     <File Include="Views/UserProfile/VisitorsSPMO.cshtml">
-      <publishTime>04/15/2018 23:04:09</publishTime>
+      <publishTime>08/03/2018 09:40:13</publishTime>
     </File>
     <File Include="Views/UserRequest/Index.cshtml">
       <publishTime>05/06/2018 22:20:01</publishTime>
@@ -1021,19 +1405,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2016 12:09:00</publishTime>
     </File>
     <File Include="Views/Vendor/IndexSPMO.cshtml">
-      <publishTime>05/06/2018 23:45:08</publishTime>
+      <publishTime>05/28/2018 22:22:25</publishTime>
     </File>
     <File Include="Views/Vendor/RegisterVendor.cshtml">
       <publishTime>05/02/2018 00:14:34</publishTime>
     </File>
     <File Include="Views/Vendor/RegisterVendorSPMO.cshtml">
-      <publishTime>05/06/2018 09:42:08</publishTime>
+      <publishTime>05/13/2018 17:27:07</publishTime>
     </File>
     <File Include="Views/Vendor/Vendors.cshtml">
       <publishTime>05/06/2018 15:06:45</publishTime>
     </File>
     <File Include="Views/Vendor/VendorsSPMO.cshtml">
-      <publishTime>05/06/2018 18:30:55</publishTime>
+      <publishTime>05/27/2018 23:56:42</publishTime>
     </File>
     <File Include="Views/Vendor/_AddVendor.cshtml">
       <publishTime>05/22/2016 21:01:47</publishTime>
@@ -1042,10 +1426,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/06/2018 10:18:03</publishTime>
     </File>
     <File Include="Views/VendorType/Index.cshtml">
-      <publishTime>05/15/2016 12:13:50</publishTime>
+      <publishTime>05/11/2018 07:08:43</publishTime>
+    </File>
+    <File Include="Views/VendorType/IndexSPMO.cshtml">
+      <publishTime>05/28/2018 22:32:11</publishTime>
     </File>
     <File Include="Views/VendorType/_AddVendorType.cshtml">
-      <publishTime>04/12/2016 23:33:42</publishTime>
+      <publishTime>05/17/2018 23:14:11</publishTime>
+    </File>
+    <File Include="Views/VendorType/_AddVendorTypeSPMO.cshtml">
+      <publishTime>05/18/2018 00:09:16</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>02/27/2015 22:47:52</publishTime>
@@ -1054,7 +1444,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/27/2015 22:47:52</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/07/2018 22:10:59</publishTime>
+      <publishTime>08/14/2018 11:05:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

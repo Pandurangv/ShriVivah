@@ -2,7 +2,17 @@
 
 var VarmalaVivahApp = angular.module('VarmalaVivahApp', []).run(['$rootScope', function ($rootScope) {
 
-}]).directive('myEnter', function () {
+}]).filter("mydate", function () {
+    var re = /\/Date\(([0-9]*)\)\//;
+    return function (x) {
+        if (x != null && x !== undefined) {
+            var m = x.match(re);
+            if (m) return new Date(parseInt(m[1]));
+            else return null;
+        }
+        else return null;
+    };
+}).directive('myEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {

@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 @Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
 @Scripts.Render("~/Scripts/Main/VendorListController.js")
@@ -151,75 +151,73 @@
         $("#divvendorInfo").html(html);
     }
 </script>
-<input type="hidden" id="chkIsLogin" value="@ViewBag.IsLogin" />
-<input type="hidden" id="requeststatus" />
-<input type="hidden" id="pagename" value="vedndorsearch" />
-<div class="col-md-12 innerDiv" id="contentdiv" data-ng-app="VarmalaVivahApp" data-ng-controller="VendorListController">
-    <input type="hidden" value="@ViewBag.VendorTypeID" id="hdnVendorTypeId"/>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="service-tile">Photographer</h3>
+<div class="container">
+        <input type="hidden" id="chkIsLogin" value="@ViewBag.IsLogin" />
+        <input type="hidden" id="requeststatus" />
+        <input type="hidden" id="pagename" value="vedndorsearch" />
+        <div class="row innerDiv" id="contentdiv" data-ng-app="VarmalaVivahApp" data-ng-controller="VendorListController">
+            <input type="hidden" value="@ViewBag.VendorTypeID" id="hdnVendorTypeId" />
+            <div class="row">
+                <div class="col-md-4">
+                    <select class="form-control pull-left" data-ng-model="City" data-ng-options="item for item in CityList" data-ng-change="BindVendorListByCity();"></select>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" data-ng-model="prefix" class="col-sm-12 form-control ng-pristine ng-untouched ng-valid" id="SearchText" data-ng-change="BindVendorListByPrefix();">
+                </div>
+                <div class="col-md-4">
+                    <span class="ng-binding"> Total Vendors : <span>{{VendorList.length}}</span></span>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <select class="form-control pull-left">
-                    <option value="---Select---">---Select---</option>
-                    <option value="Pune">Pune</option>
-                    <option value="Sangli">Sangli</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <input type="text" data-ng-model="prefix" class="col-sm-12 form-control ng-pristine ng-untouched ng-valid">
-            </div>
-            <div class="col-md-4">
-                <span class="ng-binding"> Total Vendors : 0</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" data-ng-repeat="item in VendorList | filter:prefix">
+            <div class="col-md-12" data-ng-repeat="item in VendorList">
+                
                 <div class="row">
-                    <div class="col-md-12"><h1 class="pull-left" style="color:#460f0f;font-weight:bold"><u>{{item.VendorName.toUpperCase()}}</u></h1></div>
+                    <div class="col-md-12"><h4 class="pull-left" style="color:#460f0f;font-weight:bold"><u>{{item.VendorName.toUpperCase()}}</u></h4></div>
                 </div>
                 <div class="row">
                     <div class="col-md-1">
-                        <span>{{item.District}}</span>
                         <img src="@Url.Content("~/Content/FrontUI/images/Shake_hand.jpg")" class="img-responsive" style="width:100%" alt="Image">
                     </div>
                     <div class="col-md-9">
                         <span>{{item.VendorType}}</span>
                         <h5 style="color:#460f0f;font-weight:bold"> Address {{item.Address}}</h5>
+                        <span>{{item.District}}</span>
                     </div>
                     <div class="col-md-2">
                         <h5 style="color:#460f0f;font-weight:bold" data-ng-click="ShowModel(item)" data-toggle="modal" data-target="#myVendors">View Contact</h5>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade in" id="myVendors" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        ×
-                    </button>
-                    <h4 class="modal-title pull-left" style="color:#460f0f;font-weight:bold" id="myModalLabel">{{SelectedVendor.VendorName.toUpperCase()}}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row" id="divvendorInfo">
-                        <div class="col-sm-12">
-                            <span class="pull-left">Address : {{SelectedVendor.Address}}</span><br />
-                            <span class="pull-left">Info : {{SelectedVendor.BusinessDescription}}</span><br />
-                            <span class="pull-left">Contact No : {{SelectedVendor.ContactNo}}</span><br />
-                            <span class="pull-left">Email Id : {{SelectedVendor.EmailId}}</span>
+            <div class="col-md-12" style="margin-bottom:20px;">
+                <input type="button" value="Previous" data-ng-click="BindVendorList(true,'Prev');" class="btn btn-primary" />
+                <input type="button" value="Next" data-ng-click="BindVendorList(true,'Next');" class="btn btn-primary" />
+            </div>
+            <div class="modal fade in" id="myVendors" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="pull-left">
+                                <h4 class="modal-title" style="color:#460f0f;font-weight:bold" id="myModalLabel">{{SelectedVendor.VendorName.toUpperCase()}}</h4>
+                            </div>
+                            <div class="pull-right">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="divvendorInfo">
+                                <div class="col-sm-12">
+                                    <span class="pull-left">Address : {{SelectedVendor.Address}}</span><br />
+                                    <span class="pull-left">Info : {{SelectedVendor.BusinessDescription}}</span><br />
+                                    <span class="pull-left">Contact No : {{SelectedVendor.ContactNo}}</span><br />
+                                    <span class="pull-left">Email Id : {{SelectedVendor.EmailId}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 

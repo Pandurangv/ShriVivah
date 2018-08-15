@@ -29,7 +29,7 @@ namespace ShriVivah.Controllers
                        Text = tbl.FirstName + " " + tbl.LName
                    }).ToList();
 
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Organizer---" : "----माहिती देणारा ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Organizer---" : "----माहिती देणारा ----" });
             ViewBag.AgentId = lst;
 
             lst = (from tbl in objState.GetStates()
@@ -39,7 +39,7 @@ namespace ShriVivah.Controllers
                        Text = tbl.StateName
                    }).ToList();
 
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select State---" : "----माहिती देणारा ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select State---" : "----माहिती देणारा ----" });
             ViewBag.StateId = lst;
             return View("Index");
         }

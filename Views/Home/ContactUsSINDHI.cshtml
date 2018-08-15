@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_LayoutPageSINDHI.cshtml";
+}
+@*<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h3>Contact Us</h3>
+        </div>
+        <div class="row contact-info">
+
+            <div class="col-md-4">
+                <div class="contact-address">
+                    <i class="ion-ios-location-outline"></i>
+                    <h3>Address</h3>
+                    <address>1 - C SAI PLAZA, SAI Chowk Pimpari, 411017</address>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-phone">
+                    <i class="ion-ios-telephone-outline"></i>
+                    <h3>Mobile Number</h3>
+                    <p><a href="tel:+155895548855">+91 9552925750</a></p>
+                    <i class="ion-ios-telephone-outline"></i>
+                    <h3>Phone Number</h3>
+                    <p><a href="tel:+155895548855"> (020) 27414229</a></p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="contact-email">
+                    <i class="ion-ios-email-outline"></i>
+                    <h3>Email</h3>
+                    <p><a href="mailto:info@example.com">info@example.com</a></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form">
+            <div id="sendmessage">Your message has been sent. Thank you!</div>
+            <div id="errormessage"></div>
+            
+            <ng-form name="frmContact" novalidate method="post" role="form" class="contactForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" id="Name" class="form-control" placeholder="Name" data-ng-blur="ValidateName()"
+                                   maxlength="60">
+                            <span class="h3color" data-ng-show="ErrorModel.IsName">
+                                {{ErrorMessage}}
+                            </span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="email" id="useremail" class="form-control" placeholder="E-Mail" data-ng-blur="ValidateEmail()"
+                                   maxlength="80">
+                            <span class="h3color" data-ng-show="ErrorModel.IsEmail">
+                                {{ErrorMessage}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="subject" class="form-control" placeholder="Subject" data-ng-blur="ValidateEmail()"
+                               maxlength="30">
+                        <span class="h3color" data-ng-show="ErrorModel.IsSubject">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <textarea cols="77" rows="6" id="usermessage" class="form-control" placeholder="Message" data-ng-blur="ValidateUserMessage()"></textarea>
+                        <span class="h3color" data-ng-show="ErrorModel.IsUserMsg">
+                            {{ErrorMessage}}
+                        </span>
+                    </div>
+                    <div class="text-center"><button type="button" data-ng-click="SaveContacts()">Send Message</button></div>
+            </ng-form>
+        </div>
+    </div>
+</section>*@
+<div class="grid_3">
+    <div class="container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">Contact</li>
+            </ul>
+        </div>
+        <div class="grid_5">
+            <p>Working hours 7:00 pm to 9:00 pm Monday to Saturday and </br> Sunday 11:00 am to 1:00 pm</p>
+            <address class="addr row">
+                <dl class="grid_4">
+                    <dt>Address :</dt>
+                    <dd>
+                        SINDHU Progressive Matrimonial Organisation, <br>
+                        Office No 1C, First Floor, Sai Plaza, Sai Chawk, Pimpri Pune 411017.
+                    </dd>
+                </dl>
+                <dl class="grid_4">
+                    <dt>Telephones :</dt>
+                    <dd>
+                        +020 27414229
+                    </dd>
+                </dl>
+                <dl class="grid_4">
+                    <dt>E-mail :</dt>
+                    <dd><a href="malito:mail@demolink.org">info@sindhumatri.com</a></dd>
+                </dl>
+            </address>
+        </div>
+    </div>
+</div>
+<div class="about_middle">
+    <div class="container">
+        <h2>Contact Form</h2>
+        <form id="contact-form" class="contact-form">
+            <fieldset>
+                <input type="text" class="text" placeholder="" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
+                <input type="text" class="text" placeholder="" value="Phone" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Phone';}">
+                <input type="text" class="text" placeholder="" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
+                <textarea value="Message" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message</textarea>
+                <input name="submit" type="submit" id="submit" value="Submit">
+            </fieldset>
+        </form>
+    </div>
+</div>
+@Scripts.Render("~/bundles/HelperJs/VendorHelper")
+@Scripts.Render("~/Scripts/HelperJs/IndexHelper.js")

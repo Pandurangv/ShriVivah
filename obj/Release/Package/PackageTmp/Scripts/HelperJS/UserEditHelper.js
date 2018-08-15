@@ -35,7 +35,7 @@ $(document).ready(function () {
         var btnid = $(this).attr("id");
         var relativedetails="";
         if (btnid == "btnAddFamilyDetails") {
-            relativedetails = { RelativeName: $("#txtUncleName").val(), RelativeAddress: $("#txtUncleAddress").val(), Relation: $("#hdnbranding").val() == "SPMO" ? "Uncle" : "काका", MobileNo: $("#txtUContactNo").val() };
+            relativedetails = { RelativeName: $("#txtUncleName").val(), RelativeAddress: $("#txtUncleAddress").val(), Relation: $("#hdnbranding").val() == "SINDHI" ? "Uncle" : "काका", MobileNo: $("#txtUContactNo").val() };
             $("#txtUncleName").val("");
             $("#txtUncleAddress").val("");
             $("#txtUContactNo").val("");
@@ -186,7 +186,7 @@ $(document).ready(function () {
         var txtUncleName = $("#txtUncleName").val();
         var txtUncleAddress = $("#txtUncleAddress").val();
         if (txtUncleName != "" || txtUncleAddress != "") {
-            relatives.push({ RelativeName: txtUncleName, RelativeAddress: txtUncleAddress, Relation:$("#hdnbranding").val() == "SPMO" ? "Uncle.": "काका", MobileNo: $("#txtUContactNo").val() });
+            relatives.push({ RelativeName: txtUncleName, RelativeAddress: txtUncleAddress, Relation:$("#hdnbranding").val() == "SINDHI" ? "Uncle.": "काका", MobileNo: $("#txtUContactNo").val() });
         }
         relatives = JSON.stringify(relatives);
 
@@ -210,7 +210,7 @@ $(document).ready(function () {
                 if (data.Status == true) {
                     var objShowCustomAlert = new ShowCustomAlert({
                         Title: "",
-                        Message: $("#hdnbranding").val() == "SPMO" ? "Information completed successfully." : "माहिती पूर्ण झाली.",
+                        Message: $("#hdnbranding").val() == "SINDHI" ? "Information completed successfully." : "माहिती पूर्ण झाली.",
                         Type: "alert",
                         OnOKClick: function () {
                             window.location = GetVirtualDirectory() + '/UserProfile/Index';
@@ -249,7 +249,7 @@ function BindCasts(ReligionId, CastId)
             data: { ReligionId: ReligionId },
             success: function (data) {
                 var items1 = "";
-                if ($("#hdnbranding").val() == "SPMO") {
+                if ($("#hdnbranding").val() == "SINDHI") {
                     items1 += "<option value=\"0\">---Select Cast---</option>";
                 }
                 else {

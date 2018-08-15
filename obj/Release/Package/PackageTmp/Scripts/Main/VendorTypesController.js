@@ -1,7 +1,15 @@
 ﻿// JavaScript source code
 
+VarmalaVivahApp.factory('MainService', ['$http', function ($http) {
+    var urlBase = GetVirtualDirectory();
+    var MainService = {};
 
-VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+    MainService.getEventDetails = function () {
+        return $http.get(urlBase + "/EventManagement/GetFutureEvents");
+    };
+    return MainService;
+}]);
+VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter', 'MainService', function ($scope, $http, $filter, MainService) {
 
     $scope.VendorTypes = [];
     $scope.Branding = "";
@@ -41,7 +49,21 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
     $scope.BindVendorTypes = function ()
     {
         var lst = $("#hdnVendorType").val();
-        $scope.VendorTypes = JSON.parse(lst);
+        lst = JSON.parse(lst);
+        var url = GetVirtualDirectory();
+        angular.forEach(lst, function (key, value) {
+            key.TypeImagesPath = url + "/" + key.TypeImagesPath;
+            $scope.VendorTypes.push(key);
+        })
+    }
+
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
     }
 
     $scope.ValidateAndLogin = function ()
@@ -55,8 +77,8 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             objShowCustomAlert.ShowCustomAlertBox();
         }
         else {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdivbody").appendChild(spinner.el);
+        //var spinner = new Spinner().spin();
+        //document.getElementById("contentdivbody").appendChild(spinner.el);
             var url = GetVirtualDirectory();
             var req = {
                 method: 'POST',
@@ -70,7 +92,12 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             $http(req).then(function (response)
             {
                 if (response.data.Status == true) {
-                    window.location = url + "/UserProfile/Index";
+                    if (response.data.DataResponse[0].UserType.toUpperCase() == "USER" || response.data.DataResponse[0].UserType.toUpperCase() == "ADMIN") {
+                        window.location = url + "/UserProfile/Index";
+                    }
+                    else if (response.data.DataResponse[0].UserType.toUpperCase() == "AGENT") {
+                        window.location = url + "/Vendor/Index";
+                    }
                 }
                 else {
                     var objShowCustomAlert = new ShowCustomAlert({
@@ -80,7 +107,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdivbody").removeChild(spinner.el);
+                //document.getElementById("contentdivbody").removeChild(spinner.el);
             }, 
             function (response) {
                 var objShowCustomAlert = new ShowCustomAlert({
@@ -89,7 +116,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdivbody").removeChild(spinner.el);
+                //document.getElementById("contentdivbody").removeChild(spinner.el);
             });
         }
     }
@@ -101,7 +128,28 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         $("#forGotPassword").show();
     }
 
-    
+    $scope.UpcomingEvents = "Upcoming Events : ";
+    var objdatehelper = new datehelper({ format: "dd/MM/yyyy", cdate: new Date() });
+    $scope.HideEvents=false;
+
+    $scope.BindEvents = function ()
+    {
+        ShowLoader();
+        MainService.getEventDetails()
+           .success(function (qualifications) {
+               HideLoader();
+               if (qualifications.EventList.length>0) {
+                   $scope.HideEvents = true;
+               }
+               angular.forEach(qualifications.EventList, function (value, key) {
+                   $scope.UpcomingEvents += " ,Event Name : " + value.EventName + ", " + objdatehelper.getFormatteddate($filter('mydate')(value.EventDate), "dd-MM-yyyy") + ", " + value.EventLocation + ", " + value.EventState;
+               });
+           })
+          .error(function (error) {
+              HideLoader();
+              findAndCallErrorBox("", response.data.Error.Message, "alert", null, null);
+          });
+    }
 
     $scope.lnkLoginClick = function ()
     {
@@ -242,6 +290,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
     $scope.init = function () {
         $scope.Branding = $("#branding").val();
         $scope.BindVendorTypes();
+        $scope.BindEvents();
         $(document).ready(function () {
             $('#loginPage').on('shown.bs.modal', function () {
                 if ($scope.Branding == "SPMO") {

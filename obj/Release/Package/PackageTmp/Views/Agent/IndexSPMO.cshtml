@@ -3,6 +3,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
 }
+<style type="text/css">
+    .btnPadding {
+        padding:3.5px 8px;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
@@ -265,6 +270,7 @@
             });
         });
         $("#UserName").change(function () {
+
             var spinner = new Spinner().spin();
             document.getElementById("contentdiv").appendChild(spinner.el);
             var username = $("#UserName").val();
@@ -293,6 +299,98 @@
             });
         });
         $("#btnUpdate").click(function () {
+            if ($("#FirstName").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill First Name." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#LastName").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill Last Name." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#EmailId").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill EmailId." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if (validateEmail($("#EmailId")) == false) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill valid EmailId." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#City").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill City Name." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#Password").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill Password." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#State").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill State Name." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#ContactNo").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill Contact No." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            if ($("#State").val() == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Please fill State Name." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            var reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)[a-zA-Z0-9]+$/g);
+            if (!reg.test($("#Password").val())) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SPMO" ? "Password should be alphanumeric." : "माहिती सेव केली आहे.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+
             var spinner = new Spinner().spin();
             document.getElementById("contentdiv").appendChild(spinner.el);
             var model =
@@ -376,13 +474,17 @@
             row.appendChild(cell);
 
             cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.PanchayatCode;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
             cell.innerHTML = SubCategorydata.FirstName + " " + SubCategorydata.LName;
             row.appendChild(cell);
 
             cell = document.createElement("td");
             cell.innerHTML = SubCategorydata.Address;
             row.appendChild(cell);
-
+            //
             cell = document.createElement("td");
             cell.innerHTML = SubCategorydata.MailId;
             row.appendChild(cell);
@@ -395,12 +497,28 @@
             var btn = document.createElement("input");
             btn.id = SubCategorydata.Userd;
             $(btn).attr("type", "button");
-            $(btn).addClass("btn-success btn");
+            $(btn).addClass("btn-success btn btnPadding");
             $(btn).val("Edit");
             $(btn).attr("onclick", "EditAgent(" + SubCategorydata.UserId + ");")
             cell.appendChild(btn);
 
             row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.Userd;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn btnPadding");
+            $(btn).val("Activate");
+            $(btn).attr("onclick", "ActivateDeactivate(" + SubCategorydata.UserId + ",this);")
+            var active=SubCategorydata.IsActive=='true';
+            if(active==false){
+                $(btn).val("Deactivate");
+                $(btn).attr("onclick", "ActivateDeactivate(" + SubCategorydata.UserId + ",this);")
+            }
+            cell.appendChild(btn);
+            row.appendChild(cell);
+
             tbody.appendChild(row);
             table.appendChild(tbody);
         });
@@ -443,6 +561,36 @@
         }
     }
 
+    function ActivateDeactivate(UserId, element) {
+        var IsActive = true;
+        if ($(element).val() == "Deactivate") {
+            IsActive = false;
+        }
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
+        $.ajax({
+            cache: false,
+            type: "GET",
+            async: false,
+            data: { UserId: UserId, IsActive: IsActive },
+            url: '@Url.Action("ActivateDeactivate", "Agent")',
+            dataType: "json",
+            success: function (students) {
+                if (IsActive) {
+                    $(element).val("Deactivate");
+                }
+                else {
+                    $(element).val("Activate");
+                }
+                document.getElementById("contentdiv").removeChild(spinner.el);
+            },
+            error: function (data) {
+                document.getElementById("contentdiv").removeChild(spinner.el);
+            }
+        });
+    }
+
+
     function clearValues() {
         $("#UserId").val(0);
         $("#FirstName").val("");
@@ -464,23 +612,29 @@
 
 </script>
 <div class="span_3" id="divMain">
-    <div class="span_3">
-        <input type="text" id="txtSearch" />
-        <input type="hidden" value="agent" id="pagename" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
-        <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-8">
+            <input type="text" id="txtSearch" placeholder="Name, Address, Panchayat Code, Mobile No" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-4">
+            <input type="hidden" value="agent" id="pagename" />
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+            <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th style="display:none">Sr. No.</th>
+                    <th>P Code</th>
                     <th>Panchayat Name</th>
                     <th>Address</th>
                     <th>E-Mail</th>
                     <th>Mobile No</th>
                     <th>Edit</th>
+                    <th>Activatation</th>
                 </tr>
             </thead>
             <tbody>
@@ -488,12 +642,23 @@
                 {
                     <tr class="active">
                         <td style="display:none">@item.UserId</td>
+                        <td>@item.PanchayatCode</td>
                         <td>@item.FirstName &nbsp; @item.LName</td>
                         <td>@item.Address</td>
                         <td>@item.MailId</td>
                         <td>@item.MobileNo</td>
                         <td>
-                            <input type="button" class="btn-success btn" value="Edit" onclick="EditAgent(@item.UserId);" />
+                            <input type="button" class="btn-success btn btnPadding" value="Edit" onclick="EditAgent(@item.UserId);" />
+                        </td>
+                        <td>
+                            @if (item.IsActive != null && Convert.ToBoolean(item.IsActive))
+                            {
+                                <input type="button" class="btn-success btn btnPadding" value="Deactivate" onclick="ActivateDeactivate(@item.UserId,this);" />
+                            }
+                            else
+                            {
+                                <input type="button" class="btn-success btn btnPadding" value="Activate" onclick="ActivateDeactivate(@item.UserId,this);" />
+                            }
                         </td>
                     </tr>
                 }

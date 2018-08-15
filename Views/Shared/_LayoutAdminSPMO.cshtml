@@ -105,7 +105,9 @@
                                     <li>
                                         <a href="@Url.Action("Index","VendorType")">Business Types</a>
                                     </li>
-
+                                    <li>
+                                        <a href="@Url.Action("Index","Barrier")">Packages</a>
+                                    </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -132,6 +134,12 @@
                                     </li>
                                     <li>
                                         <a href="@Url.Action("Index","EventManagement")">Event Management</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("PanAdhaar", "UserProfile")">Adhaar & Pan</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "LoginDetails")">Login Tracking</a>
                                     </li>
                                     <li onclick="Logout();"><a href="#">Log Off</a></li>
                                 </ul>
@@ -219,7 +227,16 @@
                             <i class="pull-left fa fa-users user1 icon-rounded"></i>
                             <div class="stats">
                                 <h5><strong>@ViewBag.VisitorCount</strong></h5>
-                                <span><a href="@Url.Action("Visitors", "UserProfile")">Visitors</a></span>
+                                <span>
+                                    @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F")
+                                    {
+                                        <a href="@Url.Action("Visitors", "UserProfile")">Visitors</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">Visitors</a>
+                                    }
+                                </span>
                             </div>
                         </div>
                     </div>

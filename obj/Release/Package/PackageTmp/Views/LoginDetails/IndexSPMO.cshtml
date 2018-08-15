@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "IndexSPMO";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+<div class="span_3" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="LoginDetailsController">
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" placeholder="Search" class="form-control1 inputborder" data-ng-model="Prefix" data-ng-change="FilterList()" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+        </div>
+    </div>
+    <div class="bs-example1" data-example-id="contextual-table">
+        <table class="table table-bordered" id="SubCategoryInfo">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Mobile No</th>
+                    <th>Login IP</th>
+                    <th>Login Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="active" data-ng-repeat="item in SearchLoginDetailsList">
+                    <td>{{item.UserName}}</td>
+                    <td>{{item.MobileNo}}</td>
+                    <td>{{item.LoginIP}}</td>
+                    <td>
+                        {{item.LoginDate | mydate | date: 'dd-MM-yyyy'}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 page_1">
+        <nav>
+            <ul class="pagination">
+                <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Main/LoginDetailsController.js")
+

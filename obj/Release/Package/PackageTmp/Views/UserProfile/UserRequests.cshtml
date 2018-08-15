@@ -58,7 +58,7 @@
                 </div>
                 <div class="media-body" data-ng-switch="user.MarritalStatus">
                     <input type="hidden" id="user.UserId" value="user.UserId" />
-                    <span class="mediaprofilestrong spanStyle">{{user.Gender=='M'?'Mr.':'Mrs.'}} {{user.FirstName}} {{user.LName}}</span>
+                    <span class="mediaprofilestrong spanStyle">{{user.Gender=='M'?'Mr.':'Miss.'}} {{user.FirstName}} {{user.LName}}</span>
                     @if (ViewBag.IsAdmin == true)
                     {
                         <span>( {{user.IsActive=='false'?'नवीन उमेदवार':'सक्रिय'}} )</span>

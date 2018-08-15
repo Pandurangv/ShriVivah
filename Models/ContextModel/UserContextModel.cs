@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -62,6 +63,131 @@ namespace ShriVivah.Models.ContextModel
             string commandText = "[dbo].[STP_GetUserDetails]";
             var result= objData.Database.SqlQuery<STP_GetUserDetail>(commandText).AsQueryable();
             
+            return result;
+        }
+
+        public IQueryable<STP_GetUserDetail> Select_STP_GetUserDetails(SearchRequestModel request)
+        {
+            SqlParameter pUserId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@UserId"};
+            if (request.UserId==null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.UserId;
+            }
+            SqlParameter pGender = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@Gender" };
+            if (string.IsNullOrEmpty(request.Gender) == false)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.Gender;
+            }
+            SqlParameter pIsMarried = new SqlParameter() { DbType=DbType.Boolean,ParameterName= "@IsMarried" };
+            if (request.IsMarried==null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.IsMarried;
+            }
+            SqlParameter pIsActive = new SqlParameter() { DbType=DbType.Boolean,ParameterName="@IsActive"};
+            if (request.IsActive == null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.IsActive;
+            }
+            SqlParameter pMinAge = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MinAge"};
+            if (request.MinAge == null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.MinAge;
+            }
+            SqlParameter pMaxAge = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MaxAge"};
+            if (request.MaxAge == null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.Gender;
+            }
+            SqlParameter pMinHeightId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MinHeightId"};
+            if (request.MaxAge == null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.Gender;
+            }
+            SqlParameter pMaxHeightId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MaxHeightId"};
+            if (request.MaxAge == null)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.MaxHeightId;
+            }
+            SqlParameter pIncome = new SqlParameter() { DbType=DbType.String,ParameterName="@Income"};
+            if (string.IsNullOrEmpty(request.Income) == false)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.Income;
+            }
+            SqlParameter pCity = new SqlParameter() { DbType=DbType.String,ParameterName="@City"};
+            if (string.IsNullOrEmpty(request.Income) == false)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.City;
+            }
+            SqlParameter pQualification = new SqlParameter() { DbType=DbType.String,ParameterName= "@Qualification" };
+            if (string.IsNullOrEmpty(request.Income) == false)
+            {
+                pUserId.Value = DBNull.Value;
+            }
+            else
+            {
+                pUserId.Value = request.Qualification;
+            }
+            SqlParameter pPageNo = new SqlParameter() { DbType=DbType.Int32,ParameterName="@PageNo"};
+            if (request.MaxAge == null)
+            {
+                pUserId.Value = 1;
+            }
+            else
+            {
+                pUserId.Value = request.PageNo;
+            }
+            SqlParameter pPageSize = new SqlParameter() { DbType=DbType.Int32,ParameterName="@PageSize"};
+            if (request.MaxAge == null)
+            {
+                pUserId.Value = 50;
+            }
+            else
+            {
+                pUserId.Value = request.PageSize;
+            }
+            string commandText = "[dbo].[STP_GetUserDetails_BackUp]";
+            var result = objData.Database.SqlQuery<STP_GetUserDetail>(commandText).AsQueryable();
+
             return result;
         }
 
@@ -156,18 +282,25 @@ namespace ShriVivah.Models.ContextModel
             
         }
 
+        internal void SaveLoginDetails(LoginDetails objLoginDetails)
+        {
+            objData.LoginDetailss.Add(objLoginDetails);
+            objData.SaveChanges();
+        }
+
+        
+
         internal ResponseModel SendSMS(STP_GetUserDetail user, RegisterViewModel model=null)
         {
-            ResponseModel response = new ResponseModel() { Status = false };//bool flag = false;
-            string authKey = SettingsManager.Instance.AuthKey;
+            
             //Multiple mobiles numbers separated by comma
             string mobileNumber = user != null ? user.MobileNo : model.MobileNo;
             //Sender ID,While using route4 sender id should be 6 characters long.
-            string senderId = SettingsManager.Instance.SenderId;
+            
             //Your message to send, Add URL encoding here.
             StringBuilder sb = new StringBuilder();
             string message = string.Empty;
-            if (user!=null)
+            if (user != null)
             {
                 if (SettingsManager.Instance.Branding == "SPMO")
                 {
@@ -188,29 +321,39 @@ namespace ShriVivah.Models.ContextModel
                 {
                     charat = uid.Substring(i, 1);
                     int res = 0;
-                    if (int.TryParse(charat,out res))
+                    if (int.TryParse(charat, out res))
                     {
                         otp += charat;
-                        if (otp.Length==3)
+                        if (otp.Length == 3)
                         {
                             break;
                         }
                     }
                 }
-                
+
                 model.OTP = otp;
                 SessionManager.GetInstance.RegisterUser = model;
-                response.ModelObject = model;
-                sb.Append("Please do not share OTP with any other. Your OTP is " + otp +" Regards, Sindhi Hindu");
+                
+                sb.Append("Please do not share OTP with any other. Your OTP is " + otp + " Regards, Sindhi Hindu");
                 message = HttpUtility.UrlEncode(sb.ToString());
             }
+            
+            var response= SendUserSMS(mobileNumber, message);
+            response.ModelObject = model;
+            return response;
+        }
+
+        public ResponseModel SendUserSMS(string mobileNumber, string message)
+        {
+            ResponseModel response = new ResponseModel() { Status = false };//bool flag = false;
+            string authKey = SettingsManager.Instance.AuthKey;
             //Prepare you post parameters
             StringBuilder sbPostData = new StringBuilder();
             sbPostData.AppendFormat("tranxid={0}", authKey);
             sbPostData.AppendFormat("&login={0}", SettingsManager.Instance.MsgLogin);
             sbPostData.AppendFormat("&psw={0}", SettingsManager.Instance.MsgPassword);
 
-            sbPostData.AppendFormat("&sender={0}", senderId);
+            sbPostData.AppendFormat("&sender={0}", SettingsManager.Instance.SenderId);
             sbPostData.AppendFormat("&mobile={0}", mobileNumber);
 
             sbPostData.AppendFormat("&message={0}", message);
@@ -268,6 +411,7 @@ namespace ShriVivah.Models.ContextModel
                 IsDelete = false,
                 IsActive = SettingsManager.Instance.Branding == "SPMO" ? false : (model.IsActive == null ? true : model.IsActive),
                 Gender = model.Gender,
+                BehalfOf=model.BehalfOf,
             };
             objData.tblUsers.Add(user);
             objData.SaveChanges();
@@ -284,6 +428,9 @@ namespace ShriVivah.Models.ContextModel
                 IsAdminApproved = false
             };
             objData.UserRequest.Add(userRequest);
+
+            user.PanchayatCode = user.Gender=="M"? "SPMOM-" + user.UserId : "SPMOF-"  + user.UserId;
+
             objData.SaveChanges();
 
             return user.UserId.Value;
@@ -748,6 +895,16 @@ namespace ShriVivah.Models.ContextModel
                     {
                         obju.IsActive = false;
                     }
+                    obju.IsSpec = model.IsSpec;
+                    obju.IsOwnShop = model.IsOwnShop;
+                    
+
+                    var req= objData.UserRequest.Where(p => p.UserId == model.UserId).FirstOrDefault();
+                    if (req != null)
+                    {
+                        req.IsApproved = true;
+                        req.IsAdminApproved = true;
+                    }
                     objData.SaveChanges();
                 }
             }
@@ -791,6 +948,17 @@ namespace ShriVivah.Models.ContextModel
                     objData.tblJobDetailss.Add(objfamily);
                     objData.SaveChanges();
                 }
+            }
+        }
+
+        internal void ApproveRequest(int visitorId, bool approvedImage, bool approvedImageWithContact)
+        {
+            tblVisitorDetails visitor = objData.tblVisitorDetailss.Where(p => p.VisitorId == visitorId).FirstOrDefault();
+            if (visitor!=null)
+            {
+                visitor.ApprovedImage = approvedImage;
+                visitor.ApprovedImageWithContact = approvedImageWithContact;
+                objData.SaveChanges();
             }
         }
 
@@ -995,7 +1163,8 @@ namespace ShriVivah.Models.ContextModel
                     IsDelete = false,
                     UserId = ProfileId,
                     VisitDate = DateTime.Now.Date,
-                    VisitedUserId = SessionManager.GetInstance.ActiveUser.UserId.Value
+                    VisitedUserId = SessionManager.GetInstance.ActiveUser.UserId.Value,
+                    IsSendRequest=true,
                 };
                 objData.tblVisitorDetailss.Add(visitor);
                 objData.SaveChanges();
@@ -1016,25 +1185,35 @@ namespace ShriVivah.Models.ContextModel
 
         internal void SetActive(int UserId, bool IsActive,bool IsAgent=false)
         {
+            tblUser user = null;
             if (IsAgent)
             {
-                tblUser user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
                 user.IsActive = IsActive;
             }
             else
             {
                 if (SettingsManager.Instance.Branding == "SPMO")
                 {
-                    UserRequests user = objData.UserRequest.Where(p => p.UserId == UserId).FirstOrDefault();
-                    user.IsApproved = IsActive;
+                    UserRequests userdata = objData.UserRequest.Where(p => p.UserId == UserId).FirstOrDefault();
+                    user= objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(user.MobileNo))
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append("Your account has been activated. Please do login Using your credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and find your matching, Regards Sindhi Hindu, www.sindhihindu.com 9273763490");
+                        string message = HttpUtility.UrlEncode(sb.ToString());
+                        SendUserSMS(user.MobileNo, message);
+                    }
+                    userdata.IsApproved = IsActive;
                 }
                 else
                 {
-                    tblUser user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
+                    user = objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
                     user.IsActive = IsActive;
                 }
             }
             objData.SaveChanges();
+            
         }
 
         internal bool SendWelcomeMail(tblUser model)
@@ -1316,6 +1495,23 @@ namespace ShriVivah.Models.ContextModel
             cmd.Parameters.Add(new SqlParameter() { DbType = System.Data.DbType.Int32, Direction = System.Data.ParameterDirection.Input, Value = userId, ParameterName = "@UserId" });
             cmd.ExecuteNonQuery();
         }
+    }
+
+    public class SearchRequestModel
+    {
+        public int? UserId { get; set; }
+        public string Gender { get; set; }
+        public bool? IsMarried { get; set; }
+        public bool? IsActive { get; set; }
+        public int? MinAge { get; set; }
+        public int? MaxAge { get; set; }
+        public int? MinHeightId { get; set; }
+        public int? MaxHeightId { get; set; }
+        public string Income { get; set; }
+        public string City { get; set; }
+        public string Qualification { get; set; }
+        public int? PageNo { get; set; }
+        public bool? PageSize { get; set; }
     }
 
     public class UserDetails : Error

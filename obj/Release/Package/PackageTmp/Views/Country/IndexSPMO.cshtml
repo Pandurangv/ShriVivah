@@ -17,8 +17,8 @@
             }
         });
         $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
-            //var spinner = new Spinner().spin();
-            //document.getElementById("contentdiv").appendChild(spinner.el);
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             var btnId = $(this).attr("id");
             var urluse = "";
             if (btnId == "btnFirst") {
@@ -47,11 +47,14 @@
                     else {
                         alert(students.ErrorMessage);
                     }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         });
         $("#btnSearch").click(function () {
             var prefix = $("#txtSearch").val();
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             if (prefix == "") {
                 alert("Please fill search text!");
                 return false;
@@ -71,11 +74,14 @@
                     else {
                         alert(students.ErrorMessage);
                     }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         });
 
         $("#btnReset").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             $.ajax({
                 cache: false,
                 type: "GET",
@@ -86,18 +92,17 @@
                     $("#txtSearch").val("");
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
                     bindUserData(students);
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         });
 
-        //$("a").click(function () {
-        //    var BGId = this.id;
-        //    Edit(BGId);
-        //});
+        
 
         $("#btnSave").click(function () {
             var model = $('#frmCountry').serialize();
-
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             $.ajax({
                 cache: false,
                 type: 'POST',
@@ -112,7 +117,7 @@
                     else {
                         //ShowAlert('error', data.ErrorMessage);
                     }
-
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Error during process: \n' + xhr.responseText);
@@ -121,6 +126,8 @@
         });
         $("#btnUpdate").click(function () {
             var model = $('#frmCountry').serialize();
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             $.ajax({
                 cache: false,
                 type: 'POST',
@@ -134,9 +141,8 @@
                         $("#btnCancel").trigger("click");
                     }
                     else {
-                        alert(data.ErrorMessage);
                     }
-
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Error during process: \n' + xhr.responseText);
@@ -181,7 +187,7 @@
             btn.id = SubCategorydata.CountryId;
             $(btn).attr("type", "button");
             $(btn).addClass("btn-success btn");
-            $(btn).val("बदल करा");
+            $(btn).val("Edit");
             //<input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(item.ReligionId);" />
             //btn.innerHTML = "Edit";
             //cell.appendChild(a);
@@ -200,6 +206,8 @@
 
     function EditCountry(BGId)
     {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
         if (BGId > 0) {
             $.ajax({
                 cache: false,
@@ -214,6 +222,7 @@
                     $("#CountryId").val(students.CountryId);
                     $("#btnSave").hide();
                     $("#btnUpdate").show();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         }
@@ -221,14 +230,18 @@
 </script>
 <div class="span_3" id="divMain">
     <input type="hidden" id="pagename" value="country" />
-    <div class="span_3">
-        <input type="text" id="txtSearch" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
-        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+            <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th>Id</th>

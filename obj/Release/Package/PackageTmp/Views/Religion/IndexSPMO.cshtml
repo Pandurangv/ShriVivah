@@ -61,6 +61,8 @@
             });
         });
         $("#btnSearch").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             var prefix = $("#txtSearch").val();
             if (prefix == "") {
                 alert("Please fill search text!");
@@ -81,11 +83,14 @@
                     else {
                         alert(students.ErrorMessage);
                     }
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         });
 
         $("#btnReset").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             $.ajax({
                 cache: false,
                 type: "GET",
@@ -96,12 +101,15 @@
                     $("#txtSearch").val("");
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
                     bindUserData(students);
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         });
 
 
         $("#btnSave").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             var model = $('#frmReligion').serialize();
             $.ajax({
                 cache: false,
@@ -128,7 +136,7 @@
                         });
                         objShowCustomAlert.ShowCustomAlertBox();
                     }
-
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Error during process: \n' + xhr.responseText);
@@ -136,6 +144,8 @@
             });
         });
         $("#btnUpdate").click(function () {
+            var spinner = new Spinner().spin();
+            document.getElementById("contentdiv").appendChild(spinner.el);
             var model = $('#frmReligion').serialize();
             $.ajax({
                 cache: false,
@@ -163,7 +173,7 @@
                         });
                         objShowCustomAlert.ShowCustomAlertBox();
                     }
-
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Error during process: \n' + xhr.responseText);
@@ -207,7 +217,7 @@
             btn.id = SubCategorydata.ReligionId;
             $(btn).attr("type", "button");
             $(btn).addClass("btn-success btn");
-            '@SettingsManager.Instance.Branding' == "SPMO" ? $(btn).val("Edit") : $(btn).val("बदल करा");
+            $(btn).val("Edit")
             $(btn).attr("onclick", "EditReligion(" + SubCategorydata.ReligionId + ");")
             cell.appendChild(btn);
 
@@ -219,6 +229,8 @@
 
     function EditReligion(BGId)
     {
+        var spinner = new Spinner().spin();
+        document.getElementById("contentdiv").appendChild(spinner.el);
         if (BGId > 0) {
             $.ajax({
                 cache: false,
@@ -233,6 +245,7 @@
                     $("#ReligionId").val(students.ReligionId);
                     $("#btnSave").hide();
                     $("#btnUpdate").show();
+                    document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         }
@@ -240,14 +253,18 @@
 </script>
 <div class="span_3" id="divMain">
     <input type="hidden" id="pagename" value="religion" />
-    <div class="span_3">
-        <input type="text" id="txtSearch" />
-        <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
-        <input type="button" value="   Reset  " class="btn btn-default" id="btnReset" />
-        <input type="button" value="   New" class="btn btn-default" id="btnAdd" />
+    <div class="col-md-12 divPadding1">
+        <div class="col-md-9">
+            <input type="text" id="txtSearch" class="form-control1 inputborder" />
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+            <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+            <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+        </div>
     </div>
     <div class="bs-example1" data-example-id="contextual-table">
-        <table class="table" id="SubCategoryInfo">
+        <table class="table table-bordered" id="SubCategoryInfo">
             <thead>
                 <tr>
                     <th>Id</th>

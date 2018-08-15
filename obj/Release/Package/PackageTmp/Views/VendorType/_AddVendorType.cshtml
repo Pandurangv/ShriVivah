@@ -17,9 +17,11 @@
             <div class="form-group">
                 <label for="radio" class="col-sm-2 control-label">Logo Image :</label>
                 <div class="col-sm-8">
-                    <input type="file" id="BrandImage" class="form-control1" />
+                    @*<input type="file" id="BrandImage" class="form-control1" />
                     <input type="hidden" id="logoImagehidden" />
-                    <input type="button" value="Upload" class="btn btn-default" onclick="Upload('LP')" />
+                    <input type="button" value="Upload" class="btn btn-default" onclick="Upload('LP')" />*@
+                    <button id="upload" class="btn btn-primary">Upload a File!</button>
+                    <input id="actual-upload" type="file" />
                 </div>
             </div>
             <br />
@@ -30,4 +32,18 @@
             </div>
         </div>
      </div>
+     
+     <script type="text/javascript">
+         $(document).ready(function () {
+             $("#upload").click(function () {
+                 files = $("#actual-upload").get(0).files;
+                 if (files.length==0) {
+                     $("#actual-upload").trigger("click");
+                 }
+                 else {
+                      Upload("LP")
+                 }
+             })
+         })
+     </script>
 }

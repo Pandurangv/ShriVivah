@@ -1,0 +1,26 @@
+﻿@model ShriVivah.Models.ContextModel.ReceiptModel
+@{
+    ViewBag.Title = "IndexSPMO";
+    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+}
+<div class="row">
+    @using (Html.BeginForm("CreatePayment", "Payment", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>Mobile Number  :</td>
+                <td><input type="text" name="mobileNumber" value="" class="form-control1 inputborder"/></td>
+            </tr>
+            <tr>
+                <td>Email  :</td>
+                <td><input type="text" name="email" value="" class="form-control1 inputborder"/></td>
+            </tr>
+            <tr>
+                <td>Amount  :</td>
+                <td><input type="text" name="amount" value="" class="form-control1 inputborder" /></td>
+            </tr>
+        </table>
+            <pre><input type="submit" value="Save" /> </pre>
+    }
+</div>
+
