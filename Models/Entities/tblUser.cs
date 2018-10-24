@@ -24,7 +24,7 @@ namespace ShriVivah.Models.Entities
 
 
 
-    [Table("tblContactUs")]
+    [Table("tblContactDetails")]
     public class tblContactDetails
     {
         [Key]
@@ -37,6 +37,10 @@ namespace ShriVivah.Models.Entities
         public bool? MailSendingStatus { get; set; }
 
         public string Description { get; set; }
+
+        public string MobileNo { get; set; }
+
+        public string Sub { get; set; }
     }
 
     [Table("tblContactUs")]
@@ -77,6 +81,8 @@ namespace ShriVivah.Models.Entities
         public string MobileNo { get; set; }
 
         public bool IsDelete { get; set; }
+
+        public string EventImage { get; set; }
 
     }
 
@@ -214,6 +220,10 @@ namespace ShriVivah.Models.Entities
         public string JobBusinessInfo1 { get; set; }
 
         public string GrandFatherName { get; set; }
+
+        public int? NoOfMBro { get; set; }
+
+        public int? NoOfMSis { get; set; }
     }
 
     [Table("tblVendorType")]
@@ -249,6 +259,8 @@ namespace ShriVivah.Models.Entities
 
         public bool IsDelete { get; set; }
     }
+
+    
 
     [Table("tblVisitorDetails")]
     public class tblVisitorDetails
@@ -289,6 +301,24 @@ namespace ShriVivah.Models.Entities
 
     }
 
+    [Table("Shortlist")]
+    public class Shortlist
+    {
+        [Key]
+        public long? ShortlistId { get; set; }
+
+        public DateTime? RequestDate { get; set; }
+
+        public int UserId { get; set; }
+
+        public int RequestUserId { get; set; }
+
+        public bool IsDelete { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+    }
+
     [Table("tblRequest")]
     public class tblRequest
     {
@@ -304,6 +334,12 @@ namespace ShriVivah.Models.Entities
         public string RequestStatus { get; set; }
 
         public bool IsDelete { get; set; }
+
+        public int? FullAccess { get; set; }
+
+        public int? OnlyImageFullAccess { get; set; }
+
+        public DateTime? ConfirmDate { get; set; }
     }
 
     public class STP_SelectMessageUser
@@ -370,6 +406,310 @@ namespace ShriVivah.Models.Entities
 
         public DateTime? AdminApproveDate { get; set; }
     }
+
+    public class CityList
+    {
+        public int Id { get; set; }
+
+        public string City { get; set; }
+    }
+
+    public class QualificationList
+    {
+        public int Id { get; set; }
+
+        public string Qualification { get; set; }
+    }
+
+
+  
+
+    public class STP_GetUserDetailCopy
+    {
+        public int? IsManglik { get; set; }
+
+        public int? Jobdata { get; set; }
+
+        public int? NoOfMBro { get; set; }
+
+        public int? NoOfMSis { get; set; }
+
+        public string SubCaste { get; set; }
+
+        public string ReligionName { get; set; }
+
+        public string CastName { get; set; }
+
+        public bool? IsOwnShop { get; set; }
+
+        public int? ReligionId { get; set; }
+
+        public string BloodGroupName { get; set; }
+
+        public bool IsAdhaarVerified { get; set; }
+
+        public string DegreeName { get; set; }
+
+        public string Height { get; set; }
+
+        public int? UserId { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string MName { get; set; }
+
+        public string LName { get; set; }
+
+        public int? BloodGroupId { get; set; }
+
+        public int? CityId { get; set; }
+
+        public int? CasteId { get; set; }
+
+        public int? OrasId { get; set; }
+
+        public string OrasName { get; set; }
+
+        public string Address { get; set; }
+
+        public string Gender { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public int? HeightId { get; set; }
+
+        public int? Weight { get; set; }
+
+        public string IdentificationMark { get; set; }
+
+        public string PANNO { get; set; }
+
+        public string MobileNo { get; set; }
+
+        public string MailId { get; set; }
+
+        public string Color { get; set; }
+
+        public bool? IsHandiCapped { get; set; }
+
+        public string HandicapedType { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public string UserType { get; set; }
+
+        public DateTime? DateofReg { get; set; }
+
+        public int? MarritalStatus { get; set; }
+
+        public int? NoOfChildrens { get; set; }
+
+        public bool? ChildLivingStatus { get; set; }
+
+        public string PlaceofBirth { get; set; }
+
+        public string TimeofBirth { get; set; }
+
+        public string BodyType { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
+        public int? QualificationId { get; set; }
+
+
+        public string Qualification { get; set; }
+        public string Income { get; set; }
+
+        public string Img1 { get; set; }
+
+        public string Img2 { get; set; }
+
+        public string KImg { get; set; }
+
+        public string Gotra { get; set; }
+
+        public string BirthName { get; set; }
+
+        public string Hobbies { get; set; }
+
+        public string Expectation { get; set; }
+
+        public string City { get; set; }
+
+        public string State { get; set; }
+
+        public string Country { get; set; }
+
+        public string District { get; set; }
+
+        public string Taluka { get; set; }
+
+        public bool? IsIntercast { get; set; }
+
+        public int? JobId { get; set; }
+
+        public bool? IsJobOrBusiness { get; set; }
+
+        public string Salary { get; set; }
+
+        public string Post { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public bool? PermanentOrContract { get; set; }
+
+        public string JobType { get; set; }
+
+        public string JobLocation { get; set; }
+
+        public string Expr1 { get; set; }
+
+        public string FathersName { get; set; }
+
+        public int? FamilyMemId { get; set; }
+
+        public string MothersName { get; set; }
+
+        public int? Age { get; set; }
+
+        //public string Expr2 { get; set; }
+
+        public int? NoofBrothers { get; set; }
+
+        public int? NoofSisters { get; set; }
+
+        public bool? IsJob { get; set; }
+
+        public string FathersIncome { get; set; }
+
+        public string JobBusinessInfo { get; set; }
+
+        public string JobBusinessInfo1 { get; set; }
+
+        public string BotherInfo { get; set; }
+
+        public string SisterInfo { get; set; }
+
+        public int? ismarried { get; set; }
+
+        public string BirthCountry { get; set; }
+
+        public string BirthDistrict { get; set; }
+
+        public string BirthState { get; set; }
+
+        public string PanchayatCode { get; set; }
+
+        //public string Name { get; set; }
+
+        public int? PanchayatId { get; set; }
+
+        public int? IsOwnHouse { get; set; }
+
+        public string Achievements { get; set; }
+
+        public string Pincode { get; set; }
+
+        public string ReferenceName { get; set; }
+
+        public string ReferenceContact { get; set; }
+
+        public string BehalfOf { get; set; }
+
+        public bool? IsSpec { get; set; }
+
+        public int? TotalRecords { get; set; }
+
+    }
+
+    public class SP_GetShortlists
+    {
+        public int? ReqUserId { get; set; }
+
+        public long? RowNum { get; set; }
+
+        public string ReqUserName { get; set; }
+
+        public int? RequestToUserId { get; set; }
+
+        public string UserType { get; set; }
+
+        public string Qualification { get; set; }
+
+        public string City { get; set; }
+
+        public string Income { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LName { get; set; }
+
+        public int? TotalRecords { get; set; }
+
+        public string Height { get; set; }
+
+        public int? MarritalStatus { get; set; }
+
+        public int? Age { get; set; }
+
+        public int? Jobdata { get; set; }
+
+        public DateTime? RequestDate { get; set; }
+
+        public string Img1 { get; set; }
+
+        public int? FullAccess { get; set; }
+
+        public int? OnlyImageFullAccess { get; set; }
+
+        public string Gender { get; set; }
+
+    }
+
+    public class SP_GetRequests
+    {
+        public int? RequestId { get; set; }
+
+        public long? RowNum { get; set; }
+
+        public int? UserId { get; set; }
+
+        public string UserType { get; set; }
+
+        public string Qualification { get; set; }
+
+        public string City { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LName { get; set; }
+
+        public int? TotalRecords { get; set; }
+
+        public string Height { get; set; }
+
+        public int? MarritalStatus { get; set; }
+
+        public int? Age { get; set; }
+
+        public int? Jobdata { get; set; }
+
+        public DateTime? RequestDate { get; set; }
+
+        public string Income { get; set; }
+
+        public string Img1 { get; set; }
+
+        public int? FullAccess { get; set; }
+
+        public int? OnlyImageFullAccess { get; set; }
+
+        public string Gender { get; set; }
+
+    }
+
 
     public class STP_GetUserDetail
     {
@@ -555,6 +895,16 @@ namespace ShriVivah.Models.Entities
 
         public bool? IsSpec { get; set; }
 
+        public int? IsManglik { get; set; }
+
+        public int? Jobdata { get; set; }
+
+        public int? NoOfMBro { get; set; }
+
+        public int? NoOfMSis { get; set; }
+
+        public string SubCaste { get; set; }
+
     }
 
     [Table("tblUser")]
@@ -729,6 +1079,11 @@ namespace ShriVivah.Models.Entities
         public string JobLocation { get; set; }
 
         public int UserId { get; set; }
+
+
+        public int? IsManglik { get; set; }
+
+        public int? Jobdata { get; set; }
 
         //public string JobBusinessInfo { get; set; }
 

@@ -27,7 +27,7 @@ $(document).ready(function () {
             success: function (students) {
                 if (students.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    if ($("#hdnbranding").val() == "SPMO") {
+                    if ($("#hdnbranding").val() == "SINDHI") {
                         bindUserData(students.VendorListSPMO);
                     }
                     else {
@@ -70,7 +70,7 @@ $(document).ready(function () {
             success: function (students) {
                 if (students.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    if ($("#hdnbranding").val() == "SPMO") {
+                    if ($("#hdnbranding").val() == "SINDHI") {
                         bindUserData(students.VendorListSPMO);
                     }
                     else {
@@ -142,7 +142,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.Status == true) {
                     $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
-                    if ($("#hdnbranding").val() == "SPMO") {
+                    if ($("#hdnbranding").val() == "SINDHI") {
                         bindUserData(data.VendorListSPMO);
                     }
                     else {
@@ -229,7 +229,7 @@ var bindUserData = function (SubCategory) {
             cell.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         }
         row.appendChild(cell);
-        if ($("#hdnbranding").val() != "SPMO") {
+        if ($("#hdnbranding").val() != "SINDHI") {
             cell = document.createElement("td");
             var btn = document.createElement("input");
             btn.id = SubCategorydata.VendorId;
@@ -246,7 +246,7 @@ var bindUserData = function (SubCategory) {
         btn.id = SubCategorydata.VendorId;
         $(btn).attr("type", "button");
         $(btn).addClass("btn-success btn");
-        if ($("#hdnbranding").val() == "SPMO") {
+        if ($("#hdnbranding").val() == "SINDHI") {
             if (SubCategorydata.IsApproved == true || SubCategorydata.IsApproved == 'true') {
                 $(btn).val("Deactivate");
                 $(btn).attr("onclick", "ActiveDeactiveVendor(" + SubCategorydata.VendorId + ",false,this);")
@@ -357,7 +357,7 @@ function ActiveDeactiveVendor(VendorId, IsActive,btn) {
             dataType: "json",
             success: function (students) {
                 if (students==true) {
-                    if ($("#hdnbranding").val() == "SPMO") {
+                    if ($("#hdnbranding").val() == "SINDHI") {
                         if (IsActive == false) {
                             $(btn).attr("onclick", "ActiveDeactiveVendor(" + VendorId + ",this)");
                             $(btn).val("Activate");

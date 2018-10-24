@@ -1,0 +1,32 @@
+﻿@model ShriVivah.Models.Entities.tblBloodGroup
+
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmBG" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="span_3">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model=>model.BloodGroupId)
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Blood Group Name</label>
+                @Html.TextBoxFor(model => model.BloodGroupName, new { @class = "form-control inputborder" ,@maxlength="4"})
+            </div>
+            <div class="col-md-12" id="erroBloodGroupName">
+                <div class="form-group">
+                    <span class="has-error" style="color: #c32143;">Please fill blood group name.</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="col-md-12">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel"/>
+        </div>
+    </div>
+}
+

@@ -50,7 +50,10 @@ namespace ShriVivah.Models.Entities
 
         public DbSet<tblRequest> tblRequests { get; set; }
 
+        public DbSet<Shortlist> Shortlists { get; set; }
+
         public DbSet<tblVisitorDetails> tblVisitorDetailss { get; set; }
+
 
         public DbSet<PackageMaster> PackageMasters { get; set; }
 

@@ -1,187 +1,225 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>@ViewBag.Title</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-    <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon">
-    <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
-    <!-- Bootstrap CSS File -->
-    @Styles.Render("~/Content/commoncss")
-    @Styles.Render("~/Content/css")
+    <title>SPMO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Marital Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript">
 
-    @Scripts.Render("~/bundles/Main")
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    @Styles.Render("~/Content/SPMO/SINDHI/css/bootstrap-3.1.1.min.css")
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    @Scripts.Render("~/Scripts/SPMO/SINDHI/jquery.min.js")
+    @Scripts.Render("~/Scripts/SPMO/SINDHI/bootstrap.min.js")
+    @Styles.Render("~/Content/SPMO/SINDHI/css/style.css")
+    <!-- Custom Theme files -->
+    @Styles.Render("~/Content/SPMO/SINDHI/css/css.css")
+    @Styles.Render("~/Content/SPMO/SINDHI/css/cssu.css")
+
+    <!----font-Awesome----->
+    @Styles.Render("~/Content/SPMO/SINDHI/css/font-awesome.css")
+    <!----font-Awesome----->
+    <script>
+$(document).ready(function(){
+    $(".dropdown").hover(
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');
+        }
+    );
+});
+    </script>
     @Scripts.Render("~/bundles/common")
-    @Scripts.Render("~/Scripts/SPMO/bootstrap.bundle.min")
-   
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    </head>
-    <body data-ng-app="VarmalaVivahApp" data-ng-controller="VendorTypesController" id="contentdivbody">
-        <input type="hidden" id="loginStatus" value="@ViewBag.IsLogin" />
-        <input type="hidden" id="hdnVendorType" value="@ViewBag.VendorTypes" />
-        <input type="hidden" id="branding" value="@SettingsManager.Instance.Branding" />
-        <header id="header">
-            <div class="container-fluid">
-                <div id="logo" class="pull-left">
-                    <a href="@Url.Action("Index","Home")"> <h5 style="color:#000;">@SettingsManager.Instance.Title</h5></a>
-                </div>
-                <nav id="nav-menu-container">
-                    <ul class="nav-menu">
-                        <li class="menu-active"><a href="@Url.Action("Index","Home")">Home</a></li>
-                        <li><a href="@Url.Action("Index","Home")">Panchayat</a></li>
-                        <li data-ng-class="{'menu-has-children':VendorTypes.length>0}"><a href="@Url.Action("Vendors","Vendor")">Services</a>
-                            <ul>
-                                <li data-ng-repeat="vtype in VendorTypes"><a href="~/Vendor/Vendors?VendorTypeId={{vtype.VendorTypeId}}">{{vtype.VendorType}}</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Success Stories</a></li>
-                        <li><a href="#">Parechay Samelan</a></li>
-                        <li><a href="@Url.Action("Register","Account")">Registration</a></li>
-                        <li data-ng-click="lnkShowModal()" data-toggle="modal" data-target="#loginPage" data-backdrop="static" data-keyboard="false"><a href="#">Login</a></li>
-                        <li><a href="@Url.Action("Contact","Home")">Contact Us</a></li>
-                    </ul>
-                </nav><!-- #nav-menu-container -->
-            </div>
-        </header><!-- #header -->
-        <div class="container">
-            <!-- Modal -->
-            <div class="modal fade" id="loginPage" role="dialog" style="padding-top:134px;">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title h3color h3back1 align-center">{{DialogTitle}}</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <ng-form name="frmLogin" novalidate>
-                                <div id="divLogin">
-                                    <div>
-                                        <input type="number" class="form-control" name="MobileNo" required data-ng-model="LoginModel.MobileNo" maxlength="10" placeholder="Mobile No"
-                                               data-ng-class="{'borderred':frmLogin.MobileNo.$dirty && frmLogin.MobileNo.$error.required}" />
-                                    </div>
-                                    <br />
-                                    <div>
-                                        <input type="password" class="form-control" name="Password" required data-ng-model="LoginModel.Password"
-                                               placeholder="Password" data-ng-class="{'borderred':frmLogin.Password.$dirty && frmLogin.Password.$error.required}" my-enter="ValidateAndLogin()" />
-                                    </div>
-                                    <hr />
-                                    <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="frmLogin.$invalid==true" id="btnLogin" data-ng-click="ValidateAndLogin()">Log In</button>
-                                    <br />
-                                    <a class="h3color h3back1" data-ng-click="lnkForgotPasswordClick()">Forgot Password</a>
+    @Scripts.Render("~/Scripts/Main/datehelper.js")
+    @Scripts.Render("~/Scripts/Main/angular.min.js")
+    @Scripts.Render("~/Scripts/Main/App.js")
+    @Scripts.Render("~/Scripts/Main/VendorTypesController.js")
 
-                                </div>
-                                <div id="forGotPassword" style="display:none">
-                                    <div>
-                                        <input type="text" class="form-control" id="UserLoginId" placeholder="Mobile No." />
-                                    </div>
-                                    <br />
-                                    <button type="button" class="btn btn-primary btn-sm" id="btnForgot" data-ng-click="ForgotPassword()">Submit</button>
-                                    <br />
-                                    <a class="h3color h3back1" data-ng-click="lnkLoginClick()">Login</a>
-                                </div>
-                                <br />
-                                <a class="h3color h3back1" href="@Url.Action("Register","Account")">New User?</a>
-                            </ng-form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <section>
-            <div class="intro-container">
-                <img class="mySlides" src="@Url.Content("~/Content/SPMO/FrontUI/images/22.png")" style="width:100%">
-                <img class="mySlides" src="@Url.Content("~/Content/SPMO/FrontUI/images/11.png")" style="width:100%">
-                <img class="mySlides" src="@Url.Content("~/Content/SPMO/FrontUI/images/33.png")" style="width:100%">
-                <img class="mySlides" src="@Url.Content("~/Content/SPMO/FrontUI/images/11.png")" style="width:100%">
-                <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-                <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
-            </div>
-        </section>
-        <div class="col-md-12">
-            @RenderBody()
-            <div class="mainLoader" id="rclLoader" style="display: none;">
-                <div class="mainLoaderImg"></div>
-                <div class="lyfBg"></div>
-            </div>
-        </div>
-        
-        <footer id="footer">
-            <div class="footer-top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 footer-info">
-                            <h4>@SettingsManager.Instance.Title</h4>
-                            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
-                        </div>
-                        <div class="col-lg-3 col-md-6 footer-links">
-                            <h4>Useful Links</h4>
-                            <ul>
-                                <li><i class="ion-ios-arrow-right"></i> <a href="#">Home</a></li>
-                                <li><i class="ion-ios-arrow-right"></i> <a href="#">About us</a></li>
-                                <li><i class="ion-ios-arrow-right"></i> <a href="#">Services</a></li>
-                                <li><i class="ion-ios-arrow-right"></i> <a href="#">Terms of service</a></li>
-                                <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-3 col-md-6 footer-contact">
-                            <h4>Contact Us</h4>
-                            <p>
-                                1 - C SAI PLAZA,  <br>
-                                SAI Chowk Pimpari, 411017<br>
-                                <strong>Mpbile:</strong> +91  9552925750<br>
-                                <strong>Phone:</strong> (020) 27414229<br>
-                            </p>
-                            <div class="social-links">
-                                <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-                                <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-                                <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-                                <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-                                <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 footer-newsletter">
-                            <h4>Our Newsletter</h4>
-                            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza.</p>
-                            <form action="" method="post">
-                                <input type="email" name="email"><input type="submit" value="Subscribe">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+</head>
+<body>
+    <input type="hidden" id="hdnbranding" value="@SettingsManager.Instance.Branding" />
+    <input type="hidden" id="branding" value="@SettingsManager.Instance.Branding" />
+    <input type="hidden" id="hdnVendorType" value="@ViewBag.VendorTypes" />
+    <div class="navbar navbar-inverse-blue navbar">
+        <!--<div class="navbar navbar-inverse-blue navbar-fixed-top">-->
+        <div class="navbar-inner">
             <div class="container">
-                <div class="copyright">
-                    &copy; Copyright <strong>@SettingsManager.Instance.Title</strong>. All Rights Reserved
-                </div>
-            </div>
-        </footer><!-- #footer -->
-        
-        
-        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-        <script type="text/javascript">
-            var slideIndex = 1;
-            showDivs(slideIndex);
-            function plusDivs(n) {
-              showDivs(slideIndex += n);
-            }
+                <div class="navbar navbar-inverse-blue navbar">
+                    <!--<div class="navbar navbar-inverse-blue navbar-fixed-top">-->
+                    <div class="navbar-inner">
+                        <div class="container">
 
-            function showDivs(n) {
-              var i;
-              var x = document.getElementsByClassName("mySlides");
-              if (n > x.length) {slideIndex = 1}
-              if (n < 1) {slideIndex = x.length}
-              for (i = 0; i < x.length; i++) {
-                 x[i].style.display = "none";
-              }
-              x[slideIndex-1].style.display = "block";
-            }
-        </script>
-        @Scripts.Render("~/Scripts/Main/VendorTypesController.js")
-    </body>
+                            <div class="row">
+                                <div class="col-md-2" style="padding-left:0px;">
+                                    <img src="@Url.Content("~/Content/SPMO/SINDHI/images/logofinal.jpg")" title="logo" style="float: left;left: 15px;height:100px">
+                                </div>
+                                <div class="col-md-10" style="padding-left:0px;">
+                                    <h1 class="brand brand-name navbar-left" style="top:10px;">
+                                        <div class="navbar-left">
+                                            <span style="color: #fff;font-size: 35px;padding-top: 10px;">SINDHU PROGRESSIVE MATRIMONIAL ORGANISATION</span>
+                                            <br />
+                                            <span style="color: #fff;font-size: 18px;padding-top: 10px;">REG NO: MAH/223/2000/PUNE</span>
+                                        </div>
+                                    </h1>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+
+                        <div class="clearfix"></div>
+                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                        {
+                            <div class="pull-left">
+                                <nav class="navbar nav_bottom pull-right" role="navigation">
+                                    <ul class="nav navbar-nav nav_1">
+                                        <li><a href="#">Welcome- @ShriVivah.Models.SessionManager.GetInstance.ActiveUser.FirstName &nbsp; @ShriVivah.Models.SessionManager.GetInstance.ActiveUser.LName </a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
+
+                        <div class="pull-right">
+                            <nav class="navbar nav_bottom pull-right" role="navigation">
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                                    <ul class="nav navbar-nav nav_1">
+                                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                                        <li><a href="@Url.Action("About","Home")">About</a></li>
+
+                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                                        {
+                                            if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Admin")
+                                            {
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Masters<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("Index", "BloodGroup")">Blood Group</a></li>
+                                                        <li><a href="@Url.Action("Index", "Country")">Country</a></li>
+                                                        <li><a href="@Url.Action("Index", "State")">State</a></li>
+                                                        <li><a href="@Url.Action("Index", "Oras")">Moon Sign</a></li>
+                                                        <li><a href="@Url.Action("Index", "Religion")">Religion</a></li>
+                                                        <li><a href="@Url.Action("Index", "Cast")">Cast</a></li>
+                                                        <li><a href="@Url.Action("Index", "PendingUSers")">Pending Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "PendingUSers")">Inactive Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "PaymentDetails")">Payment Details</a></li>
+                                                        <li><a href="@Url.Action("RegisterFromAdmin", "UserProfile")">Register</a></li>
+                                                        <li><a href="@Url.Action("Index", "MarriedUsers")">Married Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "EventManagement")">Events &amp; Functions</a></li>
+                                                        <li><a href="@Url.Action("Index", "Feedback")">Feedback</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Regular Search</a></li>
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Search Profile ID</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("ShowProfile", "UserProfile",new { ProfileId = ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId})">My Profile</a></li>
+                                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F")
+                                                        {
+                                                            <li><a href="@Url.Action("Visitors", "UserProfile")">Who Viewed my Profile</a></li>
+                                                        }
+                                                        <li><a href="@Url.Action("Index", "MyRequests")">Requests</a></li>
+                                                        <li><a href="@Url.Action("Index", "MyRequests")">Shortlisted Profile</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Regular Search</a></li>
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Search By Profile ID</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Profile<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("UploadPhotos", "UserProfile")">Upload Photos</a></li>
+                                                        <li><a href="@Url.Action("EditProfile", "UserProfile")">Edit Profile</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        }
+                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser == null)
+                                        {
+                                            <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                                            <li><a href="@Url.Action("Register", "Account")">Login</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="@Url.Action("LogOff", "Account")">Log Off</a></li>
+                                        }
+                                        <li class="last"><a href="@Url.Action("Contact","Home")">Contacts</a></li>
+                                    </ul>
+                                </div><!-- /.navbar-collapse -->
+                            </nav>
+                        </div>
+                        <!-- end pull-right -->
+                        <div class="clearfix"> </div>
+                    </div> <!-- end container -->
+                </div>
+            </div> <!-- end container -->
+        </div> <!-- end navbar-inner -->
+    </div> <!-- end navbar-inverse-blue -->
+    <!-- ============================  Navigation End ============================ -->
+
+    @RenderBody()
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-4 col_2">
+                <h4>About Us</h4>
+                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."</p>
+            </div>
+            <div class="col-md-2 col_2">
+                <h4>Help & Support</h4>
+                <ul class="footer_links">
+                    <li><a href="#">24x7 Live help</a></li>
+                    <li><a href="@Url.Action("Contact","Home")">Contact us</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col_2">
+                <h4>Quick Links</h4>
+                <ul class="footer_links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Services</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col_2">
+                <h4>Social</h4>
+                <ul class="footer_social">
+                    <li><a href="#"><i class="fa fa-facebook fa1"> </i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter fa1"> </i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus fa1"> </i></a></li>
+                    <li><a href="#"><i class="fa fa-youtube fa1"> </i></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+            <div class="copy">
+                <p>Copyright © 2015 Sindhu Matri </p>
+            </div>
+        </div>
+    </div>
+    <div class="mainLoader" id="rclLoader" style="display: none;">
+        <div class="mainLoaderImg"></div>
+        <div class="lyfBg"></div>
+    </div>
+</body>
 </html>

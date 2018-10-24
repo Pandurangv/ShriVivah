@@ -7,6 +7,10 @@ VarmalaVivahApp.factory('MainService', ['$http', function ($http) {
     MainService.getEventDetails = function () {
         return $http.get(urlBase + "/EventManagement/GetFutureEvents");
     };
+
+    MainService.getMarriedUsers = function () {
+        return $http.get(urlBase + "/MarriedUsers/MarriedUserList");
+    };
     return MainService;
 }]);
 VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter', 'MainService', function ($scope, $http, $filter, MainService) {
@@ -23,6 +27,8 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         IsName: false,
         IsEmail: false,
         IsUserMsg: false,
+        IsMobileNo: false,
+        IsPassword:false,
     };
 
     $scope.ErrorMessage = "";
@@ -68,17 +74,18 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
 
     $scope.ValidateAndLogin = function ()
     {
-        if ($scope.LoginModel.$invalid) {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: $scope.Branding == "SPMO" ? "Mobile no. and Password should be filled." : "लॉग-इन नाव किंवा पासवर्ड रिक्त असू नये.",
-                Type: "alert",
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
+        if ($scope.LoginModel.MobileNo == "") {
+            $scope.ErrorModel.IsMobileNo = true;
+            $scope.ErrorMessage = $scope.Branding == "SINDHI" ? "Mobile No should be filled." : "लॉग-इन नाव किंवा पासवर्ड रिक्त असू नये.";
+            return false;
+        }
+        if ($scope.LoginModel.Password == "") {
+            $scope.ErrorModel.IsPassword = true;
+            $scope.ErrorMessage = $scope.Branding == "SINDHI" ? "Password should be filled." : "लॉग-इन नाव किंवा पासवर्ड रिक्त असू नये.";
+            return false;
         }
         else {
-        //var spinner = new Spinner().spin();
-        //document.getElementById("contentdivbody").appendChild(spinner.el);
+            ShowLoader();
             var url = GetVirtualDirectory();
             var req = {
                 method: 'POST',
@@ -91,6 +98,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
 
             $http(req).then(function (response)
             {
+                HideLoader();
                 if (response.data.Status == true) {
                     if (response.data.DataResponse[0].UserType.toUpperCase() == "USER" || response.data.DataResponse[0].UserType.toUpperCase() == "ADMIN") {
                         window.location = url + "/UserProfile/Index";
@@ -107,7 +115,6 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                //document.getElementById("contentdivbody").removeChild(spinner.el);
             }, 
             function (response) {
                 var objShowCustomAlert = new ShowCustomAlert({
@@ -116,7 +123,6 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                //document.getElementById("contentdivbody").removeChild(spinner.el);
             });
         }
     }
@@ -127,10 +133,29 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         $("#divLogin").hide();
         $("#forGotPassword").show();
     }
-
-    $scope.UpcomingEvents = "Upcoming Events : ";
+    $scope.EventList = [];
+    //$scope.UpcomingEvents = "Upcoming Events : ";
+    
     var objdatehelper = new datehelper({ format: "dd/MM/yyyy", cdate: new Date() });
     $scope.HideEvents=false;
+
+    //BindSuccessStories
+
+
+    $scope.SuccessStories = [];
+
+    $scope.BindSuccessStories = function () {
+        ShowLoader();
+        MainService.getMarriedUsers()
+           .success(function (qualifications) {
+               HideLoader();
+               $scope.SuccessStories = qualifications;
+           })
+          .error(function (error) {
+              HideLoader();
+              findAndCallErrorBox("", response.data.Error.Message, "alert", null, null);
+          });
+    }
 
     $scope.BindEvents = function ()
     {
@@ -141,9 +166,10 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                if (qualifications.EventList.length>0) {
                    $scope.HideEvents = true;
                }
-               angular.forEach(qualifications.EventList, function (value, key) {
-                   $scope.UpcomingEvents += " ,Event Name : " + value.EventName + ", " + objdatehelper.getFormatteddate($filter('mydate')(value.EventDate), "dd-MM-yyyy") + ", " + value.EventLocation + ", " + value.EventState;
-               });
+               $scope.EventList = qualifications.EventList;
+               setTimeout(function () {
+                   $("#myModal").modal("show");
+               },2000);
            })
           .error(function (error) {
               HideLoader();
@@ -164,7 +190,7 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         if (userid == "") {
             var objShowCustomAlert = new ShowCustomAlert({
                 Title: "",
-                Message: $scope.Branding == "SPMO" ? "Mobile No. should be filled" : "लॉग-इन नाव रिक्त असू नये.",
+                Message: $scope.Branding == "SINDHI" ? "Mobile No. should be filled" : "लॉग-इन नाव रिक्त असू नये.",
                 Type: "alert",
             });
             objShowCustomAlert.ShowCustomAlertBox();
@@ -172,8 +198,8 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             return false;
         }
 
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        ShowLoader();
+
         var model = { UserName: userid, Password: "" };
         $.ajax({
             cache: false,
@@ -199,11 +225,11 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                HideLoader();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('Error during process: \n' + xhr.responseText);
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                HideLoader();
             }
         });
     }
@@ -231,10 +257,16 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             $scope.ErrorMessage = "Please fill message.";
             return false;
         }
+        if ($("#usermessage").val().length>500) {
+            $scope.ErrorModel.IsUserMsg = true;
+            $scope.ErrorMessage = "Message length should be less than 500 charechtos.";
+            return false;
+        }
         $scope.ContactUsModel = {
             Name: $("#Name").val(),
             MailId: $("#useremail").val(),
-            Description: $("#usermessage").val()
+            Description: $("#usermessage").val(),
+            MobileNo: $("#txtMobileNo").val()
         }
         var url = GetVirtualDirectory();
         var req = {
@@ -248,9 +280,10 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
 
         $http(req).then(function (response)
         {
+            console.log(response);
             var objShowCustomAlert = new ShowCustomAlert({
                 Title: "",
-                Message: $scope.Branding == "SPMO" ? "Your message has been sent. Thank you!" : "तुमचा अभिप्राय आम्हाला भेटला वरमाला विवाह संस्थेकडून तुमचे आभार.",
+                Message: $scope.Branding == "SINDHI" ? "Your message has been sent. Thank you!" : "तुमचा अभिप्राय आम्हाला भेटला वरमाला विवाह संस्थेकडून तुमचे आभार.",
                 Type: "alert",
                 OnOKClick: function () {
                     $("#Name").val('');
@@ -262,9 +295,10 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
             
         }, 
         function (response) {
+            console.log(response);
             var objShowCustomAlert = new ShowCustomAlert({
                 Title: "",
-                Message: $scope.Branding == "SPMO" ? "Thanks for Sending your valuable Suggestion." : "तुमचा अभिप्राय आम्हाला भेटला वरमाला विवाह संस्थेकडून तुमचे आभार.",
+                Message: $scope.Branding == "SINDHI" ? "Thanks for Sending your valuable Suggestion." : "तुमचा अभिप्राय आम्हाला भेटला वरमाला विवाह संस्थेकडून तुमचे आभार.",
                 Type: "alert",
                 OnOKClick: function () {
                     $("#Name").val('');
@@ -291,11 +325,12 @@ VarmalaVivahApp.controller("VendorTypesController", ['$scope', '$http', '$filter
         $scope.Branding = $("#branding").val();
         $scope.BindVendorTypes();
         $scope.BindEvents();
+        $scope.BindSuccessStories()
         $(document).ready(function () {
             $('#loginPage').on('shown.bs.modal', function () {
-                if ($scope.Branding == "SPMO") {
-                    $('body').css("padding-right", "0px");
-                }
+                //if ($scope.Branding == "SINDHI") {
+                //    $('body').css("padding-right", "0px");
+                //}
             })
         })
     }

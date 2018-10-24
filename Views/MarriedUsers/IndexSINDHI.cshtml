@@ -1,0 +1,190 @@
+﻿@model IEnumerable<ShriVivah.Models.Entities.STP_GetUserDetail>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast,#btnReset").click(function () {
+            
+            ShowLoader();
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("MarriedUsersFirst", "MarriedUsers")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("MarriedUsersNext", "MarriedUsers")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("MarriedUsersPrev", "MarriedUsers")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("MarriedUsersLast", "MarriedUsers")';
+            }
+            if (btnId == "btnReset") {
+                urluse = '@Url.Action("Reset", "MarriedUsers")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (btnId == "btnReset") {
+                        $("#txtSearch").val("");
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students);
+                    }
+                    else {
+                        if (students.Status == true) {
+                            $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                            bindUserData(students.UserList);
+                        }
+                        else {
+                            var objShowCustomAlert = new ShowCustomAlert({
+                                Title: "",
+                                Message: students.ErrorMessage,
+                                Type: "alert",
+                            });
+                            objShowCustomAlert.ShowCustomAlertBox();
+                        }
+                    }
+                    HideLoader();
+                },
+                error: function (data)
+                {
+                    HideLoader();
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            
+            
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                alert("Please fill search text!");
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "MarriedUsers")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.UserList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    HideLoader();
+                },
+                error: function (data)
+                {
+                    HideLoader();
+                }
+            });
+        });
+        
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+            $(row).attr("id", SubCategorydata.ContactUsId);
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.PanchayatCode;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.FirstName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.LName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.MailId;
+            row.appendChild(cell);
+
+            var dob = SubCategorydata.DateOfBirth == null || SubCategorydata.DateOfBirth == "" || SubCategorydata.DateOfBirth===undefined ? "" : parseJsonDate(SubCategorydata.DateOfBirth);
+            cell = document.createElement("td");
+            cell.innerHTML = dob;
+            row.appendChild(cell);
+
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    
+    
+</script>
+<div class="grid-3">
+    <div class="container">
+        <div class="span_3" id="divMain">
+            <div class="col-md-12">
+                <div class="headerdiv">Married Users</div>
+            </div>
+            <div class="col-md-12 divPadding1">
+                <div class="col-md-9">
+                    <input type="text" id="txtSearch" class="form-control inputborder" />
+                </div>
+                <div class="col-md-3">
+                    <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+                    <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+                </div>
+            </div>
+            <div class="bs-example1" data-example-id="contextual-table">
+                <table class="table table-bordered" id="SubCategoryInfo">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mail Id</th>
+                            <th>DOB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="active">
+                                <td>@item.PanchayatCode</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.LName</td>
+                                <td>@item.MailId</td>
+                                <td>@String.Format("{0:dd-MM-yyyy}", item.DateOfBirth)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 page_1">
+                <nav>
+                    <ul class="pagination">
+                        <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                        <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                        <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                        <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

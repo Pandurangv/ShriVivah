@@ -1,0 +1,26 @@
+﻿@model ShriVivah.Models.Entities.tblReligion
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmReligion" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="span_3">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ReligionId)
+        <div class="col-md-4">
+            <span>Religion Name :</span>
+            @Html.TextBoxFor(model => model.ReligionName,new {@class= "form-control inputborder",@maxlength="20" })
+        </div>
+        <div class="col-md-4" id="errorName" style="display:none">
+            <div class="form-group">
+                <span class="has-error" style="color: #c32143;">Please fill Religion name.</span>
+            </div>
+        </div>
+        <br />
+        <div class="span_3">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

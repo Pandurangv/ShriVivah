@@ -1,0 +1,373 @@
+﻿@model IQueryable<ShriVivah.Models.DataModels.CastModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            
+            ShowLoader();
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("CastFirst", "Cast")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("CastNext", "Cast")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("CastPrev", "Cast")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("CastLast", "Cast")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CastList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    HideLoader();
+                },
+                error: function (data) {
+                    HideLoader();
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                alert("Please fill search text!");
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "Cast")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.CastList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //
+                    HideLoader();
+                },
+                error: function (data) {
+                    HideLoader();
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "Cast")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                    //
+                    HideLoader();
+                }
+            });
+        });
+
+        //$("a").click(function () {
+        //    var BGId = this.id;
+        //    Edit(BGId);
+        //});
+
+        $("#btnSave").click(function () {
+            var model = $('#frmCast').serialize();
+            if ($("#ReligionId").val() == 0) {
+                $("#errorCName").show();
+                return false;
+            }
+            if ($("#CastName").val() == "") {
+                $("#errorName").show();
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddCast", "Cast")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CastList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: '@SettingsManager.Instance.Branding' == "SPMO" ? "Saved successfully!" : "माहिती सेव केली आहे..",
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        //ShowAlert('error', data.ErrorMessage);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //
+                    HideLoader();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    HideLoader();
+                }
+            });
+
+        });
+        $("#btnUpdate").click(function () {
+            var model = $('#frmCast').serialize();
+            if ($("#ReligionId").val() == 0) {
+                $("#errorCName").show();
+                return false;
+            }
+            if ($("#CastName").val() == "") {
+                $("#errorName").show();
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "Cast")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        HideLoader();
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.CastList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                            OnOKClick: function () {
+                                $("#btnCancel").trigger("click");
+                            }
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    else {
+                        HideLoader();
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    //
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    HideLoader();
+                }
+            });
+
+        });
+
+        $("#CountryId").change(function () {
+
+            var cid = $(this).val();
+            if (cid > 0) {
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '@Url.Action("GetStatesByCountry", "State")',
+                    data: { CountryId: cid },
+                    success: function (data) {
+                        $('#StateId').children('option:not(:first)').remove();
+                        //For spoke ddl
+                        var items1 = "";
+
+                        $.each(data, function (i, item) {
+                            items1 += "<option value=\"" + item.StateId + "\">" + item.StateName + "</option>";
+                        });
+                        $("#StateId").append(items1);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Error during process: \n' + xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            $("#CastId").val("");
+            $("#CastName").val("");
+            $("#ReligionId").val("0");
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            $("#CastId").val("");
+            $("#CastName").val("");
+            $("#ReligionId").val("0");
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CastId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.ReligionName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CastName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.CityId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            '@SettingsManager.Instance.Branding' == "SINDHI" ? $(btn).val("Edit") : $(btn).val("बदल करा");
+            //<input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(item.ReligionId);" />
+            //btn.innerHTML = "Edit";
+            //cell.appendChild(a);
+            $(btn).attr("onclick", "EditCast(" + SubCategorydata.CastId + ");")
+            //$(a).click(function () {
+            //    var BGId = this.id;
+            //    Edit(BgId);
+            //});
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditCast(BGId) {
+        if (BGId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { BGId: BGId },
+                url: '@Url.Action("Edit", "Cast")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#CastName").val(students.CastName);
+                    $("#CastId").val(students.CastId);
+                    $("#ReligionId").val(students.ReligionId);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                }
+            });
+        }
+    }
+</script>
+<div class="grid-3">
+    <div class="container">
+        <div class="headerdiv">Cast Information</div>
+        <div class="span_3" id="divMain">
+            <input type="hidden" id="pagename" value="caste" />
+            <div class="col-md-12 divPadding1">
+                <div class="col-md-9">
+                    <input type="text" id="txtSearch" class="form-control inputborder" />
+                </div>
+                <div class="col-md-3">
+                    <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+                    <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+                    <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+                </div>
+            </div>
+            <div class="bs-example1" data-example-id="contextual-table">
+                <table class="table table-bordered" id="SubCategoryInfo">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Religion Name</th>
+                            <th>Cast Name</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="active">
+                                <td>@item.CastId</td>
+                                <td>@item.ReligionName</td>
+                                <td>@item.CastName</td>
+                                <td>
+                                    <input type="button" class="btn-success btn" value="Edit" onclick="EditCast(@item.CastId);" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 page_1">
+                <nav>
+                    <ul class="pagination">
+                        <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                        <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                        <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                        <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div id="createDiv" class="span_3" style="display:none">
+            @Html.Partial("_AddCastSINDHI", new ShriVivah.Models.Entities.tblCast())
+        </div>
+    </div>
+</div>
+
+
+

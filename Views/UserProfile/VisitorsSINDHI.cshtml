@@ -1,0 +1,134 @@
+﻿@model IQueryable<ShriVivah.Models.VisitorModel>
+@{
+    Layout = "~/Views/Shared/_LayoutPageSINDHI.cshtml";
+}
+
+@Scripts.Render("~/bundles/UserProfile")
+@Scripts.Render("~/Scripts/Main/VisitorController.js")
+<div class="grid-3" data-ng-app="VarmalaVivahApp" data-ng-controller="VisitorController">
+    <div class="container">
+        <div class="col-md-12 topset" id="divMain">
+            <div class="col-md-12">
+                <div class="headerdiv">
+                    Visitor Information
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input type="hidden" id="UserId" value="@ViewBag.UserId" />
+                <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+                <input type="hidden" id="UserGender" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender" />
+                <div class="col-md-9 search_left">
+                    <div class="col-md-12">
+                        <ul class="pagination">
+                            <li><a href="#" aria-label="First" id="btnFirst" data-ng-click="GetUserData()"><span aria-hidden="true">First</span></a></li>
+                            <li><a href="#" aria-label="Previous" id="btnPrev" data-ng-click="getVisitorsPrev()"><span aria-hidden="true">Prev</span></a></li>
+                            <li><a href="#" aria-label="Nex" id="btnNext" data-ng-click="getVisitorsNext()"><span aria-hidden="true">Next</span></a></li>
+                            <li><a href="#" aria-label="Last" id="btnLast" data-ng-click="getVisitorsLast()"><span aria-hidden="true">Last</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="paid_people">
+                        <h1>Search Profile</h1>
+                        <div class="row_1" data-ng-repeat="user in UserList">
+                            <div class="col-md-12">
+                                <div class="headerdiv">{{user.PanchayatCode}}</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-sm-3 profile_left-top">
+                                    <img data-ng-src="{{user.Img1}}" class="img-responsive profileimg" alt="" />
+                                </div>
+                                <div class="col-sm-9">
+                                    <table class="table_working_hours">
+                                        <tbody>
+                                            <tr class="opened_1">
+                                                <td class="day_label1">Name :</td>
+                                                <td class="day_value">{{user.FirstName}} &nbsp; {{user.LName}}</td>
+                                            </tr>
+                                            <tr class="opened_1">
+                                                <td class="day_label1">Height :</td>
+                                                <td class="day_value">{{user.Height}}</td>
+                                            </tr>
+                                            <tr class="opened">
+                                                <td class="day_label1">Marital Status :</td>
+                                                <td class="day_value" ng-switch="user.MarritalStatus">
+                                                    <span ng-switch-when="1">Never Married</span>
+                                                    <span ng-switch-when="2">Widow</span>
+                                                    <span ng-switch-when="3">Divorcee</span>
+                                                    <span ng-switch-when="4">Separated</span>
+                                                    <span ng-switch-when="5">Annulled</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="opened">
+                                                <td class="day_label1">City :</td>
+                                                <td class="day_value">{{user.City}}</td>
+                                            </tr>
+                                            <tr class="closed">
+                                                <td class="day_label1">Profile Created by :</td>
+                                                <td class="day_value closed"><span>{{user.BehalfOf}}</span></td>
+                                            </tr>
+                                            <tr class="closed">
+                                                <td class="day_label1">Education :</td>
+                                                <td class="day_value closed"><span>{{user.Qualification}}</span></td>
+                                            </tr>
+                                            <tr class="closed">
+                                                <td class="day_label1">Income :</td>
+                                                <td class="day_value closed"><span>{{user.Income}}</span></td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                    <div class="buttons">
+                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                                        {
+                                            if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType != "Admin")
+                                            {
+                                                <div class="vertical">Shortlist</div>
+                                                if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "M")
+                                                {
+                                                    <div class="vertical" data-ng-click="SendRequest(user)">Express Interest</div>
+                                                }
+                                            }
+                                            <div class="vertical" data-ng-click="RedirectUser(user)">View Profile</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+
+        <div class="modal modal-md fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel">×</button>
+                        <h2 class="modal-title">Approve Request</h2>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="hdnVisitedUserId" />
+                        <select class="form-control inputborder" id="ddlApproveRequest">
+                            <option value="0">---Select---</option>
+                            <option value="1">Show Only Profile Image</option>
+                            <option value="2">Show Profile Image With Contact</option>
+                            <option value="3">Block User</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" value="Approve" onclick="ApproveFinal()">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myModal").hide();
+    })
+</script>

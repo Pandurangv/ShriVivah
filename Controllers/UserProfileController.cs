@@ -33,7 +33,8 @@ namespace ShriVivah.Controllers
         }
 
         [CustomView]
-        public ActionResult UserRequestsSPMO()
+        [MyAuthorizeAttribute(IsAdmin = false)]
+        public ActionResult SearchRequests()
         {
             this.LoadIsAdmin();
             return View("UserRequests");
@@ -112,22 +113,22 @@ namespace ShriVivah.Controllers
 
                 ViewBag.BloodGroupId = lstData;
                 Session["pageindex"] = 0;
-                string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "UserRequestsSPMO" : "UserRequests";
+                string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "SearchRequests" : "UserRequests";
                 if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()=="ADMIN")
                 {
                     //var userdetails = objUser.Select_STP_GetUserDetails().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId 
                     //            && p.UserType.ToUpper() != "ADMIN" && p.UserType.ToUpper() != "AGENT" && p.ismarried==0);
                     //Session["users"] = userdetails;
                     //var filter = userdetails.OrderBy(p => p.UserId).Skip(0 * PageSize).Take(PageSize);
-
-                    return RedirectToAction("UserRequestsSPMO", "UserProfile");
+                    
+                    return RedirectToAction("SearchRequests", "UserProfile");
                 }
                 else if(SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "USER")
                 {
                     //var userdetails = objUser.GetUserDetailsForUser().Where(p => p.UserId != SessionManager.GetInstance.ActiveUser.UserId && p.Gender == gender && p.UserType.ToUpper() != "ADMIN" && p.ismarried == 0);
                     //Session["users"] = userdetails;
                     //var filter = userdetails.OrderBy(p => p.UserId).Skip(0 * PageSize).Take(PageSize);
-                    return RedirectToAction("UserRequestsSPMO", "UserProfile");
+                    return RedirectToAction("SearchRequests", "UserProfile");
                 }
                 else //if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper() == "AGENT")
                 {
@@ -295,6 +296,30 @@ namespace ShriVivah.Controllers
         public ActionResult PanAdhaar()
         {
             return View("PanAdhaar");
+        }
+
+        [MyAuthorize]
+        public ActionResult SearchUsers(SearchRequestModel model)
+        {
+            ViewBag.MinAge = 18;
+            if (SessionManager.GetInstance.ActiveUser.UserType=="User" && SessionManager.GetInstance.ActiveUser.Gender=="F")
+            {
+                ViewBag.MinAge = 21;
+            }
+            ResponseModel obj = new ResponseModel();
+            model.UserType = SessionManager.GetInstance.ActiveUser.UserType;
+            if (SessionManager.GetInstance.ActiveUser.UserType=="User")
+            {
+                model.Gender= SessionManager.GetInstance.ActiveUser.Gender == "M" ? "F" : "M";
+                model.IsActive = true;
+                model.IsMarried = false;
+            }
+            obj.UserCityList = objUser.GetCityList();
+            obj.QualificationList = objUser.GetQualifications();
+            obj.HeightList = new OrasModel().GetHeights();
+            obj.HeightOrasList = new OrasModel().GetOrass();
+            obj.DataResponse = objUser.Select_STP_GetUserDetails(model);
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [MyAuthorize]
@@ -557,8 +582,8 @@ namespace ShriVivah.Controllers
 
             ViewBag.QualificationId = lstData;
             //ViewBag.EQualificationId = lstData;
-
-            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "UserRequestsSPMO" : "UserRequests";
+            
+            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "SearchRequests" : "UserRequests";
 
             string gender = SessionManager.GetInstance.ActiveUser.Gender == "M" ? "F" : "M";
             ViewBag.SearchGender = gender;
@@ -592,7 +617,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult VisitorFirst()
         {
-            IQueryable<VisitorModel> users = (IQueryable<VisitorModel>)Session["users"];
+            IQueryable<VisitorModel> users = objUser.GetVisitors();
             int pageindex = 0;
             var filter = users.OrderBy(p => p.VisitorId).Skip(pageindex * PageSize).Take(PageSize);
             Session["visitors"] = users;
@@ -712,33 +737,87 @@ namespace ShriVivah.Controllers
             ViewBag.ActiveUserId = ProfileId;
             if (SessionManager.GetInstance.ActiveUser.UserType.ToUpper()!="ADMIN" && SessionManager.GetInstance.ActiveUser.UserId!=ProfileId)
             {
-                if (SettingsManager.Instance.Branding != "SINDHI")
-                {
-                    objUser.InsertVisitorDetails(ProfileId);
-                }
+                objUser.InsertVisitorDetails(ProfileId);
             }
             var userinfo =objUser.Select_STP_GetUserDetails().Where(p => p.UserId == ProfileId).FirstOrDefault();
+            ViewBag.IsFullAccess = false;
             if (!string.IsNullOrEmpty(userinfo.Img1))
             {
-                userinfo.Img1 = userinfo.Img1 + "?lastmodified=" + DateTime.Now.Hour + "_" + DateTime.Now.Minute;
+                userinfo.Img1 =SettingsManager.Instance.SourcePath + userinfo.Img1;// + "?lastmodified=" + DateTime.Now.Hour + "_" + DateTime.Now.Minute;
             }
-            
+            if (ProfileId != SessionManager.GetInstance.ActiveUser.UserId)
+            {
+                if (SessionManager.GetInstance.ActiveUser.UserType!="Admin" && SessionManager.GetInstance.ActiveUser.Gender=="M")
+                {
+                    tblRequest verify= objUser.VerifyRequestedUserVerified(ProfileId);
+                    if (verify!=null)
+                    {
+                        ViewBag.IsFullAccess = verify.FullAccess == 1 ? true : false;
+                        if (verify.FullAccess == 1)
+                        {
+
+                        }
+                        else if (verify.OnlyImageFullAccess == 1)
+                        {
+                            userinfo.MobileNo = "";
+                            userinfo.MailId = "";
+                            userinfo.Expr2 = "";
+                        }
+                        else
+                        {
+                            userinfo.Img1 = SettingsManager.Instance.SourcePathF;
+                            userinfo.MobileNo = "";
+                            userinfo.MailId = "";
+                            userinfo.Expr2 = "";
+                        }
+                    }
+                    else
+                    {
+                        userinfo.Img1 = SettingsManager.Instance.SourcePathF;
+                        userinfo.MobileNo = "";
+                        userinfo.MailId = "";
+                        userinfo.Expr2 = "";
+                    }
+                }
+                else
+                {
+                    ViewBag.IsFullAccess = true;
+                }
+            }
+            else
+            {
+                ViewBag.IsFullAccess = true;
+            }
+
             ViewBag.RelativeDetails= objUser.GetRelativeDetails(ProfileId);
-            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "ShowProfileSPMO" : "ShowProfile";
+            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "ShowProfileSINDHI" : "ShowProfile";
             return View(ViewName, userinfo);
         }
 
         [HttpPost]
-        public ActionResult ApproveRequestSPMO(int VisitorId, bool ApprovedImage, bool ApprovedImageWithContact)
+        public ActionResult GetRelativeDetails(int UserId)
         {
-            objUser.ApproveRequest(VisitorId, ApprovedImage, ApprovedImageWithContact);
+            return Json(objUser.GetRelativeDetails(UserId), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ApproveRequestSPMO(int VisitorId, int ApprovedImage, int ApprovedImageWithContact)
+        {
+            objUser.UpdateRequest(VisitorId, ApprovedImage, ApprovedImageWithContact);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Shortlist(int UserId)
+        {
+            bool Success = objUser.ShortlistUser(UserId, SessionManager.GetInstance.ActiveUser.UserId);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult ExpressInterest(int UserId)
         {
-            objUser.InsertVisitorDetails(UserId);
+            bool Success = objUser.SendRequest(UserId, SessionManager.GetInstance.ActiveUser.UserId);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
@@ -835,16 +914,17 @@ namespace ShriVivah.Controllers
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
+        [CustomView]
         public ActionResult EditProfile()
         {
             this.LoadIsAdmin();
             var user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).FirstOrDefault();
             ViewBag.UserDetails = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "EditProfileSPMO" : "EditProfile";
-            return View(ViewName);
+            return View("EditProfile");
         }
 
-        [MyAuthorizeAttribute(IsAdmin = true)]
+        [MyAuthorizeAttribute()]
+        [CustomView]
         public ActionResult EditUser(int UserId)
         {
             this.LoadIsAdmin();
@@ -912,9 +992,14 @@ namespace ShriVivah.Controllers
             ViewBag.EQualificationId = lstData;
 
             var user = objUser.Select_STP_GetUserDetails().Where(p => p.UserId == UserId).FirstOrDefault();
+            ViewBag.MinAge = 18;
+            if (user.Gender=="M")
+            {
+                ViewBag.MinAge = 21;
+            }
             ViewBag.UserDetails = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "EditUserSPMO" : "EditUser";
-            return View(ViewName);
+            //string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "EditUserSPMO" : "EditUser";
+            return View("EditUser");
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]
@@ -1010,7 +1095,13 @@ namespace ShriVivah.Controllers
                 int? userid= objUser.UpdateUserByAdmin(model);
                 objUser.UpdateUserByAdmin(family,userid.Value);
                 objUser.SaveUserByAdmin(job,model.UserId.Value);
-                objUser.Update(relatives,model.UserId.Value);
+                try
+                {
+                    objUser.Update(relatives, model.UserId.Value);
+                }
+                catch (Exception ex)
+                {
+                }
                 response.Status = true;
             }
             catch (Exception ex)
@@ -1032,10 +1123,20 @@ namespace ShriVivah.Controllers
                 model = serialize.Deserialize<RegisterViewModel>(Request.Params["model"]);
                 family = serialize.Deserialize<FamilyModel>(Request.Params["family"]);
                 tblExpectation tbl = new tblExpectation();
-                relatives = serialize.Deserialize<List<RelativeModel>>(Request.Params["relatives"]);
                 tblJobDetails job = serialize.Deserialize<tblJobDetails>(Request.Params["JobDetails"]);
                 model.Income = job.Income;
                 //List<string> colorlist = null;
+                if (Request.Params["relatives"] != null)
+                {
+                    try
+                    {
+                        relatives = serialize.Deserialize<List<RelativeModel>>(Request.Params["relatives"]);
+                    }
+                    catch (Exception ex)
+                    {
+                        relatives = null;
+                    }
+                }
                 if (Request.Params["colorlist[]"] != null)
                 {
                     try
@@ -1047,12 +1148,10 @@ namespace ShriVivah.Controllers
 
                     }
                 }
-                //List<string> HeightIdlist = null;
                 if (Request.Params["HeightIdlist[]"] != null)
                 {
                     try
                     {
-                        //HeightIdlist = serialize.Deserialize<List<string>>
                         tbl.Height = Convert.ToString(Request.Params["HeightIdlist[]"]);
                     }
                     catch (Exception ex)
@@ -1060,12 +1159,10 @@ namespace ShriVivah.Controllers
 
                     }
                 }
-                //List<string> OrasIdlist = null;
                 if (Request.Params["OrasIdlist[]"] != null)
                 {
                     try
                     {
-                        //OrasIdlist = serialize.Deserialize<List<string>>(Request.Params["OrasIdlist[]"]);
                         tbl.OrasId = Convert.ToString(Request.Params["OrasIdlist[]"]);
                     }
                     catch (Exception ex)
@@ -1073,12 +1170,10 @@ namespace ShriVivah.Controllers
 
                     }
                 }
-                //List<string> QualificationIdlist = null;
                 if (Request.Params["QualificationIdlist[]"] != null)
                 {
                     try
                     {
-                        //QualificationIdlist = serialize.Deserialize<List<string>>(Request.Params["QualificationIdlist[]"]);
                         tbl.Qualification = Convert.ToString(Request.Params["QualificationIdlist[]"]);
                     }
                     catch (Exception ex)
@@ -1089,11 +1184,16 @@ namespace ShriVivah.Controllers
 
                 objUser.Update(model);
                 objUser.Update(family);
-                objUser.Update(relatives);
+                if (relatives != null)
+                {
+                    objUser.Update(relatives);
+                }
                 objUser.Save(tbl);
                 objUser.Save(job);
-                
-                SessionManager.GetInstance.ActiveUser.Gender = model.Gender;
+                if (SettingsManager.Instance.Branding!="SINDHI")
+                {
+                    SessionManager.GetInstance.ActiveUser.Gender = model.Gender;
+                }
                 response.Status = true;
             }
             catch (Exception ex)
@@ -1530,10 +1630,8 @@ namespace ShriVivah.Controllers
                 file.SaveAs(Server.MapPath("~/"+ base64string));
                 //model.Image1=imgArr;
                 objUser.UploadImage(base64string, "P");
-                if (string.IsNullOrEmpty(SessionManager.GetInstance.ActiveUser.Img1))
-                {
-                    SessionManager.GetInstance.ActiveUser.Img1 = base64string;
-                }
+                SessionManager.GetInstance.ActiveUser.Img1 = base64string;
+
                 result = SessionManager.GetInstance.ActiveUser.IsActive==null?false: SessionManager.GetInstance.ActiveUser.IsActive.Value;
             }
             return Json(result);

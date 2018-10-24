@@ -1,0 +1,106 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutPageSINDHI.cshtml";
+}
+@Scripts.Render("~/bundles/UserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        bindData();
+    })
+</script>
+
+<div class="col-md-9">
+    <div>
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmEditUserProfile" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.HiddenFor(m => m.UserId)
+                <input type="hidden" id="pagename" value="editprofile">
+                <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+                @Html.ValidationSummary(true)
+                <input type="hidden" value="@ViewBag.UserDetails" id="UserDetails" />
+                <div class="form-group" id="contentdiv">
+                    <div id="divPersonal" class="col-md-12 divPadding">
+                        <div class="headerdiv">Personal Information</div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-8"><input type="text" id="txtAddress" class="form-control inputborder" required="required" maxlength="50" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">City/Town</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="City" class="form-control inputborder" required="required" maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Taluka</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="Taluka" class="form-control inputborder" required="required" maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">District</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="District" class="form-control inputborder" required="required" maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label for="focusedinput" class="col-sm-2 control-label">Mobile Number</label>
+                            <div class="col-sm-8">
+                                <input type="number" id="MobileNo" class="form-control inputborder" required="required" maxlength="10" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Birth Place</label>
+                            <div class="col-sm-8"><input type="text" id="PlaceOfBirth" class="form-control inputborder" required="required" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Birth Place</label>
+                            <div class="col-sm-8"><input type="text" id="txtBirthName" class="form-control inputborder" required="required" maxlength="50" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">E-Mail</label>
+                            <div class="col-sm-8"><input type="email" id="txtEmail" class="form-control emailinput" required="required" maxlength="50" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Job\Business Information</label>
+                            <div class="col-sm-8"><input type="text" id="txtCompanyName" class="form-control inputborder" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Job\Business Location</label>
+                            <div class="col-sm-8"><input type="text" id="txtCompanyLocation" class="form-control inputborder" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Weight</label>
+                            <div class="col-sm-8"><input type="number" min="40" max="140" id="weight" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="focusedinput">Annual Income</label>
+                            <div class="col-sm-8">
+                                <select id="cmbIncome" class="form-control inputborder" name="txtIncome" required="required">
+                                    <option selected="selected" value="">Annual Income</option>
+                                    <option value="Under   Rs.50,000">Less than Rs.50,000</option>
+                                    <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                                    <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                                    <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                                    <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                                    <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                                    <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                                    <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                                    <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span_3">
+                        <input type="button" value="Save" class="btn btn-default" id="btnUpdateUserData" onclick="UpdateUserData()" />
+                        <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+

@@ -35,48 +35,49 @@ namespace ShriVivah.Models
             }
         }
 
-        public static void SendMail(string mailId, string UserName = "",bool IsFeedback=false,string LoginId="",string Password="")
+        public static string SendMail(string mailId, string UserName = "",bool IsFeedback=false,string LoginId="",string Password="")
         {
+            string Response = "Success";
             try
             {
-                //System.Web.Mail.MailMessage message = new System.Web.Mail.MailMessage();
-                //string fromEmail = "contact@varmalavivah.com";
-                //string fromPW = "varmala753";
-                //string toEmail = mailId;
-                //const string SERVER = "relay-hosting.secureserver.net";
-                //System.Web.Mail.MailMessage oMail = new System.Web.Mail.MailMessage();
-
-                //oMail.From = fromEmail;
-                //oMail.To = toEmail;
-                //oMail.Subject = "Complete Profile";
-                //if (IsFeedback)
-                //{
-                //    oMail.Subject = "Feedback";
-                //}
-                
                 StringBuilder sb = new StringBuilder();
-                sb.Append("<html><head></head><body><div><span>Hello " + UserName + ",</span><br/><span>Welcome to Varmalavivah.com.</span><br />");
+                //sb.Append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">");
+                //sb.Append("<html><head><META http-equiv=Content-Type content=\"text/html; charset=iso-8859-1\"></head><body><div><span>Hello " + UserName + ",</span><br/><span>Welcome to ").Append(SettingsManager.Instance.Branding).Append("</span><br />");
+                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+
+                sb.Append("Hello " + UserName + "," + Environment.NewLine); //.Append(SettingsManager.Instance.Branding).Append("</span><br />");
                 if (IsFeedback)
                 {
-                    sb.Append("<span>Thank you for your valuable feedback.We will try to improve our services. We will update you about our services through Varmalavivah.com.</span><br/>");
-                    sb.Append("<span>Take a step towards meeting your Soulmate</span><br />");
+                    message.Subject = "Feedback";
+                    //sb.Append("<span>Thank you for your valuable feedback.We will try to improve our services. We will update you about our services through ").Append(SettingsManager.Instance.WEBSITE).Append("</span><br/>");
+                    //sb.Append("<span>Take a step towards meeting your Soulmate</span><br />");
+                    sb.Append("Thank you for your valuable feedback.We will try to improve our services." + Environment.NewLine + "We will update you about our services through ").Append(SettingsManager.Instance.WEBSITE);//.Append("");
+                    sb.Append("Take a step towards meeting your Soulmate" + Environment.NewLine);
                 }
                 else
                 {
-                    sb.Append("<span>Your registration was partially done. Please do login Using below credintials Login Id : ").Append(LoginId).Append(" And Password : ").Append(Password).Append(" and complete your profile");
+                    message.Subject = "Information";
+                    sb.Append("Your registration was partially done. Please do login Using below credintials Login Id : ").Append(LoginId).Append(" And Password : ").Append(Password).Append(" and complete your profile");
                 }
-                sb.Append("<span>For matrimonial assistance,</span><br/>");
-                sb.Append("<span>Call us at 8806369038</span><br />");
-                sb.Append("<span>Timing: 10:00 am – 6:00pm(Monday to Saturday).Share your feedback with any query or comments on info@varmalavivah.com.</span><br />");
-                sb.Append("<span>Best Regards</span><br/>");
-                sb.Append("<span>www.varmalavivah.com</span>");
-                sb.Append("<br/>Sent at: " + DateTime.Now);
-                sb.Append("<div></body></html>");
+                //sb.Append("<span>For matrimonial assistance,</span><br/>");
+                //sb.Append("<span>Call us at ").Append(SettingsManager.Instance.MobileNo).Append("</span><br />");
+                //sb.Append("<span>Timing: 10:00 am – 6:00pm(Monday to Saturday).Share your feedback with any query or comments on ").Append(SettingsManager.Instance.fromEmail).Append("</span><br />");
+                //sb.Append("<span>Best Regards</span><br/>");
+                //sb.Append("<span>"+ SettingsManager.Instance.WEBSITE +"</span>");
+                //sb.Append("<br/>Sent at: " + DateTime.Now);
+                //sb.Append("<div></body></html>");
 
-                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-                string fromEmail = "contact@varmalavivah.com";
-                string fromPW = "Ganesh0511@";
-                string toEmail = "truptikumbhar4@gmail.com";
+                sb.Append("For matrimonial assistance," + Environment.NewLine);
+                sb.Append("Call us at ").Append(SettingsManager.Instance.MobileNo + Environment.NewLine);//.Append("");
+                sb.Append("Timing: 10:00 am – 6:00pm(Monday to Saturday) "+ Environment.NewLine +".Share your feedback with any query or comments on ").Append(SettingsManager.Instance.fromEmail + Environment.NewLine);//.Append("</span><br />");
+                sb.Append("Best Regards, " + Environment.NewLine);
+                sb.Append(SettingsManager.Instance.WEBSITE + Environment.NewLine);
+                sb.Append(DateTime.Now + Environment.NewLine);
+                //sb.Append("<div></body></html>");
+
+                string fromEmail = SettingsManager.Instance.fromEmail;
+                string fromPW = SettingsManager.Instance.fromPW;
+                string toEmail = mailId;
                 message.From = new MailAddress(fromEmail);
                 message.To.Add(toEmail);
                 message.Subject = "Complete Profile";
@@ -84,11 +85,12 @@ namespace ShriVivah.Models
                 {
                     message.Subject = "Feedback";
                 }
+                //message.IsBodyHtml = true;
+                message.Priority = MailPriority.High;
+                message.Body = sb.ToString(); //Get Column to Diplomate for email token replaced text
+                //message.BodyEncoding = System.Text.Encoding.UTF8;
 
-                message.Body = sb.ToString();
-                message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-
-                using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+                using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
                 {
                     smtpClient.EnableSsl = false;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -98,19 +100,15 @@ namespace ShriVivah.Models
                     smtpClient.Send(message.From.ToString(), message.To.ToString(),
                                     message.Subject, message.Body);
                 }
-                //oMail.BodyFormat = System.Web.Mail.MailFormat.Html; // enumeration
-                //oMail.Priority = System.Web.Mail.MailPriority.High; // enumeration
+                message.DeliveryNotificationOptions = System.Net.Mail.DeliveryNotificationOptions.OnSuccess;
 
-                //oMail.Body = sb.ToString();
-                //System.Web.Mail.SmtpMail.SmtpServer = SERVER;
-
-
-                //System.Web.Mail.SmtpMail.Send(oMail);
-                //oMail = null;	// free up resources
             }
             catch (Exception ex)
             {
+                Response = ex.Message;
+                SettingsManager.Instance.WriteLog(ex.Message);
             }
+            return Response;
         }
 
         public static void SendMail(tblContactDetails model)

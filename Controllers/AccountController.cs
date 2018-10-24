@@ -46,7 +46,7 @@ namespace ShriVivah.Controllers
                     StringBuilder sb = new StringBuilder();
                     if (SettingsManager.Instance.Branding == "SINDHI")
                     {
-                        sb.Append("Please do login Using below credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, Regards Sindhi Hindu, www.sindhihindu.com 9273763490");
+                        sb.Append("Please do login Using below credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, ").Append(SettingsManager.Instance.SindhuRegards);
                         string message = HttpUtility.UrlEncode(sb.ToString());
                         objUser.SendUserSMS(user.MobileNo, message);
                         status = true;
@@ -82,11 +82,11 @@ namespace ShriVivah.Controllers
             STP_GetUserDetail user = null;
             if (SettingsManager.Instance.Branding!="SINDHI")
             {
-                user = objUser.Select_STP_GetUserDetails().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried != 0).FirstOrDefault();
+                user = objUser.Select_STP_GetUserDetails().Where(p => p.UserName.ToUpper() == model.UserName.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried == 0).FirstOrDefault();
             }
             else
             {
-                user=objUser.Select_STP_GetUserDetails().Where(p => p.MobileNo.ToUpper() == model.MobileNo.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried != 0).FirstOrDefault();
+                user=objUser.Select_STP_GetUserDetails().Where(p => p.MobileNo.ToUpper() == model.MobileNo.ToUpper() && p.Password.ToUpper() == model.Password.ToUpper() && p.ismarried == 0).FirstOrDefault();
             }
             if (user!=null)
             {
@@ -272,7 +272,7 @@ namespace ShriVivah.Controllers
                         model.UserId = userid;
                         PendingUsersController pending = new PendingUsersController();
                         pending.SendSMS(userid);
-                        SessionManager.GetInstance.ActiveUser = new STP_GetUserDetail() {UserId=user.UserId,Password=user.Password,FirstName=user.FirstName,MName=user.MName,LName=user.LName,MailId=user.MailId,MobileNo=user.MobileNo,UserType=user.UserType,Gender=user.Gender };
+                        SessionManager.GetInstance.ActiveUser = new STP_GetUserDetail() {UserId=user.UserId,Password=user.Password,FirstName=user.FirstName,MName=user.MName,LName=user.LName,MailId=user.MailId,MobileNo=user.MobileNo,UserType=user.UserType,Gender=model.Gender };
 
                         //objUser.SendOTP(model);
                         return Json(new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.RegistrationPage : "उमेदवार माहिती यशस्वीपणे जतन केले आहे." }, JsonRequestBehavior.AllowGet);

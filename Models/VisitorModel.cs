@@ -26,6 +26,25 @@ namespace ShriVivah.Models
         public int ReligionId { get; set; }
 
         public int CastId { get; set; }
+        public string PanchayatCode { get; set; }
+
+        public string Height { get; set; }
+
+        public int? MarritalStatus { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LName { get; set; }
+
+        public string City { get; set; }
+
+        public string BehalfOf { get; set; }
+
+        public string Qualification { get; set; }
+
+        public string Img1 { get; set; }
+
+        public string Income { get; set; }
     }
 
 

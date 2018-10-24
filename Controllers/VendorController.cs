@@ -40,7 +40,7 @@ namespace ShriVivah.Controllers
         {
             UserContextModel objUser = new UserContextModel();
             this.LoadIsAdmin();
-            if (SettingsManager.Instance.Branding=="SPMO")
+            if (SettingsManager.Instance.Branding=="SINDHI")
             {
                 var countries = objVendor.GetVendorsSPMO();
                 int pageindex = 0;
@@ -55,7 +55,7 @@ namespace ShriVivah.Controllers
                 VendorTypeContextModel objVendorType = new VendorTypeContextModel();
                 List<SelectListItem> lst = (from tbl in objVendorType.GetVendorTypes()
                                             select new SelectListItem { Value = tbl.VendorTypeId.ToString(), Text = tbl.VendorType }).ToList();
-                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
+                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
                 ViewBag.VendorTypeId = lst;
 
                 lst = (from tbl in objUser.GetAgentDetails()
@@ -65,7 +65,7 @@ namespace ShriVivah.Controllers
                            Text = tbl.FirstName + " " + tbl.LName
                        }).ToList();
 
-                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
+                lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
                 ViewBag.AgentId = lst;
 
                 int pageindex = 0;
@@ -105,10 +105,10 @@ namespace ShriVivah.Controllers
             VendorTypeContextModel objVendorType = new VendorTypeContextModel();
             List<SelectListItem> lst = (from tbl in objVendorType.GetVendorTypes()
                                         select new SelectListItem { Value = tbl.VendorTypeId.ToString(), Text = tbl.VendorType }).ToList();
-            lst.Insert(0, new SelectListItem() { Value = "0", Text =SettingsManager.Instance.Branding == "SPMO" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text =SettingsManager.Instance.Branding == "SINDHI" ? "---Business Type---" : "----व्यवसायाचा प्रकार ----" });
             ViewBag.VendorTypeId = lst;
             ViewBag.VendorTypes = Newtonsoft.Json.JsonConvert.SerializeObject(lst);
-            if (SettingsManager.Instance.Branding!="SPMO")
+            if (SettingsManager.Instance.Branding!="SINDHI")
             {
                 lst = (from tbl in objUser.GetAgentDetails()
                        select new SelectListItem
@@ -127,9 +127,9 @@ namespace ShriVivah.Controllers
                        }).ToList();
             }
 
-            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
+            lst.Insert(0, new SelectListItem() { Value = "0", Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Panchayat---" : "----माहिती देणारा ----" });
             ViewBag.AgentId = lst;
-            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "RegisterVendorSPMO" : "RegisterVendor";
+            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "RegisterVendorSPMO" : "RegisterVendor";
             return View(ViewName);
         }
 
@@ -146,7 +146,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult VendorFirst()
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
                 int pageindex = 0;
@@ -235,7 +235,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult SearchVendor(string prefix)
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 var countries = objVendor.GetVendorsSPMO().Where(p => p.VendorName.Contains(prefix.ToUpper()) || p.Address.Contains(prefix) || p.ContactNo.Contains(prefix));
                 int pageindex = 0;
@@ -256,7 +256,7 @@ namespace ShriVivah.Controllers
                     VendorDetails obj = new VendorDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -282,7 +282,7 @@ namespace ShriVivah.Controllers
                     VendorDetails obj = new VendorDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -291,7 +291,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult Reset()
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 var countries = objVendor.GetVendorsSPMO();
                 int pageindex = 0;
@@ -314,7 +314,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult VendorNext()
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
                 if (users != null)
@@ -338,7 +338,7 @@ namespace ShriVivah.Controllers
                         VendorDetails obj = new VendorDetails()
                         {
                             Status = false,
-                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                            ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                         };
                         return Json(obj, JsonRequestBehavior.AllowGet);
                     }
@@ -372,7 +372,7 @@ namespace ShriVivah.Controllers
                         VendorDetails obj = new VendorDetails()
                         {
                             Status = false,
-                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                            ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                         };
                         return Json(obj, JsonRequestBehavior.AllowGet);
                     }
@@ -386,7 +386,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult VendorPrev()
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 IQueryable<UserRequests_Vendor> users = (IQueryable<UserRequests_Vendor>)Session["users"];
 
@@ -411,7 +411,7 @@ namespace ShriVivah.Controllers
                         VendorDetails obj = new VendorDetails()
                         {
                             Status = false,
-                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                            ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
                         };
                         return Json(obj, JsonRequestBehavior.AllowGet);
                     }
@@ -446,7 +446,7 @@ namespace ShriVivah.Controllers
                         VendorDetails obj = new VendorDetails()
                         {
                             Status = false,
-                            ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
+                            ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात",
                         };
                         return Json(obj, JsonRequestBehavior.AllowGet);
                     }
@@ -460,7 +460,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult VendorLast()
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 var users = objVendor.GetVendorsSPMO();
                 VendorDetails obj = new VendorDetails();
@@ -521,7 +521,7 @@ namespace ShriVivah.Controllers
             this.loadViewBag();
             Session["pageindexsearch"] = 0;
             var users = objVendor.GetVendors().Skip(0 * PageSize).Take(PageSize);
-            string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "VendorsSPMO" : "Vendors";
+            string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "VendorsSPMO" : "Vendors";
             return View(ViewName, users);
         }
 
@@ -534,13 +534,13 @@ namespace ShriVivah.Controllers
         //    this.loadViewBag();
         //    Session["pageindexsearch"] = 0;
         //    var users = objVendor.GetVendors().Skip(0 * PageSize).Take(PageSize);
-        //    string ViewName = SettingsManager.Instance.Branding == "SPMO" ? "VendorsSPMO" : "Vendors";
+        //    string ViewName = SettingsManager.Instance.Branding == "SINDHI" ? "VendorsSPMO" : "Vendors";
         //    return View(ViewName,users);
         //}
 
         public ActionResult VendorsFilter(string prefix)
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 var userdetails = objVendor.GetVendorsSPMO();
                 var filter = userdetails.OrderBy(p => p.UserRequestID).Skip(0 * PageSize).Take(PageSize).Where(p => p.VendorName.Contains(prefix) || p.Address.Contains(prefix) || p.BusinessDescription.Contains(prefix) || p.City.Contains(prefix) || p.OwnerName.Contains(prefix));
@@ -587,7 +587,7 @@ namespace ShriVivah.Controllers
             obj.Status = true;
             try
             {
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
                 model.IsActive = true;
                 if (model.RegistrationDate==null)
                 {
@@ -607,7 +607,7 @@ namespace ShriVivah.Controllers
             catch (Exception)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FailedToSave : "माहिती सेव करू शकत नाही.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FailedToSave : "माहिती सेव करू शकत नाही.";
             }
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -620,7 +620,7 @@ namespace ShriVivah.Controllers
             //var test = countries.Where(p => p.Vendor.ToUpper() == model.Vendor.ToUpper()).FirstOrDefault();
             VendorDetails obj = new VendorDetails();
             obj.Status = true;
-            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहिती मध्ये बदल केला आहे.";
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.UpdateSuccess : "माहिती मध्ये बदल केला आहे.";
             objVendor.Update(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorId).Skip(pageindex * PageSize).Take(PageSize);
@@ -638,7 +638,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult ActiveDeactiveVendor(int VendorId,bool IsActive)
         {
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 bool success = objVendor.ActiveDeactiveVendorSPMO(VendorId, IsActive);
                 return Json(success, JsonRequestBehavior.AllowGet);

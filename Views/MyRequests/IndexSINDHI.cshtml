@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPageSINDHI.cshtml";
+}
+@Styles.Render("~/Content/AdminPanel/jquery-ui.css")
+@Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
+
+<div class="grid_3" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="MyRequestsController" style="min-height:500px">
+    <div class="container">
+        <input type="hidden" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender" id="hdnGender" />
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">Regular Search : Total Users {{TotalRecords}}</li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-9 search_left">
+                <div class="form_but1">
+                    <label class="col-sm-5 control-lable1" for="sex">Page Size : </label>
+                    <div class="col-sm-7 form_radios">
+                        <select class="form-control" id="ddlPageSize">
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="form_but1">
+                    <label class="col-sm-5 control-lable1" for="sex">Page No : </label>
+                    <div class="col-sm-7 form_radios">
+                        <select class="form-control" id="ddlPageNo"></select>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <input type="hidden" id="UserId" value="@ViewBag.UserId" />
+            <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+            <input type="hidden" id="UserGender" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender" />
+            <div class="col-md-9 search_left">
+                <form>
+                    <div class="form_but1">
+                        <button type="button" class="btn btn-danger col-md-12" data-ng-click="SearchData()">Search</button>
+                        <div class="clearfix"> </div>
+                    </div>
+                </form>
+                <div class="paid_people">
+                    <h1>Search Profile</h1>
+                    <div class="row_1" data-ng-repeat="user in UserList">
+                        <div class="col-md-12">
+                            <div class="headerdiv">{{user.PanchayatCode}}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-sm-3 profile_left-top">
+                                <img data-ng-src="{{user.Img1}}" class="img-responsive profileimg" alt="" />
+                            </div>
+                            <div class="col-sm-9">
+                                <table class="table_working_hours">
+                                    <tbody>
+                                        <tr class="opened_1">
+                                            <td class="day_label1">Name :</td>
+                                            <td class="day_value">{{user.FirstName}} &nbsp; {{user.LName}}</td>
+                                        </tr>
+                                        <tr class="opened_1">
+                                            <td class="day_label1">Age / Height :</td>
+                                            <td class="day_value">{{user.Age}}, {{user.Height}}</td>
+                                        </tr>
+                                        <tr class="opened">
+                                            <td class="day_label1">Marital Status :</td>
+                                            <td class="day_value" ng-switch="user.MarritalStatus">
+                                                <span ng-switch-when="1">Never Married</span>
+                                                <span ng-switch-when="2">Widow</span>
+                                                <span ng-switch-when="3">Divorcee</span>
+                                                <span ng-switch-when="4">Separated</span>
+                                                <span ng-switch-when="5">Annulled</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="opened">
+                                            <td class="day_label1">City :</td>
+                                            <td class="day_value">{{user.City}}</td>
+                                        </tr>
+                                        <tr class="closed">
+                                            <td class="day_label1">Profile Created by :</td>
+                                            <td class="day_value closed"><span>{{user.BehalfOf}}</span></td>
+                                        </tr>
+                                        <tr class="closed">
+                                            <td class="day_label1">Education :</td>
+                                            <td class="day_value closed"><span>{{user.Qualification}}</span></td>
+                                        </tr>
+                                        <tr class="closed">
+                                            <td class="day_label1">Income :</td>
+                                            <td class="day_value closed"><span>{{user.Income}}</span></td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                                <div class="buttons">
+                                    <div class="vertical" data-ng-click="ApproveRequest(user)" data-ng-show="user.OnlyImageFullAccess===0 && UserGender==='F'">Share Only Image</div>
+                                    <div class="vertical" data-ng-click="ApproveRequestAll(user)" data-ng-show="user.FullAccess===0 && UserGender==='F'">Share Image With Contact Details</div>
+                                    <div class="vertical" data-ng-click="RedirectUser(user)">View Profile</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Main/MyRequestsController.js")
+

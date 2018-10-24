@@ -71,7 +71,7 @@ namespace ShriVivah.Controllers
                 ReligionDetails obj = new ReligionDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoRecords : "No Records to display"
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoRecords : "No Records to display"
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -112,7 +112,7 @@ namespace ShriVivah.Controllers
                     ReligionDetails obj = new ReligionDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -148,7 +148,7 @@ namespace ShriVivah.Controllers
                     ReligionDetails obj = new ReligionDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "You are already on first page",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "You are already on first page",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -195,12 +195,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "Record saved successfully.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "Record saved successfully.";
                 objReligion.Save(model);
             }
             int pageindex = 0;
@@ -221,12 +221,12 @@ namespace ShriVivah.Controllers
             if (test != null)
             {
                 obj.Status = false;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.AlreadyExist : "Record already exist.";
             }
             else
             {
                 obj.Status = true;
-                obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "Record updated successfully.";
+                obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.UpdateSuccess : "Record updated successfully.";
                 objReligion.Update(model);
             }
             int pageindex = 0;

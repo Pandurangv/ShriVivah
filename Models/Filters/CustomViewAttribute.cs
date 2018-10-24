@@ -13,6 +13,10 @@ namespace ShriVivah.Models.Filters
             var result = filterContext.Result as ViewResultBase;
             if (result != null)
             {
+                if (string.IsNullOrEmpty(result.ViewName))
+                {
+                    result.ViewName = "Index";
+                }
                 result.ViewName= result.ViewName+SettingsManager.Instance.Branding;
             }
         }

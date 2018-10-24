@@ -80,6 +80,34 @@ namespace ShriVivah.Models
                 if (HttpContext.Current.Session["ActiveUser"] != null)
                 {
                     user = (STP_GetUserDetail)HttpContext.Current.Session["ActiveUser"];
+                    if (user.UserType!="Admin")
+                    {
+                        if (!string.IsNullOrEmpty(user.Img1))
+                        {
+                            if (!user.Img1.Contains(SettingsManager.Instance.SourcePath))
+                            {
+                                user.Img1 = SettingsManager.Instance.SourcePath + user.Img1;
+                            }
+                        }
+                        else
+                        {
+                            if (user.Gender == "M")
+                            {
+                                user.Img1 = SettingsManager.Instance.SourcePathM;
+                            }
+                            else
+                            {
+                                user.Img1 = SettingsManager.Instance.SourcePathF;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(user.Img2))
+                        {
+                            if (!user.Img2.Contains(SettingsManager.Instance.SourcePath))
+                            {
+                                user.Img2 = SettingsManager.Instance.SourcePath + user.Img2;
+                            }
+                        }
+                    }
                 }
                 return user;
             }

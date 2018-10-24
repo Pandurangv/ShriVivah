@@ -120,7 +120,7 @@ namespace ShriVivah.Models
             objData.tblVendors.Add(vendortype);
             objData.SaveChanges();
 
-            if (SettingsManager.Instance.Branding=="SPMO")
+            if (SettingsManager.Instance.Branding=="SINDHI")
             {
                 UserRequests request = new UserRequests()
                 {

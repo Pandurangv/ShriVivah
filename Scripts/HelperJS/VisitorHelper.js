@@ -52,7 +52,7 @@ function bindVisitorData(SubCategory)
     
     var html="";
     $.each(SubCategory, function (i, item) {
-        html += '<tr class="active"><td>' + item.VisitedUserId + '</td><td>' + item.UserName + '</td><td>' + item.Address + '</td><td>' + item.ReligionName + '</td><td><input type="button" class="btn-success btn" value="View Profile" onclick="ViewProfile(' + item.VisitedUserId + ');" /></td><td><input type="button" class="btn-success btn" value="Approve Request" onclick="ApproveRequestSPMO(' + item.VisitorId + ');" /></td></tr>';
+        html += '<tr class="active"><td>' + item.VisitedUserId + '</td><td>' + item.UserName + '</td><td>' + item.Address + '</td><td>' + item.ReligionName + '</td><td><input type="button" class="btn-success btn" value="View Profile" onclick="ViewProfile(' + item.VisitedUserId + ');" /></td></tr>';
     })
     //html += "</tbody>";
     $("#visitordata").html(html);

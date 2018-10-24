@@ -1,0 +1,322 @@
+﻿@model IQueryable<ShriVivah.Models.DataModels.StateContextModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFirst,#btnNext,#btnPrev,#btnLast").click(function () {
+            ShowLoader();
+            var btnId = $(this).attr("id");
+            var urluse = "";
+            if (btnId == "btnFirst") {
+                urluse = '@Url.Action("StateFirst", "State")';
+            }
+            if (btnId == "btnNext") {
+                urluse = '@Url.Action("StateNext", "State")';
+            }
+            if (btnId == "btnPrev") {
+                urluse = '@Url.Action("StatePrev", "State")';
+            }
+            if (btnId == "btnLast") {
+                urluse = '@Url.Action("StateLast", "State")';
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: urluse,
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.StateList);
+                    }
+                    else {
+                        alert(students.ErrorMessage);
+                    }
+                    HideLoader();
+                }
+            });
+        });
+        $("#btnSearch").click(function () {
+            
+            ShowLoader();
+            var prefix = $("#txtSearch").val();
+            if (prefix == "") {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: "Please fill search text!",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { prefix: prefix },
+                url: '@Url.Action("Search", "State")',
+                dataType: "json",
+                success: function (students) {
+                    if (students.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(students.StateList);
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: students.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    HideLoader();
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                url: '@Url.Action("Reset", "State")',
+                dataType: "json",
+                success: function (students) {
+                    $("#txtSearch").val("");
+                    $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                    bindUserData(students);
+                    //
+                    HideLoader();
+                }
+            });
+        });
+
+        $("#btnSave").click(function () {
+            var model = $('#frmState').serialize();
+            if ($("#CountryId").val() == 0) {
+                $("#errorCName").show();
+                return false;
+            }
+            if ($("#StateName").val() == "") {
+                $("#errorName").show();
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("AddState", "State")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.StateList);
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    HideLoader();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    //
+                    HideLoader();
+                }
+            });
+        
+        });
+        $("#btnUpdate").click(function () {
+            var model = $('#frmState').serialize();
+            if ($("#CountryId").val() == 0) {
+                $("#errorCName").show();
+                return false;
+            }
+            if ($("#StateName").val() == "") {
+                $("#errorName").show();
+                return false;
+            }
+            ShowLoader();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action("Update", "State")',
+                data: model,
+                success: function (data) {
+                    if (data.Status == true) {
+                        $('#SubCategoryInfo tr').not(function () { if ($(this).has('th').length) { return true } }).remove();
+                        bindUserData(data.StateList);
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                        $("#btnCancel").trigger("click");
+                    }
+                    else {
+                        var objShowCustomAlert = new ShowCustomAlert({
+                            Title: "",
+                            Message: data.ErrorMessage,
+                            Type: "alert",
+                        });
+                        objShowCustomAlert.ShowCustomAlertBox();
+                    }
+                    HideLoader();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Error during process: \n' + xhr.responseText);
+                    HideLoader();
+                }
+            });
+
+        });
+
+        $("#btnCancel").click(function () {
+            $("#createDiv").hide();
+            $("#divMain").show();
+            $("#StateId").val("");
+            $("#StateName").val("");
+            $("#CountryId").val("1");
+            return false;
+        });
+        $("#btnAdd").click(function () {
+            $("#createDiv").show();
+            $("#divMain").hide();
+            $("#StateId").val("");
+            $("#StateName").val("");
+            $("#CountryId").val("1");
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            return false;
+        });
+    });
+
+    var bindUserData = function (SubCategory) {
+        var table = document.getElementById("SubCategoryInfo");
+        var tbody = document.createElement("tbody");
+        $.each(SubCategory, function (i, SubCategorydata) {
+            var row = document.createElement("tr");
+
+            var cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.StateId;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.CountryName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerHTML = SubCategorydata.StateName;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.id = SubCategorydata.StateId;
+            $(btn).attr("type", "button");
+            $(btn).addClass("btn-success btn");
+            '@SettingsManager.Instance.Branding' == "SINDHI" ? $(btn).val("Edit") : $(btn).val("बदल करा");
+            //<input type="button" class="btn-success btn" value="Edit" onclick="EditReligion(item.ReligionId);" />
+            //btn.innerHTML = "Edit";
+            //cell.appendChild(a);
+            $(btn).attr("onclick", "EditState(" + SubCategorydata.StateId + ");")
+            //$(a).click(function () {
+            //    var BGId = this.id;
+            //    Edit(BgId);
+            //});
+            cell.appendChild(btn);
+
+            row.appendChild(cell);
+            tbody.appendChild(row);
+            table.appendChild(tbody);
+        });
+    };
+
+    function EditState(BGId)
+    {
+        ShowLoader();
+        if (BGId > 0) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { BGId: BGId },
+                url: '@Url.Action("Edit", "State")',
+                dataType: "json",
+                success: function (students) {
+                    $("#btnAdd").trigger("click");
+                    $("#StateName").val(students.StateName);
+                    $("#StateId").val(students.StateId);
+                    $("#CountryId").val(students.CountryId);
+                    $("#btnSave").hide();
+                    $("#btnUpdate").show();
+                    HideLoader();
+                }
+            });
+        }
+    }
+</script>
+<div class="grid-3">
+    <div class="container">
+        <div class="headerdiv">State Details</div>
+        <div class="span_3" id="divMain">
+            <div class="col-md-12 divPadding1">
+                <div class="col-md-9">
+                    <input type="text" id="txtSearch" class="form-control inputborder" />
+                </div>
+                <div class="col-md-3">
+                    <input type="button" value="Search" class="btn btn-default" id="btnSearch" />
+                    <input type="button" value=" Reset " class="btn btn-default" id="btnReset" />
+                    <input type="button" value=" New" class="btn btn-default" id="btnAdd" />
+                </div>
+            </div>
+            <div class="bs-example1" data-example-id="contextual-table">
+                <table class="table table-bordered" id="SubCategoryInfo">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Country Name</th>
+                            <th>State Name</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="active">
+                                <td>@item.StateId</td>
+                                <td>@item.CountryName</td>
+                                <td>@item.StateName</td>
+                                <td>
+                                    <input type="button" class="btn-success btn" value="Edit" onclick="EditState(@item.StateId);" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 page_1">
+                <nav>
+                    <ul class="pagination">
+                        <li><a href="#" aria-label="First" id="btnFirst"><span aria-hidden="true"><<</span></a></li>
+                        <li><a href="#" aria-label="Previous" id="btnPrev"><span aria-hidden="true"><</span></a></li>
+                        <li><a href="#" aria-label="Nex" id="btnNext"><span aria-hidden="true">></span></a></li>
+                        <li><a href="#" aria-label="Last" id="btnLast"><span aria-hidden="true">>></span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div id="createDiv" class="span_3" style="display:none">
+            @Html.Partial("_AddStateSINDHI", new ShriVivah.Models.Entities.tblState())
+        </div>
+    </div>
+</div>

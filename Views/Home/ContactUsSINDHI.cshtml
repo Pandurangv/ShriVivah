@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "ContactUs";
-    Layout = "~/Views/Shared/_LayoutPageSINDHI.cshtml";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
 }
 @*<section id="contact" class="section-bg wow fadeInUp">
     <div class="container">
@@ -80,7 +80,7 @@
     <div class="container">
         <div class="breadcrumb1">
             <ul>
-                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <a href="@Url.Action("Index","Home")"><i class="fa fa-home home_1"></i></a>
                 <span class="divider">&nbsp;|&nbsp;</span>
                 <li class="current-page">Contact</li>
             </ul>
@@ -91,11 +91,17 @@
                 <dl class="grid_4">
                     <dt>Address :</dt>
                     <dd>
-                        SINDHU Progressive Matrimonial Organisation, <br>
+                        Sindhu Progressive Matrimonial Organisation, <br>
                         Office No 1C, First Floor, Sai Plaza, Sai Chawk, Pimpri Pune 411017.
+                        <br /> 
+                        Maharashtra, India
                     </dd>
                 </dl>
                 <dl class="grid_4">
+                    <dt>Mobile No :</dt>
+                    <dd>
+                        +91 9552925750
+                    </dd>
                     <dt>Telephones :</dt>
                     <dd>
                         +020 27414229
@@ -110,15 +116,37 @@
     </div>
 </div>
 <div class="about_middle">
-    <div class="container">
+    <div class="container" data-ng-app="VarmalaVivahApp" data-ng-controller="VendorTypesController">
         <h2>Contact Form</h2>
         <form id="contact-form" class="contact-form">
             <fieldset>
-                <input type="text" class="text" placeholder="" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
-                <input type="text" class="text" placeholder="" value="Phone" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Phone';}">
-                <input type="text" class="text" placeholder="" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
-                <textarea value="Message" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message</textarea>
-                <input name="submit" type="submit" id="submit" value="Submit">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" placeholder="Name" id="Name" data-ng-blur="ValidateName()" maxlength="60">
+                    <span style="color:#fff" data-ng-show="ErrorModel.IsName">
+                        {{ErrorMessage}}
+                    </span>
+                </div>
+                <div class="col-md-12">
+                    <input type="number" class="form-control" placeholder="Mobile. No." style="margin-bottom:5px" id="txtMobileNo" maxlength="10" data-ng-blur="ValidateMobileNo()">
+                    <span style="color:#fff" data-ng-show="ErrorModel.IsMobileNo">
+                        {{ErrorMessage}}
+                    </span>
+                </div>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" placeholder="Email" id="useremail" data-ng-blur="ValidateEmail()"
+                                   maxlength="80">
+                    <span style="color:#fff" data-ng-show="ErrorModel.IsEmail">
+                        {{ErrorMessage}}
+                    </span>
+                </div>
+                <div class="col-md-12">
+                    <textarea placeholder="Message" id="usermessage" data-ng-blur="ValidateUserMessage()"></textarea>
+                    <span style="color:#fff" data-ng-show="ErrorModel.IsUserMsg">
+                        {{ErrorMessage}}
+                    </span>
+                </div>
+
+                <button type="button" class="btn btn-danger" data-ng-click="SaveContacts()">Submit</button>
             </fieldset>
         </form>
     </div>

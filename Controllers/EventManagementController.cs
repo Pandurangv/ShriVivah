@@ -52,13 +52,26 @@ namespace ShriVivah.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
-        [MyAuthorizeAttribute(IsAdmin = false)]
         public ActionResult GetEvents()
         {
             EventResponse response = new EventResponse() { Status = true };
             response.EventList = objEvents.GetEvents().ToList();
             //response.AgentList = objUser.GetAgentDetails().ToList();
             return Json(response,JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            //bool result = false;
+            string base64string = string.Empty;
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files[0];
+                base64string = "Content/EventImages/" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + "_3.jpg";
+                file.SaveAs(Server.MapPath("~/" + base64string));
+            }
+            return Json(base64string);
         }
 
         [MyAuthorizeAttribute(IsAdmin = false)]

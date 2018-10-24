@@ -17,8 +17,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     @Scripts.Render("~/Scripts/SPMO/SINDHI/bootstrap.min.js")
     @Styles.Render("~/Content/SPMO/SINDHI/css/style.css")
     <!-- Custom Theme files -->
-    <link href='//fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
+    @Styles.Render("~/Content/SPMO/SINDHI/css/css.css")
+    @Styles.Render("~/Content/SPMO/SINDHI/css/cssu.css")
+
     <!----font-Awesome----->
     @Styles.Render("~/Content/SPMO/SINDHI/css/font-awesome.css")
     <!----font-Awesome----->
@@ -41,8 +42,10 @@ $(document).ready(function(){
     @Scripts.Render("~/Scripts/Main/angular.min.js")
     @Scripts.Render("~/Scripts/Main/App.js")
     @Scripts.Render("~/Scripts/Main/VendorTypesController.js")
+    
 </head>
 <body>
+    <input type="hidden" id="hdnbranding" value="@SettingsManager.Instance.Branding" />
     <input type="hidden" id="branding" value="@SettingsManager.Instance.Branding" />
     <input type="hidden" id="hdnVendorType" value="@ViewBag.VendorTypes" />
     <div class="navbar navbar-inverse-blue navbar">
@@ -54,62 +57,113 @@ $(document).ready(function(){
                     <div class="navbar-inner">
                         <div class="container">
 
-                            <div class="navbar-left logo">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <img src="@Url.Content("~/Content/SPMO/SINDHI/images/logo.png")" title="logo" style="top: 15px;position: fixed;left: 15px;">
-                                    </div>
-                                    <div class="col-md-9" style="padding-left:0px;">
-                                        <h1 class="brand brand-name navbar-left" style="top:10px;">
-                                            <div class="navbar-left" style="color: #fff;">
-                                                SINDHI PROGRESSIVE<br /> MATRIMONIAL ORGANISATION
-                                            </div>
-                                        </h1>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-2" style="padding-left:0px;">
+                                    <img src="@Url.Content("~/Content/SPMO/SINDHI/images/logofinal.jpg")" title="logo" style="float: left;left: 15px;height:100px">
                                 </div>
-
+                                <div class="col-md-10" style="padding-left:0px;">
+                                    <h1 class="brand brand-name navbar-left" style="top:10px;">
+                                        <div class="navbar-left">
+                                            <span style="color: #fff;font-size: 35px;padding-top: 10px;">SINDHU PROGRESSIVE MATRIMONIAL ORGANISATION</span>
+                                            <br />
+                                            <span style="color: #fff;font-size: 18px;padding-top: 10px;">REG NO: MAH/223/2000/PUNE</span>
+                                        </div>
+                                    </h1>
+                                </div>
                             </div>
 
                         </div>
+                        <br>
+
+                        <div class="clearfix"></div>
+                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                        {
+                            <div class="pull-left">
+                                <nav class="navbar nav_bottom pull-right" role="navigation">
+                                    <ul class="nav navbar-nav nav_1">
+                                        <li><a href="#">Welcome- @ShriVivah.Models.SessionManager.GetInstance.ActiveUser.FirstName &nbsp; @ShriVivah.Models.SessionManager.GetInstance.ActiveUser.LName </a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
+
                         <div class="pull-right">
-                            <nav class="navbar nav_bottom" role="navigation">
+                            <nav class="navbar nav_bottom pull-right" role="navigation">
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
                                     <ul class="nav navbar-nav nav_1">
                                         <li><a href="@Url.Action("Index","Home")">Home</a></li>
                                         <li><a href="@Url.Action("About","Home")">About</a></li>
-                                        <li><a href="@Url.Action("Register","Account")">Register</a></li>
-                                        <li><a href="@Url.Action("Register","Account")">Login</a></li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="matches.html">New Matches</a></li>
-                                                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
-                                                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
-                                                <li><a href="members.html">Premium Members</a></li>
-                                                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="search.html">Regular Search</a></li>
-                                                <li><a href="profile.html">Recently Viewed Profiles</a></li>
-                                                <li><a href="search-id.html">Search By Profile ID</a></li>
-                                                <li><a href="faq.html">Faq</a></li>
-                                                <li><a href="shortcodes.html">Shortcodes</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="inbox.html">Inbox</a></li>
-                                                <li><a href="inbox.html">New</a></li>
-                                                <li><a href="inbox.html">Accepted</a></li>
-                                                <li><a href="sent.html">Sent</a></li>
-                                                <li><a href="upgrade.html">Upgrade</a></li>
-                                            </ul>
-                                        </li>
+
+                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                                        {
+                                            if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Admin")
+                                            {
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Masters<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("Index", "BloodGroup")">Blood Group</a></li>
+                                                        <li><a href="@Url.Action("Index", "Country")">Country</a></li>
+                                                        <li><a href="@Url.Action("Index", "State")">State</a></li>
+                                                        <li><a href="@Url.Action("Index", "Oras")">Moon Sign</a></li>
+                                                        <li><a href="@Url.Action("Index", "Religion")">Religion</a></li>
+                                                        <li><a href="@Url.Action("Index", "Cast")">Cast</a></li>
+                                                        <li><a href="@Url.Action("Index", "PendingUSers")">Pending Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "PendingUSers")">Inactive Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "PaymentDetails")">Payment Details</a></li>
+                                                        <li><a href="@Url.Action("RegisterFromAdmin", "UserProfile")">Register</a></li>
+                                                        <li><a href="@Url.Action("Index", "MarriedUsers")">Married Users</a></li>
+                                                        <li><a href="@Url.Action("Index", "EventManagement")">Events &amp; Functions</a></li>
+                                                        <li><a href="@Url.Action("Index", "Feedback")">Feedback</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Regular Search</a></li>
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Search Profile ID</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("ShowProfile", "UserProfile",new { ProfileId = ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserId})">My Profile</a></li>
+                                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "F")
+                                                        {
+                                                            <li><a href="@Url.Action("Visitors", "UserProfile")">Who Viewed my Profile</a></li>
+                                                        }
+                                                        <li><a href="@Url.Action("Index", "MyRequests")">Requests</a></li>
+                                                        <li><a href="@Url.Action("Index", "Shortlist")">Shortlist</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Regular Search</a></li>
+                                                        <li><a href="@Url.Action("SearchRequests", "UserProfile")">Search By Profile ID</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Profile<span class="caret"></span></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="@Url.Action("UploadPhotos", "UserProfile")">Upload Photos</a></li>
+                                                        <li><a href="@Url.Action("EditProfile", "UserProfile")">Edit Profile</a></li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        }
+                                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser == null)
+                                        {
+                                            <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                                            <li><a href="@Url.Action("Register", "Account")">Login</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="@Url.Action("LogOff", "Account")">Log Off</a></li>
+                                        }
                                         <li class="last"><a href="@Url.Action("Contact","Home")">Contacts</a></li>
                                     </ul>
                                 </div><!-- /.navbar-collapse -->
@@ -124,7 +178,40 @@ $(document).ready(function(){
     </div> <!-- end navbar-inverse-blue -->
     <!-- ============================  Navigation End ============================ -->
     
-    @RenderBody();
+    <div class="grid-3">
+        <div class="container">
+            @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+            {
+                <div class="col-md-9" id="bannerdiv">
+                    @RenderBody()
+                </div>
+                <div class="col-md-3 match_right" id="profilediv">
+                    <div class="view_profile view_profile2">
+                        @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                        {
+                            <h3>My Profile</h3>
+                            <ul class="profile_item">
+                                <li class="profile_item-img" style="width:80%;padding-left:20%">
+                                    <img src="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Img1" style="width:150px;max-height:150px;" class="img-responsive" alt="" />
+                                </li>
+                                <li class="profile_item-desc" style="width:100%;text-align:center">
+                                    <h4>@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.PanchayatCode</h4>
+                                    <p>@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.City</p>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12" id="bannerdiv1">
+                    @RenderBody()
+                </div>
+            }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
     <div class="footer">
         <div class="container">
             <div class="col-md-4 col_2">
@@ -135,17 +222,17 @@ $(document).ready(function(){
                 <h4>Help & Support</h4>
                 <ul class="footer_links">
                     <li><a href="#">24x7 Live help</a></li>
-                    <li><a href="contact.html">Contact us</a></li>
+                    <li><a href="@Url.Action("Contact","Home")">Contact us</a></li>
                     <li><a href="#">Feedback</a></li>
-                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="#">FAQs</a></li>
                 </ul>
             </div>
             <div class="col-md-2 col_2">
                 <h4>Quick Links</h4>
                 <ul class="footer_links">
-                    <li><a href="privacy.html">Privacy Policy</a></li>
-                    <li><a href="terms.html">Terms and Conditions</a></li>
-                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Services</a></li>
                 </ul>
             </div>
             <div class="col-md-2 col_2">
@@ -159,9 +246,13 @@ $(document).ready(function(){
             </div>
             <div class="clearfix"> </div>
             <div class="copy">
-                <p>Copyright © 2015 Marital . All Rights Reserved  | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+                <p>Copyright © 2015 Sindhu Matri </p>
             </div>
         </div>
+    </div>
+    <div class="mainLoader" id="rclLoader" style="display: none;">
+        <div class="mainLoaderImg"></div>
+        <div class="lyfBg"></div>
     </div>
 </body>
 </html>

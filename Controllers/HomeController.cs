@@ -4,6 +4,7 @@ using ShriVivah.Models.Entities;
 using ShriVivah.Models.Filters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -52,6 +53,7 @@ namespace ShriVivah.Controllers
             this.loadViewBag();
             return View("Index");
         }
+
         [CustomView]
         public ActionResult Contact()
         {
@@ -74,8 +76,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -83,7 +85,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = true;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -99,8 +101,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest1()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -109,7 +111,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = false;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -125,8 +127,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest2()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -134,7 +136,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = true;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -150,8 +152,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest3()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -159,7 +161,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = false;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -175,8 +177,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest5()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Admin.varm@147";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -184,7 +186,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = true;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -200,8 +202,8 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest6()
         {
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
             message.From = new MailAddress(fromEmail);
             message.To.Add(toEmail);
@@ -209,7 +211,7 @@ namespace ShriVivah.Controllers
             message.Body = "Hello Bob ";
             message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-            using (SmtpClient smtpClient = new SmtpClient("mail.varmalavivah.com", 25))
+            using (SmtpClient smtpClient = new SmtpClient(SettingsManager.Instance.SMTP, 25))
             {
                 smtpClient.EnableSsl = false;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -225,10 +227,10 @@ namespace ShriVivah.Controllers
         public ActionResult MailTest7()
         {
             System.Web.Mail.MailMessage message = new System.Web.Mail.MailMessage();
-            string fromEmail = "contact@varmalavivah.com";
-            string fromPW = "Ganesh0511@";
+            string fromEmail = SettingsManager.Instance.fromEmail;
+            string fromPW = SettingsManager.Instance.fromPW;
             string toEmail = "truptikumbhar4@gmail.com";
-            const string SERVER = "mail.varmalavivah.com";
+            string SERVER = SettingsManager.Instance.SMTP;
             System.Web.Mail.MailMessage oMail = new System.Web.Mail.MailMessage();
             
             oMail.From = fromEmail;
@@ -317,7 +319,7 @@ namespace ShriVivah.Controllers
                     ResponseModel obj = new ResponseModel()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -345,9 +347,10 @@ namespace ShriVivah.Controllers
         [HttpPost]
         public ActionResult SaveContactUs(tblContactDetails tbl)
         {
+            Error obje = new Error();
             bool test= objUser.Save(tbl);
-            SettingsHelper.SendMail(tbl.MailId,tbl.Name,true);
-            return Json(test, JsonRequestBehavior.AllowGet);
+            obje.ErrorMessage=SettingsHelper.SendMail(tbl.MailId,tbl.Name,true);
+            return Json(obje, JsonRequestBehavior.AllowGet);
         }
 
         
@@ -358,7 +361,7 @@ namespace ShriVivah.Controllers
             {
                 ResponseModel model = new ResponseModel()
                 {
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidUserNamePassword : "Your request has been sent for approval.",
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InvalidUserNamePassword : "Your request has been sent for approval.",
                     Status = false,
                 };
                 bool Success=false;
@@ -366,14 +369,14 @@ namespace ShriVivah.Controllers
                 if (requestedUser.Gender.ToUpper()==SessionManager.GetInstance.ActiveUser.Gender.ToUpper())
                 {
                     Success = false;
-                    model.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestSentFailed : "Not able to send request.";
+                    model.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.RequestSentFailed : "Not able to send request.";
                 }
                 else
                 {
                      Success= objUser.SendRequest(RequestUserId, SessionManager.GetInstance.ActiveUser.UserId);
                      if (Success==false)
                      {
-                         model.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestAlreadySent : "Request already sent for approval.";
+                         model.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.RequestAlreadySent : "Request already sent for approval.";
                      }
                 }
                 model.Status = Success;
@@ -381,7 +384,7 @@ namespace ShriVivah.Controllers
             }
             else
             {
-                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.RequestLogin : "Please do login before send request." });
+                return Json(new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.RequestLogin : "Please do login before send request." });
             }
         }
 
@@ -424,13 +427,13 @@ namespace ShriVivah.Controllers
             List<SelectListItem> lstData = (from tbl in lst
                                             select new SelectListItem { Text = tbl.ReligionName, Value = tbl.ReligionId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Religion---" : "---Select Religion---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Religion---" : "---Select Religion---", Value = "0" });
             target.ViewBag.ReligionId = lstData;
             OrasModel oras = new OrasModel();
             lstData = (from tbl in oras.GetOrass()
                        select new SelectListItem { Text = tbl.OrasName, Value = tbl.OrasId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Rashi---" : "---Select Rashi---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Rashi---" : "---Select Rashi---", Value = "0" });
 
             target.ViewBag.OrasId = lstData;
             
@@ -439,13 +442,13 @@ namespace ShriVivah.Controllers
             lstData = (from tbl in bg.GetEducations()
                        select new SelectListItem { Text = tbl.DegreeName, Value = tbl.QualificationId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Qualification---" : "---Select Qualification---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Qualification---" : "---Select Qualification---", Value = "0" });
 
             CastContextModel objC = new CastContextModel();
             lstData = (from tbl in objC.GetCasts()
                        select new SelectListItem { Text = tbl.CastName, Value = tbl.CastId.ToString() }).ToList();
 
-            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SPMO" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
+            lstData.Insert(0, new SelectListItem() { Text = SettingsManager.Instance.Branding == "SINDHI" ? "---Select Caste---" : "---जात निवडा---", Value = "0" });
             target.ViewBag.CasteId = lstData;
 
             target.ViewBag.QualificationId = lstData;

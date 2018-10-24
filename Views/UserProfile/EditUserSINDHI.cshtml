@@ -1,0 +1,549 @@
+﻿@model ShriVivah.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
+}
+@Styles.Render("~/Content/AdminPanel/jquery.timepicker.css")
+@Scripts.Render("~/Scripts/HelperJS/jquery.timepicker.js")
+@Scripts.Render("~/Scripts/Main/jquery.date-dropdowns.min.js")
+@Scripts.Render("~/bundles/EditUserProfile")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#TimeofBirth').timepicker({ step: '1' });
+        var minAge = $("#hdnMinAge").val();
+        
+        bindData();
+        DisableControls();
+        $("#DOB").dateDropdowns({
+            minAge: minAge
+        });
+    });
+</script>
+
+<div class="grid-3">
+    <div class="container">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.HiddenFor(m => m.UserId)
+
+                @Html.ValidationSummary(true)
+                <input type="hidden" value="@ViewBag.UserDetails" id="UserDetails" />
+                <input type="hidden" id="userid" />
+                <input type="hidden" id="hdnMinAge" value="@ViewBag.MinAge" />
+
+                <input type="hidden" id="pagename" value="edituser" />
+                <div class="form-group" id="contentdiv">
+                    <div id="divPersonal">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Personal Information</div>
+                            @*<div class="form-group">
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>*@
+                            <div class="form-group">
+                                <div class="form-group col-md-12">
+                                    <label for="select" class="col-sm-2 control-label">Gender<span style="color:red;font-size:x-large">*</span></label>
+                                    <div class="col-md-4">
+                                        <select id="ddlGender" class="form-control setMargin">
+                                            <option value="">--Select Gender--</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group col-md-12">
+                                    <label for="select" class="col-sm-2 control-label">Email<span style="color:red;font-size:x-large">*</span></label>
+                                    <div class="col-md-4">
+                                        <input type="email" id="Email" style="text-transform:lowercase"
+                                               placeholder="Email Id"
+                                               maxlength="50" class="form-control setMargin emailinput" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">Marrital Status<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoUnmarried" value="1" required="required" />Never Married</label></div>
+                                    <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoWidow" value="2" required="required" />Widow</label></div>
+                                    <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoDivorcee" value="3" required="required" />Divorcee</label></div>
+                                    <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoSeparated" value="4" required="required" />Separated</label></div>
+                                    <div class="radio block"><label><input type="radio" name="marritalstatus" id="rdoAnnulled" value="5" required="required" />Annulled</label></div>
+                                </div>
+                            </div>
+
+                            <div id="divorceeInfo" style="display:none">
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">Having Children</label>
+                                    <div class="col-sm-4">
+                                        <div class="radio block"><label><input type="radio" name="childrenhaving" id="rdochildNo" value="false" checked="checked" />No</label></div>
+                                        <div class="radio block"><label><input type="radio" name="childrenhaving" id="rdochildYes" value="true" />Yes</label></div>
+                                    </div>
+                                    <div class="col-sm-4" id="divchildstatus" style="display:none">
+                                        <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildLWM" value="true" />With Me</label></div>
+                                        <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildNLWM" value="false" />Not With Me</label></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Religion<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">@Html.DropDownList("ReligionId", ViewBag.ReligionId as SelectList, new { @class = "form-control inputborder", required = "required" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Cast<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">@Html.DropDownList("CasteId", ViewBag.CasteId as SelectList, new { @class = "form-control inputborder", required = "required" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Native Place of Parents</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="Subcaste" maxlength="50" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Moon sign</label>
+                                <div class="col-sm-4">@Html.DropDownList("OrasId", ViewBag.OrasId as SelectList, new { @class = "form-control inputborder", required = "required" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">Manglik</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="Manglik" id="rdoManglikYes" value="0" checked="checked" /> No</label></div>
+                                    <div class="radio block"><label><input type="radio" name="Manglik" id="rdoManglikNo" value="1" />Yes</label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Birth Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Date of Birth<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4"><input type="hidden" id="DOB" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Birth Time</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="TimeofBirth" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Birth Place/City</label>
+                                <div class="col-sm-4"><input class="form-control inputborder" id="PlaceOfBirth" required="required" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Birth District</label>
+                                <div class="col-sm-4"><input class="form-control inputborder" id="BirthDistrict" required="required" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Birth State</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control inputborder" id="BirthState"></select>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Birth Country</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control inputborder" id="BirthCountry"></select>
+                                </div>
+                            </div>
+
+
+                            @*<div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label">Birth Name</label>
+                        <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtBirthName" required="required" maxlength="50" /></div>
+                    </div>*@
+                        </div>
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Contact Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Address<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">
+                                    <textarea class="form-control inputborder" id="txtAddress" required="required" maxlength="500" rows="3" style="height:100px"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">
+                                    City
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control inputborder" id="City" required="required" maxlength="40" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Pincode<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control inputborder" id="Pincode" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">House</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="IsOwnHouse" id="rdoOwn" value="1" required="required" />Own </label></div>
+                                    <div class="radio block"><label><input type="radio" name="IsOwnHouse" id="rdoRented" value="0" required="required" />Rented</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Taluka</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control inputborder" id="Taluka" required="required" maxlength="50" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">District</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control inputborder" id="District" required="required" maxlength="50" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">State</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control inputborder" id="StateId"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Country</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control inputborder" id="CountryId"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Reference Name</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control inputborder" id="ReferenceName" required="required" maxlength="50" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Reference Contact No.</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control inputborder" id="ReferenceContact" required="required" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="divPhysical">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Physical Information</div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">Spec</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="IsSpec" id="rdoYes" value="true" required="required" />Yes </label></div>
+                                    <div class="radio block"><label><input type="radio" name="IsSpec" id="rdoRented" value="false" required="required" />No</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Height<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">@Html.DropDownList("HeightId", ViewBag.HeightId as SelectList, new { @class = "form-control inputborder", required = "required" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Weight (Kg.)</label>
+                                <div class="col-sm-4"><input type="number" min="40" max="140" id="weight" class="form-control inputborder" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Blood Group</label>
+                                <div class="col-sm-4">@Html.DropDownList("BloodGroupId", ViewBag.BloodGroupId as SelectList, new { @class = "form-control inputborder", required = "required" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkbox" class="col-sm-2 control-label">Health Information?</label>
+                                <div class="col-sm-4">
+                                    <div class="checkbox-inline1">
+                                        <label>
+                                            <input type="checkbox" name="handicappedstatus" id="rdoIsHandicapped" value="Handicapped" />Any Disability
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="disabledesc" maxlength="150" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Color</label>
+                                <div class="col-sm-4">
+                                    <select id="cmbColor" class="form-control inputborder" name="txtComplexion" required="required">
+                                        <option selected="" value="0">- Complexion -</option>
+                                        <option value="Very Fair">Very Fair</option>
+                                        <option value="Fair">Fair</option>
+                                        <option value="Brown">Brown</option>
+                                        <option value="Light Brown">Light Brown</option>
+                                        <option value="Medium Fair ">Medium Fair</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">Body Type</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="bodytype" id="rdoSlim" value="Thin" required="required" />Thin </label></div>
+                                    <div class="radio block"><label><input type="radio" name="bodytype" id="rdoAverage" value="Medium" required="required" />Medium</label></div>
+                                    <div class="radio block"><label><input type="radio" name="bodytype" id="rdoAtheletic" value="Healthy" required="required" />Healthy</label></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divProfessional">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Occupation Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Education<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">
+                                    <input id="QualificationId" type="text" class="form-control inputborder" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="radio" class="col-sm-2 control-label">Business/Job</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="occuption" id="rdoJob" value="0" /> Job</label></div>
+                                    <div class="radio block"><label><input type="radio" name="occuption" id="rdoBusiness" value="1" />Business</label></div>
+                                    <div class="radio block"><label><input type="radio" name="occuption" id="rdoNotWorking" value="2" />Not Working</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="display:none" id="officediv">
+                                <label for="radio" class="col-sm-2 control-label">Office/Shop</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="IsOwnShop" id="rdoYes" value="true" /> Own</label></div>
+                                    <div class="radio block"><label><input type="radio" name="IsOwnShop" id="rdoNo" value="false" />Rented</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Business/Job Information</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtCompanyName" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Business/Job Location</label>
+                                <div class="col-sm-4"><textarea class="form-control inputborder" id="txtCompanyLocation" style="height:100px" maxlength="50" rows="3"></textarea></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Hobbies</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtHobbies" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Activities</label>
+                                <div class="col-sm-4"><textarea class="form-control inputborder" id="txtActivities" rows="2"></textarea> </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="focusedinput">Annual Income<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4">
+                                    <select id="cmbIncome" class="form-control inputborder" name="txtIncome" required="required">
+                                        <option selected="selected" value="">Annual Income</option>
+                                        <option value="No Income">No Income</option>
+                                        <option value="Under   Rs.50,000">Less than Rs.50,000</option>
+                                        <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                                        <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                                        <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                                        <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                                        <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                                        <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                                        <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                                        <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="divFamilyDetails">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Family Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Father Name<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtFatherName" required="required" maxlength="50" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.MName" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Mother Name<span style="color:red;font-size:x-large">*</span></label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtMotherName" required="required" maxlength="30" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Grand Father Name</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtGFatherName" required="required" maxlength="50" /></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">No of Brothers</label>
+                                <div class="col-sm-4"><input type="number" min="0" max="4" class="form-control inputborder" id="txtNoofBrothers" required="required" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">No of Sisters</label>
+                                <div class="col-sm-4"><input type="number" min="0" max="4" class="form-control inputborder" id="txtNoofSisters" required="required" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Married Brothers</label>
+                                <div class="col-sm-4"><input type="number" min="0" max="4" class="form-control inputborder" id="txtNoofMBrothers" required="required" value="0" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Married Sisters</label>
+                                <div class="col-sm-4"><input type="number" min="0" max="4" class="form-control inputborder" id="txtNoofMSisters" required="required" value="0" /></div>
+                            </div>
+                            <div class="form-group" style="display:none">
+                                <label for="radio" class="col-sm-2 control-label">Fathers Occupation</label>
+                                <div class="col-sm-4">
+                                    <div class="radio block"><label><input type="radio" name="foccuption" id="rdofJob" value="Job" /> Job</label></div>
+                                    <div class="radio block"><label><input type="radio" name="foccuption" id="rdofBusiness" value="Business" />Business</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Business/Job Information</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtFCompanyName" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Fathers Income</label>
+                                <div class="col-sm-4">
+                                    <select id="cmbFIncome" class="form-control inputborder" name="txtIncome" required="required">
+                                        <option selected="selected" value="">Annual Income</option>
+                                        <option value="No Income">No Income</option>
+                                        <option value="Under   Rs.50,000">Less than Rs.50,000</option>
+                                        <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                                        <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                                        <option value="Rs.2,00,001 -   3,00,000">Rs.2,00,001 -   3,00,000</option>
+                                        <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                                        <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                                        <option value="Rs.5,00,001 -   7,50,000">Rs.5,00,001 -   7,50,000</option>
+                                        <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                                        <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Mobile Number.</label>
+                                <div class="col-sm-4"><input type="number" class="form-control inputborder" id="txtFatherMobileNo" required="required" maxlength="10" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Uncle Name</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtUncleName" required="required" maxlength="50" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtUncleAddress" required="required" maxlength="50" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Uncles Mobile Number</label>
+                                <div class="col-sm-4"><input type="number" class="form-control inputborder" id="txtUContactNo" required="required" maxlength="10" /></div>
+                            </div>
+                            <div class="span_3">
+                                <input type="button" value="Uncle's Information..." class="btn btn-default" id="btnAddFamilyDetails" />
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Uncle Name
+                                                </th>
+                                                <th>
+                                                    Address
+                                                </th>
+                                                <th>
+                                                    Mobile Number
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblUncle"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="divRelativeDetails" style="display:none">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Relative Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Relative</label>
+                                <div class="col-sm-4">
+                                    <select id="cmbRelations" class="form-control inputborder" name="cmbRelations">
+                                        <option selected="selected" value="">Select Relation</option>
+                                        <option value="Mothers Brother">Brother</option>
+                                        <option value="Mothers Brother">Sister</option>
+                                        <option value="Mothers Brother">Mothers Brother</option>
+                                        <option value="Fathers Sister">Fathers Sister</option>
+                                        <option value="Mothers Sister">Mothers Sister</option>
+                                        <option value="Sitsres Husband">Sitsres Husband</option>
+                                        <option value="Grandfather">Grandfather</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Relative Name</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtRelativeName" required="required" maxlength="150" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Relative Address</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtRelativeAddress" required="required" maxlength="150" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Mobile Number</label>
+                                <div class="col-sm-4"><input type="number" class="form-control inputborder" id="txtRContactNo" required="required" maxlength="10" /></div>
+                            </div>
+                            <div class="span_3">
+                                <input type="button" value="Add More.." class="btn btn-default" id="btnAddRelativeDetails" />
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Relative Name
+                                                </th>
+                                                <th>
+                                                    Address
+                                                </th>
+                                                <th>
+                                                    Mobile Number
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblRelative"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divUserExpection" style="display:none">
+                        <div class="col-md-12 divPadding">
+                            <div class="headerdiv">Expectation Information</div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Expectation</label>
+                                <div class="col-sm-4"><input type="text" class="form-control inputborder" id="txtUserExpectation" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Complexion</label>
+                                <div class="col-sm-4">
+                                    <select id="EtxtColor" class="form-control inputborder" multiple="multiple">
+                                        <option selected="" value="0">- Select -</option>
+                                        <option value="Very Fair">Very Fair</option>
+                                        <option value="Fair">Fair</option>
+                                        <option value="Wheatish">Brown</option>
+                                        <option value="Wheatish Medium">Light Brown</option>
+                                        <option value="Dark">Light Fair </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Height</label>
+                                <div class="col-sm-4">@Html.DropDownList("EHeightId", ViewBag.HeightId as MultiSelectList, new { @class = "form-control inputborder", multiple = "multiple" })</div>
+                            </div>
+                            <div class="form-group" style="display:none">
+                                <label for="focusedinput" class="col-sm-2 control-label">Moonsign</label>
+                                <div class="col-sm-4">@Html.DropDownList("EOrasId", ViewBag.OrasId as MultiSelectList, new { @class = "form-control inputborder", multiple = "multiple" })</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="focusedinput" class="col-sm-2 control-label">Education</label>
+                                <div class="col-sm-4">@Html.DropDownList("EQualificationId", ViewBag.QualificationId as MultiSelectList, new { @class = "form-control inputborder", multiple = "multiple" })</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="span_3">
+                    <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+                    <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" onclick="window.location='@Url.Action("Index","UserProfile")'" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

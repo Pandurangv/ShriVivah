@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,6 +27,366 @@ namespace ShriVivah.Models.ContextModel
         {
             objData = new ShreeVivahDbContext();
         }
+
+        public void UpdateUid(int UserId)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                SqlParameter pUserId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@UserId", Direction = System.Data.ParameterDirection.Input };
+                pUserId.Value = UserId;// SessionManager.GetInstance.ActiveUser.UserId;
+
+                SqlCommand cmd = new SqlCommand("SP_Update_Uid", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(pUserId);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
+
+        public IQueryable<SP_GetShortlists> Select_SP_GetShortlists(SearchRequestModel request)
+        {
+            try
+            {
+                List<SqlParameter> cmd = new List<SqlParameter>();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                SqlParameter pUserId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@UserId", Direction = System.Data.ParameterDirection.Input };
+                pUserId.Value = SessionManager.GetInstance.ActiveUser.UserId;
+                cmd.Add(pUserId);
+
+                // @MinAge 
+                if (request.MinAge != null)
+                {
+                    SqlParameter pMinAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinAge == null)
+                    {
+                        pMinAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinAge.Value = request.MinAge;
+                    }
+                    cmd.Add(pMinAge);
+                }
+                //@MaxAge
+                if (request.MaxAge != null)
+                {
+                    SqlParameter pMaxAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxAge == null)
+                    {
+                        pMaxAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxAge.Value = request.MaxAge;
+                    }
+                    cmd.Add(pMaxAge);
+                }
+                if (request.MinHeightId != null)
+                {
+                    SqlParameter pMinHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinHeightId == null)
+                    {
+                        pMinHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinHeightId.Value = request.MinHeightId;
+                    }
+                    cmd.Add(pMinHeightId);
+                }
+                if (request.MaxHeightId != null)
+                {
+                    SqlParameter pMaxHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxHeightId == null)
+                    {
+                        pMaxHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxHeightId.Value = request.MaxHeightId;
+                    }
+                    cmd.Add(pMaxHeightId);
+                }
+
+                if (string.IsNullOrEmpty(request.City) == false)
+                {
+                    SqlParameter pCity = new SqlParameter() { DbType = DbType.String, ParameterName = "@City", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.City))
+                    {
+                        pCity.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pCity.Value = request.City;
+                    }
+                    cmd.Add(pCity);
+                }
+                if (string.IsNullOrEmpty(request.Qualification) == false)
+                {
+                    SqlParameter pQualification = new SqlParameter() { DbType = DbType.String, ParameterName = "@Qualification", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.Qualification))
+                    {
+                        pQualification.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pQualification.Value = request.Qualification;
+                    }
+                    cmd.Add(pQualification);
+                }
+                SqlParameter pPageNo = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageNo", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageNo == null)
+                {
+                    pPageNo.Value = 1;
+                }
+                else
+                {
+                    pPageNo.Value = request.PageNo;
+                }
+                cmd.Add(pPageNo);
+                SqlParameter pPageSize = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageSize", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageSize == null)
+                {
+                    pPageSize.Value = 50;
+                }
+                else
+                {
+                    pPageSize.Value = request.PageSize;
+                }
+                cmd.Add(pPageSize);
+
+                //SqlParameter pMarritalStatus = new SqlParameter() { DbType = DbType.String, ParameterName = "@MarritalStatus", Direction = System.Data.ParameterDirection.Input };
+                //if (request.MarritalStatus == null)
+                //{
+                //    pMarritalStatus.Value = 1;
+                //}
+                //else
+                //{
+                //    pMarritalStatus.Value = request.MarritalStatus;
+                //}
+                //cmd.Add(pMarritalStatus);
+                string SPName = "SP_GetShortlists";
+                
+
+                DataTable dt = GetDataTable(SPName, cmd);
+                List<SP_GetShortlists> lst = dt.ToList<SP_GetShortlists>();
+
+                foreach (var item in lst)
+                {
+                    string imgpath = item.Gender == "M" ? SettingsManager.Instance.SourcePathM : SettingsManager.Instance.SourcePathF;
+                    if (item.OnlyImageFullAccess != null && Convert.ToInt32(item.OnlyImageFullAccess) == 1)
+                    {
+                        if (string.IsNullOrEmpty(item.Img1))
+                        {
+                            item.Img1 = imgpath;
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(item.Img1))
+                        {
+                            item.Img1 = imgpath;
+                        }
+                        else
+                        {
+                            if (SessionManager.GetInstance.ActiveUser.Gender == "M")
+                            {
+                                item.Img1 = imgpath;
+                            }
+                        }
+                    }
+                }
+                con.Close();
+                return lst.AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public IQueryable<SP_GetRequests> Select_SP_GetRequests(SearchRequestModel request)
+        {
+            try
+            {
+                List<SqlParameter> cmd = new List<SqlParameter>();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                SqlParameter pUserId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@UserId", Direction = System.Data.ParameterDirection.Input };
+                pUserId.Value = SessionManager.GetInstance.ActiveUser.UserId;
+                cmd.Add(pUserId);
+
+                // @MinAge 
+                if (request.MinAge != null)
+                {
+                    SqlParameter pMinAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinAge == null)
+                    {
+                        pMinAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinAge.Value = request.MinAge;
+                    }
+                    cmd.Add(pMinAge);
+                }
+                //@MaxAge
+                if (request.MaxAge != null)
+                {
+                    SqlParameter pMaxAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxAge == null)
+                    {
+                        pMaxAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxAge.Value = request.MaxAge;
+                    }
+                    cmd.Add(pMaxAge);
+                }
+                if (request.MinHeightId != null)
+                {
+                    SqlParameter pMinHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinHeightId == null)
+                    {
+                        pMinHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinHeightId.Value = request.MinHeightId;
+                    }
+                    cmd.Add(pMinHeightId);
+                }
+                if (request.MaxHeightId != null)
+                {
+                    SqlParameter pMaxHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxHeightId == null)
+                    {
+                        pMaxHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxHeightId.Value = request.MaxHeightId;
+                    }
+                    cmd.Add(pMaxHeightId);
+                }
+
+                if (string.IsNullOrEmpty(request.City) == false)
+                {
+                    SqlParameter pCity = new SqlParameter() { DbType = DbType.String, ParameterName = "@City", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.City))
+                    {
+                        pCity.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pCity.Value = request.City;
+                    }
+                    cmd.Add(pCity);
+                }
+                if (string.IsNullOrEmpty(request.Qualification) == false)
+                {
+                    SqlParameter pQualification = new SqlParameter() { DbType = DbType.String, ParameterName = "@Qualification", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.Qualification))
+                    {
+                        pQualification.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pQualification.Value = request.Qualification;
+                    }
+                    cmd.Add(pQualification);
+                }
+                SqlParameter pPageNo = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageNo", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageNo == null)
+                {
+                    pPageNo.Value = 1;
+                }
+                else
+                {
+                    pPageNo.Value = request.PageNo;
+                }
+                cmd.Add(pPageNo);
+                SqlParameter pPageSize = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageSize", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageSize == null)
+                {
+                    pPageSize.Value = 50;
+                }
+                else
+                {
+                    pPageSize.Value = request.PageSize;
+                }
+                cmd.Add(pPageSize);
+
+                //SqlParameter pMarritalStatus = new SqlParameter() { DbType = DbType.String, ParameterName = "@MarritalStatus", Direction = System.Data.ParameterDirection.Input };
+                //if (request.MarritalStatus == null)
+                //{
+                //    pMarritalStatus.Value = 1;
+                //}
+                //else
+                //{
+                //    pMarritalStatus.Value = request.MarritalStatus;
+                //}
+                //cmd.Add(pMarritalStatus);
+                string SPName = "SP_GetRequests";
+                if (SessionManager.GetInstance.ActiveUser.Gender == "M")
+                {
+                    SPName = "SP_GetRequests_Male";
+                }
+
+                DataTable dt = GetDataTable(SPName, cmd);
+                List<SP_GetRequests> lst = dt.ToList<SP_GetRequests>();
+
+                foreach (var item in lst)
+                {
+                    string imgpath = item.Gender == "M" ? SettingsManager.Instance.SourcePathM : SettingsManager.Instance.SourcePathF;
+                    if (item.OnlyImageFullAccess != null && Convert.ToInt32(item.OnlyImageFullAccess) == 1)
+                    {
+                        if (string.IsNullOrEmpty(item.Img1))
+                        {
+                            item.Img1 = imgpath;
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(item.Img1))
+                        {
+                            item.Img1 = imgpath;
+                        }
+                        else
+                        {
+                            if (SessionManager.GetInstance.ActiveUser.Gender == "M")
+                            {
+                                item.Img1 = imgpath;
+                            }
+                        }
+                    }
+                }
+                con.Close();
+                return lst.AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
 
         public IQueryable<STP_SelectMessageUser> Select_STP_SelectMessageUser(int toUserId)
         {
@@ -66,129 +427,328 @@ namespace ShriVivah.Models.ContextModel
             return result;
         }
 
-        public IQueryable<STP_GetUserDetail> Select_STP_GetUserDetails(SearchRequestModel request)
+        public IQueryable<CityList> GetCityList()
         {
-            SqlParameter pUserId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@UserId"};
-            if (request.UserId==null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.UserId;
-            }
-            SqlParameter pGender = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@Gender" };
-            if (string.IsNullOrEmpty(request.Gender) == false)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.Gender;
-            }
-            SqlParameter pIsMarried = new SqlParameter() { DbType=DbType.Boolean,ParameterName= "@IsMarried" };
-            if (request.IsMarried==null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.IsMarried;
-            }
-            SqlParameter pIsActive = new SqlParameter() { DbType=DbType.Boolean,ParameterName="@IsActive"};
-            if (request.IsActive == null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.IsActive;
-            }
-            SqlParameter pMinAge = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MinAge"};
-            if (request.MinAge == null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.MinAge;
-            }
-            SqlParameter pMaxAge = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MaxAge"};
-            if (request.MaxAge == null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.Gender;
-            }
-            SqlParameter pMinHeightId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MinHeightId"};
-            if (request.MaxAge == null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.Gender;
-            }
-            SqlParameter pMaxHeightId = new SqlParameter() { DbType=DbType.Int32,ParameterName="@MaxHeightId"};
-            if (request.MaxAge == null)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.MaxHeightId;
-            }
-            SqlParameter pIncome = new SqlParameter() { DbType=DbType.String,ParameterName="@Income"};
-            if (string.IsNullOrEmpty(request.Income) == false)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.Income;
-            }
-            SqlParameter pCity = new SqlParameter() { DbType=DbType.String,ParameterName="@City"};
-            if (string.IsNullOrEmpty(request.Income) == false)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.City;
-            }
-            SqlParameter pQualification = new SqlParameter() { DbType=DbType.String,ParameterName= "@Qualification" };
-            if (string.IsNullOrEmpty(request.Income) == false)
-            {
-                pUserId.Value = DBNull.Value;
-            }
-            else
-            {
-                pUserId.Value = request.Qualification;
-            }
-            SqlParameter pPageNo = new SqlParameter() { DbType=DbType.Int32,ParameterName="@PageNo"};
-            if (request.MaxAge == null)
-            {
-                pUserId.Value = 1;
-            }
-            else
-            {
-                pUserId.Value = request.PageNo;
-            }
-            SqlParameter pPageSize = new SqlParameter() { DbType=DbType.Int32,ParameterName="@PageSize"};
-            if (request.MaxAge == null)
-            {
-                pUserId.Value = 50;
-            }
-            else
-            {
-                pUserId.Value = request.PageSize;
-            }
-            string commandText = "[dbo].[STP_GetUserDetails_BackUp]";
-            var result = objData.Database.SqlQuery<STP_GetUserDetail>(commandText).AsQueryable();
-
+            string commandText = "[dbo].[GetCityList]";
+            var result = objData.Database.SqlQuery<CityList>(commandText).AsQueryable();
             return result;
+        }
+
+
+        public IQueryable<QualificationList> GetQualifications()
+        {
+            string commandText = "[dbo].[GetQualifications]";
+            var result = objData.Database.SqlQuery<QualificationList>(commandText).AsQueryable();
+            return result;
+        }
+
+
+        public IQueryable<STP_GetUserDetailCopy> Select_STP_GetUserDetails(SearchRequestModel request)
+        {
+            try
+            {
+                List<SqlParameter> cmd = new List<SqlParameter>();
+                //List<SqlParameter> cmd.Parameters = new List<SqlParameter>();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                //cmd.Connection = con;
+                // @UserId
+                if (request.UserId != null)
+                {
+                    SqlParameter pUserId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@UserId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.UserId == null)
+                    {
+                        pUserId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pUserId.Value = request.UserId;
+                    }
+                    cmd.Add(pUserId);
+                }
+                // @Gender
+                if (string.IsNullOrEmpty(request.Gender) == false)
+                {
+                    SqlParameter pGender = new SqlParameter() { DbType = DbType.String, ParameterName = "@Gender", Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.Gender))
+                    {
+                        pGender.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pGender.Value = request.Gender;
+                    }
+                    cmd.Add(pGender);
+                }
+                // @IsMarried 
+                if (request.IsMarried != null)
+                {
+                    SqlParameter pIsMarried = new SqlParameter() { DbType = DbType.Boolean, ParameterName = "@IsMarried", Direction = System.Data.ParameterDirection.Input };
+                    if (request.IsMarried == null)
+                    {
+                        pIsMarried.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pIsMarried.Value = request.IsMarried;
+                    }
+                    cmd.Add(pIsMarried);
+                }
+                // @IsActive 
+                if (request.IsActive != null)
+                {
+                    SqlParameter pIsActive = new SqlParameter() { DbType = DbType.Boolean, ParameterName = "@IsActive", Direction = System.Data.ParameterDirection.Input };
+                    if (request.IsActive == null)
+                    {
+                        pIsActive.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pIsActive.Value = request.IsActive;
+                    }
+                    cmd.Add(pIsActive);
+                }
+                // @MinAge 
+                if (request.MinAge != null)
+                {
+                    SqlParameter pMinAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinAge == null)
+                    {
+                        pMinAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinAge.Value = request.MinAge;
+                    }
+                    cmd.Add(pMinAge);
+                }
+                //@MaxAge
+                if (request.MaxAge != null)
+                {
+                    SqlParameter pMaxAge = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxAge", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxAge == null)
+                    {
+                        pMaxAge.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxAge.Value = request.MaxAge;
+                    }
+                    cmd.Add(pMaxAge);
+                }
+                if (request.MinHeightId != null)
+                {
+                    SqlParameter pMinHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MinHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MinHeightId == null)
+                    {
+                        pMinHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMinHeightId.Value = request.MinHeightId;
+                    }
+                    cmd.Add(pMinHeightId);
+                }
+                if (request.MaxHeightId != null)
+                {
+                    SqlParameter pMaxHeightId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@MaxHeightId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MaxHeightId == null)
+                    {
+                        pMaxHeightId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMaxHeightId.Value = request.MaxHeightId;
+                    }
+                    cmd.Add(pMaxHeightId);
+                }
+                if (string.IsNullOrEmpty(request.Income) == false)
+                {
+                    SqlParameter pIncome = new SqlParameter() { DbType = DbType.String, ParameterName = "@Income", Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.Income))
+                    {
+                        pIncome.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pIncome.Value = request.Income;
+                    }
+                    cmd.Add(pIncome);
+                }
+                if (string.IsNullOrEmpty(request.City) == false)
+                {
+                    SqlParameter pCity = new SqlParameter() { DbType = DbType.String, ParameterName = "@City", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.City))
+                    {
+                        pCity.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pCity.Value = request.City;
+                    }
+                    cmd.Add(pCity);
+                }
+                if (string.IsNullOrEmpty(request.Qualification) == false)
+                {
+                    SqlParameter pQualification = new SqlParameter() { DbType = DbType.String, ParameterName = "@Qualification", Size = -1, Direction = System.Data.ParameterDirection.Input };
+                    if (string.IsNullOrEmpty(request.Qualification))
+                    {
+                        pQualification.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pQualification.Value = request.Qualification;
+                    }
+                    cmd.Add(pQualification);
+                }
+                SqlParameter pPageNo = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageNo", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageNo == null)
+                {
+                    pPageNo.Value = 1;
+                }
+                else
+                {
+                    pPageNo.Value = request.PageNo;
+                }
+                cmd.Add(pPageNo);
+                SqlParameter pPageSize = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@PageSize", Direction = System.Data.ParameterDirection.Input };
+                if (request.PageSize == null)
+                {
+                    pPageSize.Value = 50;
+                }
+                else
+                {
+                    pPageSize.Value = request.PageSize;
+                }
+                cmd.Add(pPageSize);
+                SqlParameter pUserType = new SqlParameter() { DbType = DbType.String, ParameterName = "@UserType", Direction = System.Data.ParameterDirection.Input };
+                if (!string.IsNullOrEmpty(request.UserType))
+                {
+                    pUserType.Value = request.UserType;
+                }
+                else
+                {
+                    pUserType.Value = "User";
+                }
+                cmd.Add(pUserType);
+                if (request.MarritalStatus != null)
+                {
+                    SqlParameter pMarritalStatus = new SqlParameter() { DbType = DbType.String, ParameterName = "@MarritalStatus", Direction = System.Data.ParameterDirection.Input };
+                    if (request.MarritalStatus == null)
+                    {
+                        pMarritalStatus.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pMarritalStatus.Value = request.MarritalStatus;
+                    }
+                    cmd.Add(pMarritalStatus);
+                }
+                if (request.OrasId != null)
+                {
+                    SqlParameter pOrasId = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@OrasId", Direction = System.Data.ParameterDirection.Input };
+                    if (request.OrasId == null)
+                    {
+                        pOrasId.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pOrasId.Value = request.OrasId;
+                    }
+                    cmd.Add(pOrasId);
+                }
+                if (request.IsJob != null)
+                {
+                    SqlParameter pIsJob = new SqlParameter() { DbType = DbType.Int32, ParameterName = "@IsJob", Direction = System.Data.ParameterDirection.Input };
+                    if (request.IsJob == null)
+                    {
+                        pIsJob.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pIsJob.Value = request.IsJob;
+                    }
+                    cmd.Add(pIsJob);
+                }
+                if (request.IsOwnHouse != null)
+                {
+                    SqlParameter pIsOwnHouse = new SqlParameter() { DbType = DbType.Boolean, ParameterName = "@IsOwnHouse", Direction = System.Data.ParameterDirection.Input };
+                    if (request.IsOwnHouse == null)
+                    {
+                        pIsOwnHouse.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        pIsOwnHouse.Value = request.IsOwnHouse;
+                    }
+                    cmd.Add(pIsOwnHouse);
+                }
+                //cmd.CommandText = "[dbo].[STP_GetUserDetails_BackUp]";
+                //DataSet ds = new DataSet();
+                //SqlDataAdapter da = new SqlDataAdapter();
+                //da.SelectCommand = cmd;
+                //da.Fill(ds);
+
+                DataTable dt = GetDataTable("STP_GetUserDetails_BackUp", cmd);
+                List<STP_GetUserDetailCopy> lst = dt.ToList<STP_GetUserDetailCopy>();
+                List<STP_GetUserDetailCopy> lstres = new List<STP_GetUserDetailCopy>();
+                foreach (var item in lst)
+                {
+
+                    if (string.IsNullOrEmpty(item.Img1))
+                    {
+                        if (item.Gender == "M")
+                        {
+                            item.Img1 = SettingsManager.Instance.SourcePathM;
+                        }
+                        else
+                        {
+                            item.Img1 = SettingsManager.Instance.SourcePathF;
+                        }
+                    }
+                    else
+                    {
+                        item.Img1 = SettingsManager.Instance.SourcePath + item.Img1;
+                    }
+                    if (!string.IsNullOrEmpty(item.Img2))
+                    {
+                        item.IsAdhaarVerified = true;
+                    }
+                    lstres.Add(item);
+                }
+                return lstres.AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable GetDataTable(string spName, List<SqlParameter> sqlParam)
+        {
+            DataTable ldt = new DataTable();
+            SqlConnection msqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+            SqlCommand msqlcmd = new SqlCommand();
+            
+            msqlcmd.Connection = msqlcon;
+            msqlcmd.CommandType = CommandType.StoredProcedure;
+            msqlcmd.CommandText = spName;
+            if (sqlParam != null)
+            {
+                if (sqlParam.Count > 0)
+                {
+                    for (int i = 0; i < sqlParam.Count; i++)
+                    {
+                        msqlcmd.Parameters.Add(sqlParam[i]);
+                    }
+                }
+            }
+            SqlDataAdapter msqlsda = new SqlDataAdapter(msqlcmd);
+            msqlsda.Fill(ldt);
+            return ldt;
         }
 
         internal void SaveAndroidUser(RegisterReuest model)
@@ -244,7 +804,7 @@ namespace ShriVivah.Models.ContextModel
             objData.tblUsers.Add(user);
             objData.SaveChanges();
 
-            if (SettingsManager.Instance.Branding == "SPMO")
+            if (SettingsManager.Instance.Branding == "SINDHI")
             {
                 UserRequests request = new UserRequests()
                 {
@@ -302,9 +862,9 @@ namespace ShriVivah.Models.ContextModel
             string message = string.Empty;
             if (user != null)
             {
-                if (SettingsManager.Instance.Branding == "SPMO")
+                if (SettingsManager.Instance.Branding == "SINDHI")
                 {
-                    sb.Append("Please do login Using below credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, Regards Sindhi Hindu, www.sindhihindu.com 9273763490");
+                    sb.Append("Please do login Using below credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and complete your profile, ");
                 }
                 else
                 {
@@ -324,7 +884,7 @@ namespace ShriVivah.Models.ContextModel
                     if (int.TryParse(charat, out res))
                     {
                         otp += charat;
-                        if (otp.Length == 3)
+                        if (otp.Length == SettingsManager.Instance.OTPLength)
                         {
                             break;
                         }
@@ -334,7 +894,7 @@ namespace ShriVivah.Models.ContextModel
                 model.OTP = otp;
                 SessionManager.GetInstance.RegisterUser = model;
                 
-                sb.Append("Please do not share OTP with any other. Your OTP is " + otp + " Regards, Sindhi Hindu");
+                sb.Append("Please do not share OTP with any other. Your OTP is " + otp + ", ").Append(SettingsManager.Instance.SindhuRegards);
                 message = HttpUtility.UrlEncode(sb.ToString());
             }
             
@@ -398,6 +958,8 @@ namespace ShriVivah.Models.ContextModel
 
         public int Save(RegisterViewModel model)
         {
+            Random rand = new Random();
+            int id = rand.Next(111111, 999999);
             tblUser user = new tblUser()
             {
                 FirstName = model.FirstName,
@@ -409,9 +971,10 @@ namespace ShriVivah.Models.ContextModel
                 Password = model.Password,
                 UserType = model.RoleName,
                 IsDelete = false,
-                IsActive = SettingsManager.Instance.Branding == "SPMO" ? false : (model.IsActive == null ? true : model.IsActive),
+                IsActive = SettingsManager.Instance.Branding == "SINDHI" ? false : (model.IsActive == null ? true : model.IsActive),
                 Gender = model.Gender,
                 BehalfOf=model.BehalfOf,
+                PanchayatCode=SettingsManager.Instance.Prefix + id + "0",
             };
             objData.tblUsers.Add(user);
             objData.SaveChanges();
@@ -428,11 +991,7 @@ namespace ShriVivah.Models.ContextModel
                 IsAdminApproved = false
             };
             objData.UserRequest.Add(userRequest);
-
-            user.PanchayatCode = user.Gender=="M"? "SPMOM-" + user.UserId : "SPMOF-"  + user.UserId;
-
             objData.SaveChanges();
-
             return user.UserId.Value;
         }
 
@@ -630,9 +1189,19 @@ namespace ShriVivah.Models.ContextModel
             return result;
         }
 
+        public tblRequest VerifyRequestedUserVerified(int profileId)
+        {
+            var req = objData.tblRequests.Where(p => p.RequestFrom == SessionManager.GetInstance.ActiveUser.UserId && p.RequestTo == profileId).FirstOrDefault();
+            return req;
+        }
+
         internal List<ProfileImage> GetAllImages()
         {
             var lst= objData.tblProfileImages.Where(p => p.UserId == SessionManager.GetInstance.ActiveUser.UserId).ToList();
+            foreach (var item in lst)
+            {
+                item.ImagePath = SettingsManager.Instance.SourcePath + item.ImagePath;
+            }
             lst.Insert(0, new ProfileImage() { ProfileImageId = 0, UserId = SessionManager.GetInstance.ActiveUser.UserId, ImagePath = SessionManager.GetInstance.ActiveUser.Img1 });
             return lst;
         }
@@ -694,7 +1263,7 @@ namespace ShriVivah.Models.ContextModel
             tblOTP tbl = GetOTPS().Where(p => p.UserId == user.UserId && p.OTP == OTP).FirstOrDefault();
             if (tbl==null)
             {
-                return new ResponseModel() { Status=false, ErrorMessage= SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InvalidOTP : "Invalid OTP, Please feel valid OTP" };
+                return new ResponseModel() { Status=false, ErrorMessage= SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InvalidOTP : "Invalid OTP, Please feel valid OTP" };
             }
             else
             {
@@ -703,11 +1272,11 @@ namespace ShriVivah.Models.ContextModel
                 {
                     tbl.IsDelete = true;
                     objData.SaveChanges();
-                    return new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.OTPExpired : "OTP has been expired Please Generate OTP again" };
+                    return new ResponseModel() { Status = false, ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.OTPExpired : "OTP has been expired Please Generate OTP again" };
                 }
                 else
                 {
-                    return new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.MailConfirmation : "your mail id was confirmed. Please complete your profile." };
+                    return new ResponseModel() { Status = true, ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.MailConfirmation : "your mail id was confirmed. Please complete your profile." };
                 }
             }
         }
@@ -855,7 +1424,7 @@ namespace ShriVivah.Models.ContextModel
                     obju.Color = model.Color;
                     obju.DateOfBirth = model.DateOfBirth;
                     obju.DateofReg = DateTime.Now.Date;
-                    if (SettingsManager.Instance.Branding != "SPMO")
+                    if (SettingsManager.Instance.Branding != "SINDHI")
                     {
                         obju.Gender = model.Gender;
                     }
@@ -891,13 +1460,14 @@ namespace ShriVivah.Models.ContextModel
                     obju.IsOwnHouse = model.IsOwnHouse;
                     obju.ReferenceName = model.ReferenceName;
                     obju.ReferenceContact = model.ReferenceContact;
-                    if (SettingsManager.Instance.Branding != "SPMO")
+                    obju.SubCaste = model.SubCaste;
+                    if (SettingsManager.Instance.Branding != "SINDHI")
                     {
                         obju.IsActive = false;
                     }
                     obju.IsSpec = model.IsSpec;
                     obju.IsOwnShop = model.IsOwnShop;
-                    
+
 
                     var req= objData.UserRequest.Where(p => p.UserId == model.UserId).FirstOrDefault();
                     if (req != null)
@@ -974,6 +1544,8 @@ namespace ShriVivah.Models.ContextModel
                     objfamily.FathersName = family.FathersName;
                     objfamily.BotherInfo = family.NoofBrothers;
                     objfamily.SisterInfo = family.NoOfSisters;
+                    objfamily.NoOfMBro = family.NoOfMBro;
+                    objfamily.NoOfMSis = family.NoOfMSis;
                     objfamily.MobileNo = family.MobileNo;
                     objfamily.FathersIncome = family.FathersIncome;
                     objfamily.JobBusinessInfo = family.JobBusinessInfo;
@@ -1037,6 +1609,33 @@ namespace ShriVivah.Models.ContextModel
             }
         }
 
+        internal bool ShortlistUser(int RequestUserId, int? UserId)
+        {
+            bool Success = false;
+            int cnt = objData.Shortlists.Where(p => p.UserId == UserId && p.RequestUserId == RequestUserId).Count();
+            if (cnt > 0)
+            {
+                Success = false;
+            }
+            else
+            {
+                Shortlist userrequest = new Shortlist()
+                {
+                    RequestDate = DateTime.Now.Date,
+                    UserId = Convert.ToInt32(UserId),
+                    RequestUserId = RequestUserId,
+                    CreatedDate = DateTime.Now,
+                    IsDelete = false,
+                };
+
+                objData.Shortlists.Add(userrequest);
+                objData.SaveChanges();
+                Success = true;
+            }
+
+            return Success;
+        }
+
         internal bool SendRequest(int RequestUserId, int? UserId)
         {
             bool Success = false;
@@ -1053,7 +1652,10 @@ namespace ShriVivah.Models.ContextModel
                     RequestDate = DateTime.Now.Date,
                     RequestFrom = Convert.ToInt32(UserId),
                     RequestTo = RequestUserId,
-                    RequestStatus = "Pending"
+                    RequestStatus = "Pending",
+                    FullAccess=0,
+                    OnlyImageFullAccess=0,
+                    IsDelete=false,
                 };
 
                 objData.tblRequests.Add(userrequest);
@@ -1115,12 +1717,15 @@ namespace ShriVivah.Models.ContextModel
             return result;
         }
 
-        internal void UpdateRequest(int RequestId)
+        internal void UpdateRequest(int RequestId,int FullAccess=0,int OnlyImageAccess=0)
         {
             tblRequest request = objData.tblRequests.Where(p => p.RequestId==RequestId).FirstOrDefault();
             if (request!=null)
             {
                 request.RequestStatus = "Approved";
+                request.FullAccess=FullAccess;
+                request.OnlyImageFullAccess = OnlyImageAccess;
+                request.ConfirmDate = DateTime.Now.Date;
                 objData.SaveChanges();
             }
         }
@@ -1130,24 +1735,28 @@ namespace ShriVivah.Models.ContextModel
             var result=(from tbl in objData.tblVisitorDetailss
                          join tblu in objData.tblUsers
                          on tbl.VisitedUserId equals tblu.UserId
-                         join tblr in objData.tblReligions
-                         on tblu.ReligionId equals tblr.ReligionId
-                         join tblcast in objData.tblCasts
-                         on tblu.CasteId equals tblcast.CastId
+                         join tblr in objData.tblHeights
+                         on tblu.HeightId equals tblr.HeightId
                          where tbl.IsDelete == false &&
                          tbl.UserId == SessionManager.GetInstance.ActiveUser.UserId
                          && tblu.UserId != SessionManager.GetInstance.ActiveUser.UserId
                         select new VisitorModel { 
                             Address=tblu.Address,
-                            CastId=tblcast.CastId.Value,
-                            CastName=tblcast.CastName,
-                            ReligionId=tblr.ReligionId.Value,
-                            ReligionName=tblr.ReligionName,
                             VisitDate=tbl.VisitDate,
                             UserId = SessionManager.GetInstance.ActiveUser.UserId.Value,
                             VisitedUserId=tbl.VisitedUserId,
                             UserName=tblu.FirstName + " " + tblu.LName,
                             VisitorId=tbl.VisitorId,
+                            PanchayatCode=tblu.PanchayatCode,
+                            BehalfOf=tblu.BehalfOf,
+                            Img1=(!string.IsNullOrEmpty(tblu.Img1)?SettingsManager.Instance.SourcePath + tblu.Img1: SettingsManager.Instance.SourcePathM),
+                            City=tblu.City,
+                            FirstName=tblu.FirstName,
+                            Height=tblr.Height,
+                            Qualification=tblu.Qualification,
+                            LName=tblu.LName,
+                            MarritalStatus=tblu.MarritalStatus,
+                            Income=tblu.Income,
                          });
 
             return result;
@@ -1169,6 +1778,7 @@ namespace ShriVivah.Models.ContextModel
                 objData.tblVisitorDetailss.Add(visitor);
                 objData.SaveChanges();
             }
+
         }
 
         internal void Save(tblJobDetails job)
@@ -1178,6 +1788,7 @@ namespace ShriVivah.Models.ContextModel
             {
                 job.UserId = objuser.UserId.Value;
                 job.IsDelete = false;
+                
                 objData.tblJobDetailss.Add(job);
                 objData.SaveChanges();
             }
@@ -1193,18 +1804,25 @@ namespace ShriVivah.Models.ContextModel
             }
             else
             {
-                if (SettingsManager.Instance.Branding == "SPMO")
+                if (SettingsManager.Instance.Branding == "SINDHI")
                 {
                     UserRequests userdata = objData.UserRequest.Where(p => p.UserId == UserId).FirstOrDefault();
                     user= objData.tblUsers.Where(p => p.UserId == UserId).FirstOrDefault();
                     if (!string.IsNullOrEmpty(user.MobileNo))
                     {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("Your account has been activated. Please do login Using your credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and find your matching, Regards Sindhi Hindu, www.sindhihindu.com 9273763490");
-                        string message = HttpUtility.UrlEncode(sb.ToString());
-                        SendUserSMS(user.MobileNo, message);
+                        if (IsActive==true)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append("Your account has been activated. Please do login Using your credintials Login Id : ").Append(user.MobileNo).Append(" And Password : ").Append(user.Password).Append(" and find your matching, ").Append(SettingsManager.Instance.SindhuRegards);
+                            string message = HttpUtility.UrlEncode(sb.ToString());
+                            SendUserSMS(user.MobileNo, message);
+                        }
                     }
-                    userdata.IsApproved = IsActive;
+                    if (userdata!=null)
+                    {
+                        userdata.IsApproved = IsActive;
+                        userdata.IsAdminApproved = IsActive;
+                    } 
                 }
                 else
                 {
@@ -1313,46 +1931,63 @@ namespace ShriVivah.Models.ContextModel
 
         internal int? UpdateUserByAdmin(RegisterViewModel model)
         {
-            tblUser user = objData.tblUsers.Where(p => p.UserId == model.UserId).FirstOrDefault();
-            if (user!=null)
+            tblUser obju = objData.tblUsers.Where(p => p.UserId == model.UserId).FirstOrDefault();
+            if (obju != null)
             {
-                user.Address = model.Address;
-                user.BirthName = model.BirthName;
-                user.BloodGroupId = model.BloodGroupId;
-                user.BodyType = model.BodyType;
-                user.CasteId = model.CasteId;
-                user.ChildLivingStatus = model.ChildLivingStatus;
-                user.City = model.City;
-                user.Color = model.Color;
-                user.Country = model.Country;
-                user.DateOfBirth = model.DateOfBirth;
-                user.District = model.District;
-                user.FirstName = model.FirstName;
-                user.Gender = model.Gender;
-                user.Gotra = model.GotraName;
-                user.HandicapedType = model.HandicappedType;
-                user.HeightId = model.HeightId;
-                user.Income = model.Income;
-                user.IsHandiCapped = model.IsHandicapped;
-                user.IsIntercast = model.IsInterCast;
-                user.LName = model.LastName;
-                user.MailId = model.Email;
-                user.MarritalStatus = model.MarritalStatus;
-                user.MName = model.MiddleName;
-                user.MobileNo = model.MobileNo;
-                user.NoOfChildrens = model.NoOfChildrens;
-                user.OrasId = model.OrasId;
-                user.PlaceofBirth = model.PlaceOfBirth;
-                user.QualificationId = model.QualificationId;
-                user.Qualification = model.Qualification;
-                user.ReligionId = model.ReligionId;
-                user.State = model.State;
-                user.Taluka = model.Taluka;
+                obju.Address = model.Address;
+                obju.BloodGroupId = model.BloodGroupId;
+                obju.BodyType = model.BodyType;
+                obju.CasteId = model.CasteId;
+                obju.ChildLivingStatus = model.ChildLivingStatus;
+                obju.Color = model.Color;
+                obju.MailId = model.Email;
+                obju.DateOfBirth = model.DateOfBirth;
+                obju.DateofReg = DateTime.Now.Date;
+                if (SettingsManager.Instance.Branding != "SINDHI")
+                {
+                    obju.Gender = model.Gender;
+                }
+                obju.HandicapedType = model.HandicappedType;
+                obju.HeightId = model.HeightId;
+                obju.IdentificationMark = model.IdentificationMark;
+                obju.IsIntercast = model.IsInterCast;
+                obju.IsHandiCapped = model.IsHandicapped;
+                obju.District = model.District;
+                obju.Taluka = model.Taluka;
+                obju.MarritalStatus = model.MarritalStatus;
+                obju.NoOfChildrens = model.NoOfChildrens;
+                obju.OrasId = model.OrasId;
+                obju.PANNO = model.PANNO;
+                obju.PlaceofBirth = model.PlaceOfBirth;
+                obju.QualificationId = 0;
+                obju.Qualification = model.Qualification;
+                obju.ReligionId = model.ReligionId;
 
-                user.TimeofBirth = model.strTimeofBirth;
-                user.Weight = model.Weight;
+                obju.TimeofBirth = model.strTimeofBirth;
+                obju.Weight = model.Weight;
+                obju.State = model.State;
+                obju.Country = model.Country;
+                obju.BirthName = model.BirthName;
+                obju.City = model.City;
+                obju.Hobbies = model.Hobbies;
+                obju.Expectation = model.UserExpectation;
+                obju.Income = model.Income;
+                obju.Gotra = model.GotraName;
+                obju.IsActive = true;
+                obju.Pincode = model.Pincode;
+                obju.Achievements = model.Achievements;
+                obju.IsOwnHouse = model.IsOwnHouse;
+                obju.ReferenceName = model.ReferenceName;
+                obju.ReferenceContact = model.ReferenceContact;
+                obju.SubCaste = model.SubCaste;
+                if (SettingsManager.Instance.Branding != "SINDHI")
+                {
+                    obju.IsActive = false;
+                }
+                obju.IsSpec = model.IsSpec;
+                obju.IsOwnShop = model.IsOwnShop;
                 objData.SaveChanges();
-                return user.UserId;
+                return obju.UserId;
             }
             else
             {
@@ -1374,6 +2009,8 @@ namespace ShriVivah.Models.ContextModel
                 user.MothersName = family.MothersName;
                 user.BotherInfo = family.NoofBrothers;
                 user.SisterInfo = family.NoOfSisters;
+                user.NoOfMBro = family.NoOfMBro;
+                user.NoOfMSis = family.NoOfMSis;
                 objData.SaveChanges();
             }
             else
@@ -1402,19 +2039,9 @@ namespace ShriVivah.Models.ContextModel
                 user.Income = job.Income;
                 user.IsJobOrBusiness = job.IsJobOrBusiness;
                 user.JobLocation = job.JobLocation;
-                objData.SaveChanges();
-            }
-            else
-            {
-                user = new tblJobDetails()
-                {
-                    CompanyName = job.CompanyName,
-                    Income = job.Income,
-                    IsJobOrBusiness = job.IsJobOrBusiness,
-                    JobLocation = job.JobLocation,
-                    UserId=UserId,
-                };
-                objData.tblJobDetailss.Add(user);
+                user.Jobdata = job.Jobdata;
+                user.JobType = job.JobType;
+                user.IsManglik = job.IsManglik;
                 objData.SaveChanges();
             }
         }
@@ -1489,11 +2116,22 @@ namespace ShriVivah.Models.ContextModel
 
         internal void DeleteUser(int? userId)
         {
-            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
-            con.Open();
-            SqlCommand cmd = new SqlCommand() { Connection = con, CommandType = System.Data.CommandType.StoredProcedure, CommandText = "DeleteUserProfile" };
-            cmd.Parameters.Add(new SqlParameter() { DbType = System.Data.DbType.Int32, Direction = System.Data.ParameterDirection.Input, Value = userId, ParameterName = "@UserId" });
-            cmd.ExecuteNonQuery();
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                SqlCommand cmd = new SqlCommand() { Connection = con, CommandType = System.Data.CommandType.StoredProcedure, CommandText = "DeleteUserProfile" };
+                cmd.Parameters.Add(new SqlParameter() { DbType = System.Data.DbType.Int32, Direction = System.Data.ParameterDirection.Input, Value = userId, ParameterName = "@UserId" });
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                //return null;
+            }
         }
     }
 
@@ -1511,11 +2149,60 @@ namespace ShriVivah.Models.ContextModel
         public string City { get; set; }
         public string Qualification { get; set; }
         public int? PageNo { get; set; }
-        public bool? PageSize { get; set; }
+        public int? PageSize { get; set; }
+        public string UserType { get; set; }
+        public string MarritalStatus { get; set; }
+        public int? OrasId { get; set; }
+        public int? IsJob { get; set; }
+        public bool? IsOwnHouse { get; internal set; }
     }
 
     public class UserDetails : Error
     {
         public IQueryable<STP_GetUserDetail> UserList { get; set; }
+    }
+
+    public static class Extensions
+    {
+        public static List<T> ToList<T>(this DataTable table) where T : new()
+        {
+            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            List<T> result = new List<T>();
+
+            foreach (var row in table.Rows)
+            {
+                var item = CreateItemFromRow<T>((DataRow)row, properties);
+                result.Add(item);
+            }
+
+            return result;
+        }
+
+        private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
+        {
+            T item = new T();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType == typeof(System.DayOfWeek))
+                {
+                    DayOfWeek day = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), row[property.Name].ToString());
+                    property.SetValue(item, day, null);
+                }
+                else
+                {
+                    try
+                    {
+                        if (row[property.Name] == DBNull.Value)
+                            property.SetValue(item, null, null);
+                        else
+                            property.SetValue(item, row[property.Name], null);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }
+            return item;
+        }
     }
 }

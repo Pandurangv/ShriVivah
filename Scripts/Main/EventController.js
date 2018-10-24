@@ -169,57 +169,61 @@ VarmalaVivahApp.controller("EventController", ['$scope', '$http', '$filter', 'Ev
         var reg = new RegExp("[a-zA-Z]");
         
         if ($("#EventName").val() == "") {
-            $scope.ErrorModel.IsEventName = true;
+           $("#IsEventName").show()
             $scope.ErrorMessage = "Event name should be filled.";
             return false;
         }
         else {
-            $scope.ErrorModel.IsEventName = false;
+            $("#IsEventName").hide();
         }
 
         if ($("#EventLocation").val() == "") {
-            $scope.ErrorModel.IsEventLocation = true;
+            $("#IsEventLocation").show()
             $scope.ErrorMessage = "Event Location should be filled.";
             return false;
         }
         else {
-            $scope.ErrorModel.IsEventLocation = false;
+            $("#IsEventLocation").hide();
         }
 
         if ($("#EventDistrict").val() == "") {
-            $scope.ErrorModel.IsEventDistrict = true;
+            $("#IsEventDistrict").show()
             $scope.ErrorMessage = "Event District should be filled.";
             return false;
         }
         else {
-            $scope.ErrorModel.IsEventDistrict = false;
+            $("#IsEventDistrict").hide();
         }
 
         if ($("#StateId").val() == "") {
-            $scope.ErrorModel.IsEventState = true;
+            $("#IsEventState").show()
             $scope.ErrorMessage = "Last name should be filled.";
             return false;
         }
         else {
-            $scope.ErrorModel.IsEventState = false;
+            $("#IsEventState").hide();
         }
         
         if ($("#EventDate").val() == "") {
-            $scope.ErrorModel.IsEventDate = true;
+            $("#IsEventDate").show()
             $scope.ErrorMessage = "Event Date should be filled.";
             return false;
         }
         else {
-            $scope.ErrorModel.IsEventDate = false;
+            $("#IsEventDate").hide();
         }
-        if ($("#AgentId").val() == "0") {
-            $scope.ErrorModel.IsOrganizedBy = true;
-            $scope.ErrorMessage = "Please select Organizer.";
-            return false;
+
+        if ($("#ContactNo").val()!="") {
+            if ($("#ContactNo").val().length != 10) {
+                $("#IsContactNoLength").show()
+                $scope.ErrorMessage = "Contact No lenght should be 10 digit.";
+                return false;
+            }
+            else {
+                $("#IsContactNoLength").hide();
+            }
         }
-        else {
-            $scope.ErrorModel.IsOrganizedBy = false;
-        }
+        
         $("#spanvalidate").hide();
         //ShowLoader();
         var spinner = new Spinner().spin();
@@ -228,11 +232,12 @@ VarmalaVivahApp.controller("EventController", ['$scope', '$http', '$filter', 'Ev
             EventName: $("#EventName").val().toUpperCase(),
             EventDate: $("#EventDate").val().toUpperCase(),
             EventLocation: $("#EventLocation").val().toUpperCase(),
-            OrganizedBy: $("#AgentId").val(),
+            OrganizedBy: 1,
             EventDistrict: $("#EventDistrict").val(),
             EventState: $("#StateId").val(),
             ContactPerson: $("#ContactPerson").val(),
             MobileNo: $("#ContactNo").val().toUpperCase(),
+            EventImage: $("#EventImagehidden").val(),
         };
         var url = GetVirtualDirectory();
 

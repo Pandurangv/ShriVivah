@@ -5,16 +5,16 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
     $scope.ErrorMessage = "";
     $scope.ErrorModel =
     {
-        IsFirstName: false,
-        IsMiddleName: false,
-        IsLastName: false,
+        IsFirstName: true,
+        IsMiddleName: true,
+        IsLastName: true,
         //IsEmail: false,
-        IsUserName: false,
-        IsPassword: false,
-        IsConfirmPassword: false,
-        IsContactNo: false,
-        IsTerms: false,
-        IsGender:false,
+        IsUserName: true,
+        IsPassword: true,
+        IsConfirmPassword: true,
+        IsContactNo: true,
+        IsTerms: true,
+        IsGender:true,
     };
 
     $scope.RegisterModel = { FirstName: "", MiddleName: "", LastName: "", Email: "", UserName: "", Password: "", ConfirmPassword: "", ContactNo: "" };
@@ -73,10 +73,12 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
     {
         if ($("#ContactNo").val() != "") {
             $scope.ErrorModel.IsContactNo = false;
+            $scope.ErrorMessage = "Please fill contact number.";
         }
-        if ($("#ContactNo").val().length>10) {
-            $scope.ErrorModel.IsContactNo = false;
+        if ($("#ContactNo").val().length<10 || $("#ContactNo").val().length>10) {
+            $scope.ErrorModel.IsContactNo = true;
             $scope.ErrorMessage = "Invalid contact number.";
+            return false;
         }
     }
 
@@ -99,7 +101,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             return false;
         }
         if ($("#FirstName").val() == "") {
-            $scope.ErrorModel.IsFirstName = true;
+            $("#spanFName").show();
             $scope.ErrorMessage = "First name should be filled.";
             return false;
         }
@@ -164,11 +166,11 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             $scope.ErrorMessage = "Password should be filled.";
             return false;
         }
-        if (!reg.test($("#Password").val())) {
-            $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password should be numeric with minimum eight digit length";
-            return false;
-        }
+        //if (!reg.test($("#Password").val())) {
+        //    $scope.ErrorModel.IsPassword = true;
+        //    $scope.ErrorMessage = "Password should be numeric with minimum eight digit length";
+        //    return false;
+        //}
 
         if ($("#ConfirmPassword").val() == "") {
             $scope.ErrorModel.IsConfirmPassword = true;
@@ -218,7 +220,7 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
                     Message: response.data.ErrorMessage,
                     Type: "alert",
                     OnOKClick: function () {
-                        window.location = url + "/UserProfile/Index";
+                        window.location = GetVirtualDirectory() + "/UserProfile/Index";
                     },
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
@@ -256,21 +258,29 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
             return false;
         }
         if ($("#FirstName").val()=="") {
-            $scope.ErrorModel.IsFirstName = true;
-            $scope.ErrorMessage = "First name should be filled.";
+            $("#spanFName").show();
+            $("#spanFName").html("First name should be filled.");
             return false;
         }
-        
+        else {
+            $("#spanFName").hide();
+        }
         if ($("#MiddleName").val() == "") {
-            $scope.ErrorModel.IsMiddleName = true;
-            $scope.ErrorMessage = "Middle name should be filled.";
+            $("#spanMName").show();
+            $("#spanMName").html("Middle name should be filled.");
             return false;
+        }
+        else {
+            $("#spanMName").show();
         }
         
         if ($("#LastName").val() == "") {
-            $scope.ErrorModel.IsLastName = true;
-            $scope.ErrorMessage = "Last name should be filled.";
+            $("#spanLName").show();
+            $("#spanLName").html("Last name should be filled.");
             return false;
+        }
+        else {
+            $("#spanLName").hide();
         }
         
         //if ($("#Email").val() == "") {
@@ -278,17 +288,18 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         //    $scope.ErrorMessage = "Email should be filled.";
         //    return false;
         //}
-        //reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        //if (reg.test($("#Email").val()) == false) {
-        //    $scope.ErrorModel.IsEmail = true;
-        //    $scope.ErrorMessage = "Please fill valid mail id.";
-        //    return false;
-        //}
-        if ($("#UserName").val() == "") {
-            $scope.ErrorModel.IsUserName = true;
-            $scope.ErrorMessage = "User Name should be filled.";
-            return false;
+        if ($("#Email").val() != "") {
+            reg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+            if (reg.test($("#Email").val()) == false) {
+                $("#spanEmail").show();
+                $("#spanEmail").html("Please fill valid email id.");
+                return false;
+            }
+            else {
+                $("#spanEmail").hide();
+            }
         }
+        
         //reg = new RegExp(/^(?![0-9]*$)(?![a-zA-Z]*$)(?![a-zA-Z0-9]*$)[a-zA-Z0-9@#$%&!]+$/g);
         reg = new RegExp('^[0-9]+$');
         if ($("#branding").val()!="SINDHI") {
@@ -300,53 +311,74 @@ VarmalaVivahApp.controller("RegisterUserController", ['$scope', '$http', '$filte
         }
         
         if ($("#ddlGender").val() == "") {
-            $scope.ErrorModel.IsGender = true;
-            $scope.ErrorMessage = "Please select gender.";
+            $("#spanGender").show();
+            $("#spanGender").html("Please select gender.");
             return false;
         }
         else {
-            $scope.ErrorModel.IsGender = false;
-        }
-        if ($("#Password").val() == "") {
-            $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password should be filled.";
-            return false;
-        }
-        if ($("#Password").val().length<8) {
-            $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password length should be greater than.";
-            return false;
-        }
-        if (!reg.test($("#Password").val())) {
-            $scope.ErrorModel.IsPassword = true;
-            $scope.ErrorMessage = "Password format should be numeric with minimum length 8 digit.";
-            return false;
-        }
-        
-        if ($("#ConfirmPassword").val() == "") {
-            $scope.ErrorModel.IsConfirmPassword = true;
-            $scope.ErrorMessage = "Confirm Password should be filled.";
-            return false;
+            $("#spanGender").hide();
         }
         if ($("#ContactNo").val() == "") {
-            $scope.ErrorModel.IsContactNo = true;
-            $scope.ErrorMessage = "Contact No should be filled!";
+            $("#spanContactNo").show();
+            $("#spanContactNo").html("Please fill contact no.");
             return false;
         }
-        if ($("#ContactNo").val().length>10) {
-            $scope.ErrorModel.IsContactNo = true;
-            $scope.ErrorMessage = "Invalid contact number.";
+        else {
+            $("#spanContactNo").hide();
+        }
+        if ($("#ContactNo").val().length != 10) {
+            $("#spanContactNo").show();
+            $("#spanContactNo").html("contact no should be 10 digit.");
             return false;
         }
+        else {
+            $("#spanContactNo").hide();
+        }
+        if ($("#Password").val() == "") {
+            $("#spanPassword").show();
+            $("#spanPassword").html("Please fill password.");
+            return false;
+        }
+        else {
+            $("#spanPassword").hide();
+        }
+        if ($("#Password").val().length<8) {
+            $("#spanPassword").show();
+            $("#spanPassword").html("Password length should be greater than 8");
+            return false;
+        }
+        else {
+            $("#spanPassword").hide();
+        }
+        //if (!reg.test($("#Password").val())) {
+        //    $scope.ErrorModel.IsPassword = true;
+        //    $scope.ErrorMessage = "Password format should be numeric with minimum length 8 digit.";
+        //    return false;
+        //}
+        
+        if ($("#ConfirmPassword").val() == "") {
+            $("#spanConfirmPassword").show();
+            $("#spanConfirmPassword").html("Please fill confirm password");
+            return false;
+        }
+        else {
+            $("#spanConfirmPassword").hide();
+        }
+        
         if ($("#Password").val().toLowerCase() != $("#ConfirmPassword").val().toLowerCase()) {
-            $scope.ErrorModel.IsConfirmPassword = true;
-            $scope.ErrorMessage = "Password and Confirm Password should be same!";
+            $("#spanConfirmPassword").show();
+            $("#spanConfirmPassword").html("Password and confirm password should be same.");
             return false;
+        }
+        else {
+            $("#spanConfirmPassword").hide();
         }
         if ($("#termsandconditions").is(':checked') == false) {
-            $scope.ErrorModel.IsTerms = true;
-            $scope.ErrorMessage = "Please select terms and conditions.";
+            $("#spanTerms").show();
             return false;
+        }
+        else {
+            $("#spanTerms").hide();
         }
 
         $("#spanvalidate").hide();

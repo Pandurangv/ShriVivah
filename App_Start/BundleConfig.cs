@@ -159,6 +159,20 @@ namespace ShriVivah
         }
 
 
+        public void WriteLog(string Msg)
+        {
+            try
+            {
+                string filename = string.Format("{o:dd_MM_yyyy_hh_mm_ss}", DateTime.Now.Date);
+                string filepath= HttpContext.Current.Server.MapPath("~/Content/Log/" + filename + ".txt");
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(new System.IO.FileStream(filepath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite));
+                writer.Write(Msg);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
         public static SettingsManager Instance
         {
             get {
@@ -177,7 +191,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["Prefix"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Prefix"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Prefix"].ConnectionString);
                 }
                 return Branding;
             }
@@ -190,7 +204,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["Branding"] != null)
                 {
-                    Branding=Convert.ToString(ConfigurationManager.ConnectionStrings["Branding"]);
+                    Branding=Convert.ToString(ConfigurationManager.ConnectionStrings["Branding"].ConnectionString);
                 }
                 return Branding;
             }
@@ -203,7 +217,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MSG91"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MSG91"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MSG91"].ConnectionString);
                 }
                 return Branding;
             }
@@ -216,9 +230,73 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MsgLogin"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgLogin"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgLogin"].ConnectionString);
                 }
                 return Branding;
+            }
+        }
+
+        public string SindhuRegards
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["SindhuRegards"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SindhuRegards"]);
+                }
+                return Branding;
+            }
+        }
+
+        public string SourcePathM
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["SourcePathM"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SourcePathM"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+        public string SourcePathF
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["SourcePathF"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SourcePathF"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+
+        public string SourcePath
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["SourcePath"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SourcePath"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+
+        public int OTPLength
+        {
+            get
+            {
+                int len = 4;
+                if (ConfigurationManager.ConnectionStrings["OTPLength"] != null)
+                {
+                    len = Convert.ToInt32(ConfigurationManager.ConnectionStrings["OTPLength"].ConnectionString);
+                }
+                return len;
             }
         }
 
@@ -229,7 +307,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MsgPassword"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgPassword"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MsgPassword"].ConnectionString);
                 }
                 return Branding;
             }
@@ -244,7 +322,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["SenderId"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SenderId"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SenderId"].ConnectionString);
                 }
                 return Branding;
             }
@@ -257,7 +335,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["AuthKey"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["AuthKey"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["AuthKey"].ConnectionString);
                 }
                 return Branding;
             }
@@ -271,7 +349,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["Title"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Title"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Title"].ConnectionString);
                 }
                 return Branding;
             }
@@ -285,7 +363,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["Address"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Address"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["Address"].ConnectionString);
                 }
                 return Branding;
             }
@@ -298,7 +376,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MobileNo"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MobileNo"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MobileNo"].ConnectionString);
                 }
                 return Branding;
             }
@@ -311,7 +389,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MID"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MID"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MID"].ConnectionString);
                 }
                 return Branding;
             }
@@ -324,7 +402,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["WEBSITE"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["WEBSITE"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["WEBSITE"].ConnectionString);
                 }
                 return Branding;
             }
@@ -337,7 +415,7 @@ namespace ShriVivah
                 int Branding=500;
                 if (ConfigurationManager.ConnectionStrings["Charges"] != null)
                 {
-                    Branding = Convert.ToInt32(ConfigurationManager.ConnectionStrings["Charges"]);
+                    Branding = Convert.ToInt32(ConfigurationManager.ConnectionStrings["Charges"].ConnectionString);
                 }
                 return Branding;
             }
@@ -350,7 +428,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["CHANNEL_ID"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["CHANNEL_ID"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["CHANNEL_ID"].ConnectionString);
                 }
                 return Branding;
             }
@@ -363,7 +441,7 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["INDUSTRY_TYPE_ID"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["INDUSTRY_TYPE_ID"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["INDUSTRY_TYPE_ID"].ConnectionString);
                 }
                 return Branding;
             }
@@ -376,7 +454,46 @@ namespace ShriVivah
                 string Branding = string.Empty;
                 if (ConfigurationManager.ConnectionStrings["MERCHANT_KEY"] != null)
                 {
-                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MERCHANT_KEY"]);
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["MERCHANT_KEY"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+
+        public string SMTP
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["SMTP"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["SMTP"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+
+        public string fromEmail
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["fromEmail"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["fromEmail"].ConnectionString);
+                }
+                return Branding;
+            }
+        }
+
+        public string fromPW
+        {
+            get
+            {
+                string Branding = string.Empty;
+                if (ConfigurationManager.ConnectionStrings["fromPW"] != null)
+                {
+                    Branding = Convert.ToString(ConfigurationManager.ConnectionStrings["fromPW"].ConnectionString);
                 }
                 return Branding;
             }

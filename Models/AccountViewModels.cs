@@ -276,8 +276,9 @@ namespace ShriVivah.Models
         public bool? IsActive { get; set; }
 
         public string District { get; set; }
-        public string Achievements { get; internal set; }
-        public bool? IsSpec { get; internal set; }
+        public string Achievements { get; set; }
+        public bool? IsSpec { get; set; }
+        public string SubCaste { get; set; }
     }
 
     public class MessageModel
@@ -324,6 +325,10 @@ namespace ShriVivah.Models
         public string JobLocation { get; set; }
 
         public int UserId { get; set; }
+
+        public int IsManglik { get; set; }
+
+        public int Jobdata { get; set; }
     }
 
     public class FamilyModel
@@ -337,6 +342,10 @@ namespace ShriVivah.Models
         public string NoofBrothers { get; set; }
 
         public string NoOfSisters { get; set; }
+
+        public int NoOfMBro { get; set; }
+
+        public int NoOfMSis { get; set; }
 
         public int UserId { get; set; }
 

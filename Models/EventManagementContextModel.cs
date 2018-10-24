@@ -18,8 +18,8 @@ namespace ShriVivah.Models
         {
             //var agents = objUser.GetAgentDetails().ToList();
             var query = (from c in objData.EventManagements
-                         join user in objData.tblUsers
-                         on c.OrganizedBy equals user.UserId
+                         //join user in objData.tblUsers
+                         //on c.OrganizedBy equals user.UserId
                          where c.IsDelete==false
                          orderby c.EventDate descending
                          select new EventManagementModel
@@ -34,8 +34,8 @@ namespace ShriVivah.Models
                              IsDelete=c.IsDelete,
                              MobileNo=c.MobileNo,
                              OrganizedBy=c.OrganizedBy,
-                             OrganizerName=user.FirstName + " " + user.LName  
-                             
+                             //OrganizerName=user.FirstName + " " + user.LName,  
+                             EventImage=c.EventImage,
                          });
             return query;
         }
@@ -49,21 +49,7 @@ namespace ShriVivah.Models
         }
 
         
-        //internal IQueryable<UserRequests_Vendor> GetVendorsSPMO(int? vendorTypeID, string VendorType, string SearchCity, string SearchText)
-        //{
-        //    var query = (from data in objData.viewUserRequests_Vendor
-        //                 where data.IsApproved == true
-        //                 select data).ToList();
-        //    if (vendorTypeID != 0 || Convert.ToString(VendorType) != "")
-        //        query = query.Where(s => s.VendorTypeId == vendorTypeID || s.VendorType.Contains(VendorType)).ToList();
-        //    if (string.IsNullOrEmpty(SearchCity) == false)
-        //        query = query.Where(v => v.City.Contains(SearchCity)).ToList();
-        //    if (string.IsNullOrEmpty(SearchText) == false)
-        //    {
-        //        query = query.Where(x => (Convert.ToString(x.Country) + " " + Convert.ToString(x.Address) + " " + Convert.ToString(x.OwnerName) + " " + Convert.ToString(x.Pincode)).ToLower().Contains(SearchText.ToLower())).ToList();
-        //    }
-        //    return query.AsQueryable();
-        //}
+        
 
         public int Save(EventManagementModel c)
         {
@@ -79,6 +65,7 @@ namespace ShriVivah.Models
                 EventState = c.EventState,
                 MobileNo = c.MobileNo,
                 OrganizedBy = c.OrganizedBy,
+                EventImage=c.EventImage,
             };
             objData.EventManagements.Add(vendortype);
             return objData.SaveChanges();
@@ -98,6 +85,8 @@ namespace ShriVivah.Models
                 newobj.EventState = model.EventState;
                 newobj.MobileNo = model.MobileNo;
                 newobj.OrganizedBy = model.OrganizedBy;
+                newobj.EventImage = model.EventImage;
+
                 objData.SaveChanges();
             }
         }

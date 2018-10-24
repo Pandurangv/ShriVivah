@@ -1,6 +1,6 @@
 ﻿@model ShriVivah.Models.RegisterViewModel
 @{
-    Layout = "~/Views/Shared/_LayoutAdminSPMO.cshtml";
+    Layout = "~/Views/Shared/_LayoutPageSindhi.cshtml";
 }
 
 @Scripts.Render("~/bundles/UserProfile")
@@ -9,98 +9,87 @@
     {
         if (isnewuser == true)
         {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: "Your account will be activated within 24 hours.",
-                Type: "alert",
-                OnOKClick: function () {
-                    window.location = '@Url.Action("LogOff","Account")';
-                }
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
+            window.location = '@Url.Action("Index","UserProfile")'
         }
         else {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: "Your Information saved successfully",
-                Type: "alert",
-                OnOKClick: function () {
-                    window.location = '@Url.Action("Index","UserProfile")'
-                }
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
+            window.location = '@Url.Action("Index","UserProfile")'
         }
 
     }
 </script>
-@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile", enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
-    <input type="hidden" id="hdnIsActive" value="@ViewBag.IsActive" />
-    <div class="form-horizontal divPadding1">
-        <div class="form-group" id="contentdiv">
-            <div id="divUserProfile">
-                <h3>Personal Information</h3>
-                <div class="form-group">
-                    <label for="focusedinput" class="col-sm-2 control-label">Profile Photo</label>
-                    <div class="col-sm-8"><input type="file" id="profileImage" class="form-control1" multiple="multiple"  required="required" /></div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-8">
-                        <button id="uploadAdhaar" class="btn btn-primary" type="button">Upload Adhaar!</button>
-                        <input type="hidden" id="AdhaarImagehidden" />
-                        <input id="AdhaarImage" type="file" style="display:none" />
-                    </div>
-                </div>
-                <div class="form-group" style="display:none">
-                    <div class="col-sm-8">
-                        <button id="uploadPan" class="btn btn-primary" type="button">Upload Pan Card!</button>
-                        <input type="hidden" id="PANImagehidden" />
-                        <input id="PANImage" type="file" style="display:none" />
-                    </div>
-                </div>
-               
-                <div class="spanupload">
-                    <input type="button" id="btnUpload" class="btn btn-default" value="Upload" onclick="UploadSPMO();" />
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="grid-3">
+    <div class="container">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmUserProfile", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
+            <input type="hidden" id="hdnIsActive" value="@ViewBag.IsActive" />
+            <div class="form-horizontal divPadding1">
+                <div class="form-group" id="contentdiv">
+                    <div id="divUserProfile">
+                        <h3>Personal Information</h3>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">Profile Photo</label>
+                            <div class="col-sm-8"><input type="file" id="profileImage" class="form-control1" multiple="multiple" required="required" /></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <button id="uploadAdhaar" class="btn btn-primary" type="button">Upload Adhaar!</button>
+                                <input type="hidden" id="AdhaarImagehidden" />
+                                <input id="AdhaarImage" type="file" style="display:none" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <div class="col-sm-8">
+                                <button id="uploadPan" class="btn btn-primary" type="button">Upload Pan Card!</button>
+                                <input type="hidden" id="PANImagehidden" />
+                                <input id="PANImage" type="file" style="display:none" />
+                            </div>
+                        </div>
 
-    <div class="row">
-        <div class="col-md-12 divPadding1">
-            <div class="coffee">
-                <div class="coffee-top">
-                    <a href="#">
-                        <img class="img-responsive profilepicture showprofile"  alt="" id="btnShowPopup_0" data="0" >
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 divPadding1" id="profileImageList">
-            
-        </div>
-    </div>
-    <div class="modal fade in" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;overflow-y:hidden">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel">×</button>
-                    <h2 class="modal-title">Image</h2>
-                </div>
-                <div class="modal-body" style="overflow-y: scroll;max-height: 450px;" >
-                    <div class="row" id="modalbody">
-
+                        <div class="spanupload">
+                            <input type="button" id="btnUpload" class="btn btn-default" value="Upload" onclick="UploadSPMO();" />
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSetProfileImage">Set Profile Image</button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 divPadding1">
+                    <div class="coffee">
+                        <div class="coffee-top">
+                            <a href="#">
+                                <img class="img-responsive profilepicture showprofile" alt="" id="btnShowPopup_0" data="0">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 divPadding1" id="profileImageList">
+
                 </div>
             </div>
-        </div>
+            <div class="modal fade in" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;overflow-y:hidden">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModel">×</button>
+                            <h2 class="modal-title">Image</h2>
+                        </div>
+                        <div class="modal-body" style="overflow-y: scroll;max-height: 450px;">
+                            <div class="row" id="modalbody">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="btnSetProfileImage">Set Profile Image</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-}
+</div>
+
 <script type="text/javascript">
          $(document).ready(function () {
              $("#uploadAdhaar").click(function () {

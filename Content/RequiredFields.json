@@ -1,0 +1,20 @@
+﻿{
+    "FirstName": {
+        "Show": "true",
+        "Required": "true"
+    },
+    "MName": {
+        "Show": "true",
+        "Required": "true"
+    }
+    ,
+    "LName": {
+        "Show": "true",
+        "Required": "true"
+    },
+    "Address": {
+        "Show": "true",
+        "Required": "true"
+    }
+}
+

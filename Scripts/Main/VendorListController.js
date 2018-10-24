@@ -29,7 +29,7 @@
         }
         var queryStr = "?VendorTypeID=" + vendorTypeId + "&VendorType=" + vendorType + "&SearchCity=" + searchCity + "&SearchText=" + searchText + "&PageNo=" + $scope.PageNo;
 
-        var finalurl = $('#branding').val() == 'SPMO' ? (url + '/vendor/GetSelectedVendorTypesVendors' + queryStr) : (url + '/vendor/GetAllVendorList');
+        var finalurl = $('#branding').val() == 'SINDHI' ? (url + '/vendor/GetSelectedVendorTypesVendors' + queryStr) : (url + '/vendor/GetAllVendorList');
 
         var req = {
             method: 'GET',

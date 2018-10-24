@@ -5,64 +5,75 @@
 @Styles.Render("~/Content/AdminPanel/jquery-ui.css")
 @Scripts.Render("~/Scripts/HelperJs/jquery-ui.js")
 
-<div class="grid_3">
+<div class="grid_3" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="UserSearchController" style="min-height:500px">
     <div class="container">
         <div class="breadcrumb1">
             <ul>
                 <a href="index.html"><i class="fa fa-home home_1"></i></a>
                 <span class="divider">&nbsp;|&nbsp;</span>
-                <li class="current-page">Regular Search</li>
+                <li class="current-page">Regular Search : Total Users {{TotalRecords}}</li>
             </ul>
         </div>
-        <div class="col-md-12" id="divMain" data-ng-app="VarmalaVivahApp" data-ng-controller="UserController" style="min-height:500px">
+        <div class="col-md-12">
+            <div class="col-md-9 search_left">
+                <div class="form_but1">
+                    <label class="col-sm-5 control-lable1" for="sex">Page Size : </label>
+                    <div class="col-sm-7 form_radios">
+                        <select class="form-control" id="ddlPageSize">
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="form_but1">
+                    <label class="col-sm-5 control-lable1" for="sex">Page No : </label>
+                    <div class="col-sm-7 form_radios">
+                        <select class="form-control" id="ddlPageNo"></select>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+             </div>
+        </div>
+        <div class="col-md-12">
             <input type="hidden" id="UserId" value="@ViewBag.UserId" />
                 <input type="hidden" id="ActiveUserId" value="@ViewBag.UserId" />
                 <input type="hidden" id="UserGender" value="@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender" />
+                <input type="hidden" id="hdnminage" value="@ViewBag.MinAge" />
             <div class="col-md-9 search_left">
                 <form>
+                    @if (@ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Admin")
+                    {
+                        <div class="form_but1">
+                            <label class="col-sm-5 control-lable1" for="sex">Gender : </label>
+                            <div class="col-sm-7 form_radios">
+                                <div class="radio block"><label><input type="radio" name="Gender" id="rdoMale" value="M" required="required" />Male</label></div>
+                                <div class="radio block"><label><input type="radio" name="Gender" id="rdoFemale" value="F" required="required" />Female</label></div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    }
+                    
                     <div class="form_but1">
                         <label class="col-sm-5 control-lable1" for="sex">Marital Status : </label>
                         <div class="col-sm-7 form_radios">
-                            <input type="checkbox" class="radio_1" /> Single &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" checked="checked" /> Divorced &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" value="Cheese" /> Widowed &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" value="Cheese" /> Separated &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" value="Cheese" /> Any
+                            <div class="radio block"><label><input type="checkbox" name="marritalstatus" id="rdoUnmarried" value="Unmarried" required="required" />Never Married</label></div>
+                            <div class="radio block"><label><input type="checkbox" name="marritalstatus" id="rdoWidow" value="Widow" required="required" />Widow</label></div>
+                            <div class="radio block"><label><input type="checkbox" name="marritalstatus" id="rdoDivorcee" value="Divorcee" required="required" />Divorcee</label></div>
+                            <div class="radio block"><label><input type="checkbox" name="marritalstatus" id="rdoSeparated" value="Separated" required="required" />Separated</label></div>
+                            <div class="radio block"><label><input type="checkbox" name="marritalstatus" id="rdoAnnulled" value="Separated" required="required" />Annulled</label></div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
-                    <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">Country : </label>
+                    <div class="form_but1" style="display:none" id="divorceeInfo">
+                        <label for="radio" class="col-sm-5 control-lable1">Having Children</label>
                         <div class="col-sm-7 form_radios">
-                            <div class="select-block1">
-                                <select>
-                                    <option value="">Country</option>
-                                    <option value="">Japan</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Dubai</option>
-                                    <option value="">Italy</option>
-                                    <option value="">Greece</option>
-                                    <option value="">Iceland</option>
-                                    <option value="">China</option>
-                                    <option value="">Doha</option>
-                                    <option value="">Irland</option>
-                                    <option value="">Srilanka</option>
-                                    <option value="">Russia</option>
-                                    <option value="">Hong Kong</option>
-                                    <option value="">Germany</option>
-                                    <option value="">Canada</option>
-                                    <option value="">Mexico</option>
-                                    <option value="">Nepal</option>
-                                    <option value="">Norway</option>
-                                    <option value="">Oman</option>
-                                    <option value="">Pakistan</option>
-                                    <option value="">Kuwait</option>
-                                    <option value="">Indonesia</option>
-                                    <option value="">Spain</option>
-                                    <option value="">Thailand</option>
-                                    <option value="">Saudi Arabia</option>
-                                    <option value="">Poland</option>
-                                </select>
+                            <div class="col-sm-4">
+                                <div class="radio block"><label><input type="radio" name="childrenhaving" id="rdochildNo" value="false" checked="checked" />No</label></div>
+                                <div class="radio block"><label><input type="radio" name="childrenhaving" id="rdochildYes" value="true" />Yes</label></div>
+                            </div>
+                            <div class="col-sm-4" id="divchildstatus" style="display:none">
+                                <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildLWM" value="true" />With Him/Her</label></div>
+                                <div class="radio block"><label><input type="radio" name="childrenstatus" id="rdochildNLWM" value="false" />Not With Him/Her</label></div>
                             </div>
                         </div>
                         <div class="clearfix"> </div>
@@ -71,131 +82,58 @@
                         <label class="col-sm-5 control-lable1" for="sex">District / City : </label>
                         <div class="col-sm-7 form_radios">
                             <div class="select-block1">
-                                <select>
-                                    <option value="">District / City</option>
-                                    <option value="">Japan</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Dubai</option>
-                                    <option value="">Italy</option>
-                                    <option value="">Greece</option>
-                                    <option value="">Iceland</option>
-                                    <option value="">China</option>
-                                    <option value="">Doha</option>
-                                    <option value="">Irland</option>
-                                    <option value="">Srilanka</option>
-                                    <option value="">Russia</option>
-                                    <option value="">Hong Kong</option>
-                                    <option value="">Germany</option>
-                                    <option value="">Canada</option>
-                                    <option value="">Mexico</option>
-                                    <option value="">Nepal</option>
-                                    <option value="">Norway</option>
-                                    <option value="">Oman</option>
-                                    <option value="">Pakistan</option>
-                                    <option value="">Kuwait</option>
-                                    <option value="">Indonesia</option>
-                                    <option value="">Spain</option>
-                                    <option value="">Thailand</option>
-                                    <option value="">Saudi Arabia</option>
-                                    <option value="">Poland</option>
+                                <select id="ddlCity">
                                 </select>
                             </div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
                     <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">State : </label>
+                        <label class="col-sm-5 control-lable1" for="sex">Qualification : </label>
                         <div class="col-sm-7 form_radios">
                             <div class="select-block1">
-                                <select>
-                                    <option value="">State</option>
-                                    <option value="">Japan</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Dubai</option>
-                                    <option value="">Italy</option>
-                                    <option value="">Greece</option>
-                                    <option value="">Iceland</option>
-                                    <option value="">China</option>
-                                    <option value="">Doha</option>
-                                    <option value="">Irland</option>
-                                    <option value="">Srilanka</option>
-                                    <option value="">Russia</option>
-                                    <option value="">Hong Kong</option>
-                                    <option value="">Germany</option>
-                                    <option value="">Canada</option>
-                                    <option value="">Mexico</option>
-                                    <option value="">Nepal</option>
-                                    <option value="">Norway</option>
-                                    <option value="">Oman</option>
-                                    <option value="">Pakistan</option>
-                                    <option value="">Kuwait</option>
-                                    <option value="">Indonesia</option>
-                                    <option value="">Spain</option>
-                                    <option value="">Thailand</option>
-                                    <option value="">Saudi Arabia</option>
-                                    <option value="">Poland</option>
-                                </select>
+                                <select id="ddlQualification"></select>
                             </div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
                     <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">Religion : </label>
+                        <label class="col-sm-5 control-lable1" for="sex">Income : </label>
+                        <div class="col-sm-7 select-block1" >
+                            <select id="cmbIncome" class="form-control1 inputborder" name="txtIncome" required="required">
+                                <option selected="selected" value="">Annual Income</option>
+                                <option value="Under Rs.50,000">Less than Rs.50,000</option>
+                                <option value="Rs.50,001 - 1,00,000">Rs.50,001 - 1,00,000</option>
+                                <option value="Rs.1,00,001 - 2,00,000">Rs.1,00,001 - 2,00,000</option>
+                                <option value="Rs.2,00,001 - 3,00,000">Rs.2,00,001 -   3,00,000</option>
+                                <option value="Rs.3,00,001 - 4,00,000">Rs.3,00,001 - 4,00,000</option>
+                                <option value="Rs.4,00,001 - 5,00,000">Rs.4,00,001 - 5,00,000</option>
+                                <option value="Rs.5,00,001 - 7,50,000">Rs.5,00,001 -   7,50,000</option>
+                                <option value="Rs.7,50,001 - 10,00,000">Rs.7,50,001 - 10,00,000</option>
+                                <option value="Rs.10,00,001 and above">Rs.10,00,001 and Above</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="form_but1">
+                        <label class="col-sm-5 control-lable1" for="sex">Job/Business : </label>
                         <div class="col-sm-7 form_radios">
-                            <div class="select-block1">
-                                <select>
-                                    <option value="">Hindu</option>
-                                    <option value="">Sikh</option>
-                                    <option value="">Jain-All</option>
-                                    <option value="">Jain-Digambar</option>
-                                    <option value="">Jain-Others</option>
-                                    <option value="">Muslim-All</option>
-                                    <option value="">Muslim-Shia</option>
-                                    <option value="">Muslim-Sunni</option>
-                                    <option value="">Muslim-Others</option>
-                                    <option value="">Christian-All</option>
-                                    <option value="">Christian-Catholic</option>
-                                    <option value="">Jewish</option>
-                                    <option value="">Inter-Religion</option>
-                                </select>
+                            <input type="radio" class="radio_1" name="rdojob" value="0" id="rdojob"/> Job 
+                            <input type="radio" class="radio_1" name="rdojob" value="1" id="rdobusiness"/> Business
+                            <input type="radio" class="radio_1" name="rdojob" value="2" id="rdonotworking"/> Not Working
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="form_but1">
+                        <label class="col-sm-5 control-lable1" for="sex">Height : </label>
+                        <div class="col-sm-7 form_radios">
+                            <div class="col-sm-5 select-block1">
+                                <select id="ddlMinHeight"></select>
                             </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">Mother Tongue : </label>
-                        <div class="col-sm-7 form_radios">
-                            <div class="select-block1">
-                                <select>
-                                    <option value="">English</option>
-                                    <option value="">French</option>
-                                    <option value="">Telugu</option>
-                                    <option value="">Bengali</option>
-                                    <option value="">Bihari</option>
-                                    <option value="">Hindi</option>
-                                    <option value="">Koshali</option>
-                                    <option value="">Khasi</option>
-                                    <option value="">Tamil</option>
-                                    <option value="">Urdu</option>
-                                    <option value="">Manipuri</option>
-                                </select>
+                            <div class="col-sm-5 select-block1">
+                                <select id="ddlMaxHeight"></select>
                             </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">Show Profile : </label>
-                        <div class="col-sm-7 form_radios">
-                            <input type="checkbox" class="radio_1" /> with Photo &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" checked="checked" /> with Horoscope
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="form_but1">
-                        <label class="col-sm-5 control-lable1" for="sex">Don't Show : </label>
-                        <div class="col-sm-7 form_radios">
-                            <input type="checkbox" class="radio_1" /> Ignored Profiles &nbsp;&nbsp;
-                            <input type="checkbox" class="radio_1" checked="checked" /> Profiles already Contacted
+                            <div class="clearfix"> </div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
@@ -203,194 +141,113 @@
                         <label class="col-sm-5 control-lable1" for="sex">Age : </label>
                         <div class="col-sm-7 form_radios">
                             <div class="col-sm-5 input-group1">
-                                <input class="form-control has-dark-background" name="28" id="slider-name" placeholder="28" type="text" required="">
+                                <input class="form-control has-dark-background" id="MinAge"  placeholder="Min Age" type="number" min="18" max="80" required="">
                             </div>
                             <div class="col-sm-5 input-group1">
-                                <input class="form-control has-dark-background" name="40" id="slider-name" placeholder="40" type="text" required="">
+                                <input class="form-control has-dark-background" id="MaxAge"  placeholder="Max Age" type="number" min="18" max="80" required="">
                             </div>
                             <div class="clearfix"> </div>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="form_but1">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-danger col-md-6" data-ng-click="SearchData()">Search</button>
+                            <button type="button" class="btn btn-danger col-md-6" data-ng-click="GetUserData()">Reset</button>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
                 </form>
                 <div class="paid_people">
                     <h1>Search Profile</h1>
-                    <div class="row_1">
-                        <div class="col-sm-6 paid_people-left">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a5.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
+                    <div class="row_1" data-ng-repeat="user in UserList">
+                        <div class="col-md-12">
+                            <div class="headerdiv">{{user.PanchayatCode}}</div>
                         </div>
-                        <div class="col-sm-6">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a6.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="row_1">
-                        <div class="col-sm-6 paid_people-left">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a7.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a8.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="row_2">
-                        <div class="col-sm-6 paid_people-left">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a5.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="profile_item">
-                                <a href="view_profile.html">
-                                    <li class="profile_item-img">
-                                        <img src="images/a4.jpg" class="img-responsive" alt="" />
-                                    </li>
-                                    <li class="profile_item-desc">
-                                        <h4>2458741</h4>
-                                        <p>29 Yrs, 5Ft 5in Christian</p>
-                                        <h5>View Full Profile</h5>
-                                    </li>
-                                    <div class="clearfix"> </div>
-                                </a>
-                            </ul>
+                        <div class="col-md-12">
+                            <div class="col-sm-3 profile_left-top">
+                                <img data-ng-src="{{user.Img1}}" class="img-responsive profileimg" alt="" />
+                            </div>
+                            <div class="col-sm-9">
+                                <table class="table_working_hours">
+                                    <tbody>
+                                        <tr class="opened_1">
+                                            <td class="day_label1">Name :</td>
+                                            <td class="day_value">{{user.FirstName}} &nbsp; {{user.LName}}</td>
+                                        </tr>
+                                        <tr class="opened_1">
+                                            <td class="day_label1">Age / Height :</td>
+                                            <td class="day_value">{{user.Age}}, {{user.Height}}</td>
+                                        </tr>
+                                        <tr class="opened">
+                                            <td class="day_label1">Marital Status :</td>
+                                            <td class="day_value" ng-switch="user.MarritalStatus">
+                                                <span ng-switch-when="1">Never Married</span>
+                                                <span ng-switch-when="2">Widow</span>
+                                                <span ng-switch-when="3">Divorcee</span>
+                                                <span ng-switch-when="4">Separated</span>
+                                                <span ng-switch-when="5">Annulled</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="opened">
+                                            <td class="day_label1">City :</td>
+                                            <td class="day_value">{{user.City}}</td>
+                                        </tr>
+                                        <tr class="opened">
+                                            <td class="day_label1">Job/Business :</td>
+                                            <td class="day_value" ng-switch="user.Jobdata">
+                                                <span ng-switch-when="0">Job</span>
+                                                <span ng-switch-when="1">Business</span>
+                                                <span ng-switch-when="2">Not Working</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="closed">
+                                            <td class="day_label1">Education :</td>
+                                            <td class="day_value closed"><span>{{user.Qualification}}</span></td>
+                                        </tr>
+                                        <tr class="closed">
+                                            <td class="day_label1">Income :</td>
+                                            <td class="day_value closed"><span>{{user.Income}}</span></td>
+                                        </tr>
+                                        <tr class="closed" ng-if="user.IsAdhaarVerified">
+                                            <td class="day_label1">Adhaar Verified</td>
+                                            <td class="day_value closed">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="buttons">
+                                    @if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser != null)
+                                    {
+                                        if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.UserType == "Admin")
+                                        {
+                                            <div class="vertical" data-ng-click="DeactivateUser(user)">Deactivate</div>
+                                            <div class="vertical">Send User Details</div>
+                                            <div class="vertical" data-ng-click="GotMarried(user)">Got Married/Engaged</div>
+                                            <div class="vertical" data-ng-click="EditUser(user)">Edit Profile</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="vertical" data-ng-click="ShortlistUser(user)">Shortlist</div>
+                                            if (ShriVivah.Models.SessionManager.GetInstance.ActiveUser.Gender == "M")
+                                            {
+                                                <div class="vertical" data-ng-click="SendRequest(user)">Express Interest</div>
+                                            }
+                                        }
+                                        <div class="vertical" data-ng-click="RedirectUser(user)">View Profile</div>
+                                    }
+                                </div>
+                            </div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 match_right">
-                <div class="profile_search1">
-                    <form>
-                        <input type="text" class="m_1" name="ne" size="30" required="" placeholder="Enter Profile ID :">
-                        <input type="submit" value="Go">
-                    </form>
-                </div>
-                <section class="slider">
-                    <h3>Happy Marriage</h3>
-                    <div class="flexslider">
-                        <ul class="slides">
-                            <li>
-                                <img src="images/s2.jpg" alt="" />
-                                <h4>Lorem & Ipsum</h4>
-                                <p>It is a long established fact that a reader will be distracted by the readable</p>
-                            </li>
-                            <li>
-                                <img src="images/s1.jpg" alt="" />
-                                <h4>Lorem & Ipsum</h4>
-                                <p>It is a long established fact that a reader will be distracted by the readable</p>
-                            </li>
-                            <li>
-                                <img src="images/s3.jpg" alt="" />
-                                <h4>Lorem & Ipsum</h4>
-                                <p>It is a long established fact that a reader will be distracted by the readable</p>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-                <div class="view_profile view_profile2">
-                    <h3>View Similar Profiles</h3>
-                    <ul class="profile_item">
-                        <a href="view_profile.html">
-                            <li class="profile_item-img">
-                                <img src="images/p5.jpg" class="img-responsive" alt="" />
-                            </li>
-                            <li class="profile_item-desc">
-                                <h4>2458741</h4>
-                                <p>29 Yrs, 5Ft 5in Christian</p>
-                                <h5>View Full Profile</h5>
-                            </li>
-                            <div class="clearfix"> </div>
-                        </a>
-                    </ul>
-                    <ul class="profile_item">
-                        <a href="view_profile.html">
-                            <li class="profile_item-img">
-                                <img src="images/p6.jpg" class="img-responsive" alt="" />
-                            </li>
-                            <li class="profile_item-desc">
-                                <h4>2458741</h4>
-                                <p>29 Yrs, 5Ft 5in Christian</p>
-                                <h5>View Full Profile</h5>
-                            </li>
-                            <div class="clearfix"> </div>
-                        </a>
-                    </ul>
-                    <ul class="profile_item">
-                        <a href="view_profile.html">
-                            <li class="profile_item-img">
-                                <img src="images/p7.jpg" class="img-responsive" alt="" />
-                            </li>
-                            <li class="profile_item-desc">
-                                <h4>2458741</h4>
-                                <p>29 Yrs, 5Ft 5in Christian</p>
-                                <h5>View Full Profile</h5>
-                            </li>
-                            <div class="clearfix"> </div>
-                        </a>
-                    </ul>
-                </div>
-            </div>
+            
             <div class="clearfix"> </div>
         </div>
     </div>
 </div>
-        @Scripts.Render("~/Scripts/Main/UserProfileController.js")
+@Scripts.Render("~/Scripts/Main/UserSearchController.js")
 

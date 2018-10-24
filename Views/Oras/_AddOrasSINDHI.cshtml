@@ -1,0 +1,29 @@
+﻿@model ShriVivah.Models.Entities.tblOras
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmOras" })) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=>m.OrasId)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-6">
+                <span>Moon Sign Name</span>
+                @Html.TextBoxFor(model => model.OrasName, new { @class = "form-control inputborder",@maxlength="10" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6" id="errorName" style="display:none">
+                <div class="form-group">
+                    <span class="has-error" style="color: #c32143;">Please fill Moon Sign name.</span>
+                </div>
+            </div>
+        </div>
+        <div class="span_3">
+            <input type="button" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="button" value="Update" class="btn btn-default" id="btnUpdate" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+}

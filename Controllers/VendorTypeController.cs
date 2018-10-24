@@ -87,7 +87,7 @@ namespace ShriVivah.Controllers
                 VendorTypeDetails obj = new VendorTypeDetails()
                 {
                     Status = false,
-                    ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
+                    ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही."
                 };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -128,7 +128,7 @@ namespace ShriVivah.Controllers
                     VendorTypeDetails obj = new VendorTypeDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.NoMoreInformationAvail : "आणखी माहिती उपलब्ध नाही"
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -164,7 +164,7 @@ namespace ShriVivah.Controllers
                     VendorTypeDetails obj = new VendorTypeDetails()
                     {
                         Status = false,
-                        ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात.",
+                        ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.FirstPage : "तुम्ही पहिल्याच पानावर आहात.",
                     };
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
@@ -209,7 +209,7 @@ namespace ShriVivah.Controllers
             var test = countries.Where(p => p.VendorType.ToUpper() == model.VendorType.ToUpper()).FirstOrDefault();
             VendorTypeDetails obj = new VendorTypeDetails();
             obj.Status = true;
-            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.InformationSave : "माहिती सेव केली आहे.";
             objOras.Save(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorTypeId).Skip(pageindex * PageSize).Take(PageSize);
@@ -228,7 +228,7 @@ namespace ShriVivah.Controllers
             VendorTypeDetails obj = new VendorTypeDetails();
             //model.TypeImagesPath = SessionManager.GetInstance.ImagePath;
             obj.Status = true;
-            obj.ErrorMessage = SettingsManager.Instance.Branding == "SPMO" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
+            obj.ErrorMessage = SettingsManager.Instance.Branding == "SINDHI" ? Resources.SPMOResources.UpdateSuccess : "माहितीमध्ये बदल करण्यात आला आहे.";
             objOras.Update(model);
             int pageindex = 0;
             var filter = countries.OrderBy(p => p.VendorTypeId).Skip(pageindex * PageSize).Take(PageSize);

@@ -29,6 +29,8 @@ namespace ShriVivah.Models.DataModels
         public string MobileNo { get; set; }
 
         public bool IsDelete { get; set; }
+
+        public string EventImage { get; set; }
     }
 
 

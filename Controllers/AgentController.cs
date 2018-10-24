@@ -44,7 +44,7 @@ namespace ShriVivah.Controllers
 
         public ActionResult ActivateDeactivate(int UserId, bool IsActive)
         {
-            objUser.SetActive(UserId, IsActive,true);
+            objUser.SetActive(UserId, IsActive,false);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 

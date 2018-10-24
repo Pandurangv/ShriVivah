@@ -21,8 +21,8 @@ $(document).ready(function () {
         $("#myModal1").hide();
     });
     $("#btnChangePassword").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        //var spinner = new Spinner().spin();
+        //document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: "GET",
@@ -42,7 +42,7 @@ $(document).ready(function () {
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             },
             error: function (data) {
                 var objShowCustomAlert = new ShowCustomAlert({
@@ -51,7 +51,7 @@ $(document).ready(function () {
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
@@ -70,8 +70,8 @@ $(document).ready(function () {
     });
 
     $("#btnReset").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        //var spinner = new Spinner().spin();
+        //document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: "GET",
@@ -100,7 +100,7 @@ $(document).ready(function () {
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             },
             error: function (data) {
                 //var spinner = new Spinner().spin();
@@ -110,14 +110,14 @@ $(document).ready(function () {
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
 
     $("#btnASearch").click(function () {
         var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        //document.getElementById("contentdiv").appendChild(spinner.el);
         var CastId = $("#CasteId").val() == null ? 0 : $("#CasteId").val();
         var EHeightId = $("#EHeightId").val() == null ? 0 : $("#EHeightId").val();
         var HeightId = $("#HeightId").val() == null ? 0 : $("#HeightId").val();
@@ -152,7 +152,7 @@ $(document).ready(function () {
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
                 $("#ageFrom").val("");
                 $("#ageTo").val("");
                 $("#EHeightId").val("0");
@@ -168,15 +168,15 @@ $(document).ready(function () {
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
         $("#btnCloseModel").trigger("click");
     })
 
     $("#btnSearch").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        //var spinner = new Spinner().spin();
+        //document.getElementById("contentdiv").appendChild(spinner.el);
         var prefix = $("#txtSearch").val();
         if (prefix == "") {
             var objShowCustomAlert = new ShowCustomAlert({
@@ -217,7 +217,7 @@ $(document).ready(function () {
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             },
             error: function (data) {
                 var objShowCustomAlert = new ShowCustomAlert({
@@ -226,7 +226,7 @@ $(document).ready(function () {
                     Type: "alert",
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                //document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     })
@@ -313,8 +313,27 @@ $(document).ready(function () {
         }
     });
     $("#rdoJob").change(function () {
-        if ($("#rdoBusiness").prop("checked") == true) {
+        if ($("#rdoJob").prop("checked") == true) {
             $("#officediv").hide();
+        }
+    });
+    $("#rdoNotWorking").change(function () {
+        if ($("#rdoNotWorking").prop("checked") == true) {
+            $("#officediv").hide();
+        }
+    });
+
+    $("#rdochildYes").change(function () {
+        if ($("#rdochildYes").prop("checked") == true) {
+            $("#divchildstatus").show();
+        }
+        else {
+            $("#divchildstatus").hide();
+        }
+    });
+    $("#rdochildNo").change(function () {
+        if ($("#rdochildNo").prop("checked") == true) {
+            $("#divchildstatus").hide();
         }
     });
 
@@ -342,14 +361,11 @@ $(document).ready(function () {
     });
 
     $("#btnLoadMore").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: 'GET',
             url: "../UserProfile/UserNext",
             success: function (data) {
-                document.getElementById("contentdiv").removeChild(spinner.el);
                 if (data.DataResponse!=null && data.DataResponse.length > 0) {
                     bindUserSearchResult(data);
                 }
@@ -364,14 +380,11 @@ $(document).ready(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('Error during process: \n' + xhr.responseText);
-                document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
 
     $("#btnGoBack").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: "Get",
@@ -379,7 +392,6 @@ $(document).ready(function () {
             url: GetVirtualDirectory() + '/UserProfile/GoBack',
             dataType: "json",
             success: function (response) {
-                document.getElementById("contentdiv").removeChild(spinner.el);
                 if (response.DataResponse != null && response.DataResponse.length > 0) {
                     bindUserSearchResult(response);
                 }
@@ -394,14 +406,11 @@ $(document).ready(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.responseText);
-                document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
 
     $("#btnGoLast").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: "Get",
@@ -409,7 +418,6 @@ $(document).ready(function () {
             url: GetVirtualDirectory() + '/UserProfile/GoLast',
             dataType: "json",
             success: function (response) {
-                document.getElementById("contentdiv").removeChild(spinner.el);
                 if (response.DataResponse != null && response.DataResponse.length > 0) {
                     bindUserSearchResult(response);
                 }
@@ -424,14 +432,11 @@ $(document).ready(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.responseText);
-                document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
 
     $("#btnGoFirst").click(function () {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
         $.ajax({
             cache: false,
             type: "Get",
@@ -439,7 +444,6 @@ $(document).ready(function () {
             url: GetVirtualDirectory() + '/UserProfile/GoFirst',
             dataType: "json",
             success: function (response) {
-                document.getElementById("contentdiv").removeChild(spinner.el);
                 if (response.DataResponse != null && response.DataResponse.length > 0) {
                     bindUserSearchResult(response);
                 }
@@ -454,7 +458,6 @@ $(document).ready(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.responseText);
-                document.getElementById("contentdiv").removeChild(spinner.el);
             }
         });
     });
@@ -543,7 +546,7 @@ $(document).ready(function () {
             var IsIntercast = false;// document.getElementById('rdoIsInterCast').checked;
             var DOB = $("#DOB").val(); var ReligionId = $("#ReligionId").val();
             var CasteId = $("#CasteId").val();
-            var Subcaste = $("#Subcaste").val();
+            var SubCaste = $("#Subcaste").val();
             var PlaceOfBirth = $("#PlaceOfBirth").val();
             var TimeofBirth = $("#TimeofBirth").val();
             var OrasId = $("#OrasId").val(); 
@@ -556,11 +559,13 @@ $(document).ready(function () {
             var bodytype = $("input:radio[name='bodytype']:checked").val();
             var QualificationId = $("#QualificationId").val();
             var occuption = $("input:radio[name='occuption']:checked").val();
-            var IsJobOrBusiness = occuption == "Job" ? true : (occuption!==undefined?false:occuption);
+            var IsManglik = $("input:radio[name='Manglik']:checked").val();
+            var Jobdata = occuption;
             var txtCompanyName = $("#txtCompanyName").val();
             var cmbIncome = $("#cmbIncome").val();
             var txtFatherName = $("#txtFatherName").val(); var txtMotherName = $("#txtMotherName").val(); var txtNoofBrothers = $("#txtNoofBrothers").val();
-            var txtNoofSisters = $("#txtNoofSisters").val(); var Address = $("#txtAddress").val(); var weight = $("#weight").val();
+            var txtNoofSisters = $("#txtNoofSisters").val();
+            var Address = $("#txtAddress").val(); var weight = $("#weight").val();
             var txtBirthName = $("#txtBirthName").val();
             var txtFatherMobileNo = $("#txtFatherMobileNo").val();
 
@@ -583,15 +588,17 @@ $(document).ready(function () {
             var family = {
                 FathersName: txtFatherName, MothersName: txtMotherName,
                 NoofBrothers: txtNoofBrothers, NoOfSisters: txtNoofSisters,
+                NoOfMBro: $("#NoOfMBro").val(), NoOfMSis: $("#NoOfMSis").val(),
                 MobileNo: txtFatherMobileNo, IsJob: IsJob, FathersIncome: txtFathersIncome,
                 GrandFatherName: $("#txtGFatherName").val()
             };
-            var JobDetails = { IsJobOrBusiness: IsJobOrBusiness, CompanyName: txtCompanyName, JobLocation: txtCompanyLocation, Income: cmbIncome };
+            var JobDetails = { Jobdata: Jobdata, CompanyName: txtCompanyName, JobLocation: txtCompanyLocation, Income: cmbIncome, IsManglik: IsManglik };
             var model =
                 {
                     UserId:$("#ActiveUserId").val(),
                     BloodGroupId: BloodGroupId, ReligionId: ReligionId, CasteId: CasteId,
-                    OrasId: OrasId, Gender: Gender, DateOfBirth: DOB, Address: Address,
+                    OrasId: OrasId, Gender: Gender, DateOfBirth: DOB,
+                    Address: Address,
                     HeightId: HeightId, Weight: weight, IdentificationMark: IdentificationMark,
                     PANNO: PANNO, MobileNo: MobileNo, IsHandiCapped: rdoIsHandicapped,
                     HandicapedType: disabledesc, Color: cmbColor, MarritalStatus: MarritalStatus,
@@ -602,7 +609,7 @@ $(document).ready(function () {
                     IsIntercast: IsIntercast,
                     City: City,
                     Country: Country,
-
+                    Subcaste: SubCaste,
                     State: State,
                     BirthCountry: BirthCountry,
 
@@ -639,8 +646,8 @@ $(document).ready(function () {
                 QualificationIdlist[i] = $(selected).val();
             });
 
-            var spinner = new Spinner().spin();
-            document.getElementById("contentdiv").appendChild(spinner.el);
+            //var spinner = new Spinner().spin();
+            //document.getElementById("contentdiv").appendChild(spinner.el);
             model = JSON.stringify(model); family = JSON.stringify(family);
             var cmbRelations = $("#cmbRelations").val();
 
@@ -662,6 +669,7 @@ $(document).ready(function () {
             }
             relatives = JSON.stringify(relatives);
             JobDetails = JSON.stringify(JobDetails);
+            ShowLoader();
             $.ajax({
                 cache: false,
                 type: 'POST',
@@ -696,10 +704,10 @@ $(document).ready(function () {
                         });
                         objShowCustomAlert.ShowCustomAlertBox();
                     }
-                    document.getElementById("contentdiv").removeChild(spinner.el);
+                    HideLoader();
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    document.getElementById("contentdiv").removeChild(spinner.el);
+                    //document.getElementById("contentdiv").removeChild(spinner.el);
                 }
             });
         }
@@ -710,8 +718,8 @@ $(document).ready(function () {
 
 function LoadStates(cid)
 {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'POST',
@@ -726,10 +734,10 @@ function LoadStates(cid)
                 items1 += "<option value=\"" + item.StateId + "\">" + item.StateName + "</option>";
             });
             $("#StateId").append(items1);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             alert('Error during process: \n' + xhr.responseText);
         }
     });
@@ -737,7 +745,7 @@ function LoadStates(cid)
 
 function LoadBirthStates(cid) {
     var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'POST',
@@ -752,10 +760,10 @@ function LoadBirthStates(cid) {
                 items1 += "<option value=\"" + item.StateId + "\">" + item.StateName + "</option>";
             });
             $("#BirthState").append(items1);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             alert('Error during process: \n' + xhr.responseText);
         }
     });
@@ -763,8 +771,8 @@ function LoadBirthStates(cid) {
 
 function LoadCountry()
 {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'POST',
@@ -780,14 +788,14 @@ function LoadCountry()
             });
             $("#CountryId").append(items1);
             $("#BirthCountry").append(items1);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             $("#CountryId").val(1);
             $("#BirthCountry").val(1);
             LoadStates(1);
             LoadBirthStates(1);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             alert('Error during process: \n' + xhr.responseText);
         }
     });
@@ -799,7 +807,7 @@ function LoadAllImage()
     var basepath = GetVirtualDirectory();
     basepath += "/";
     var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'Get',
@@ -841,13 +849,35 @@ function LoadAllImage()
             html += '</a>';
             html += '</div>';
             $("#modalbody").html(html);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert('Error during process: \n' + xhr.responseText);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         }
     });
+}
+
+function PrevImage() {
+    var basepath = GetVirtualDirectory();
+    var index = $("#img01").attr("data-index");
+    if (parseInt(index) == 0) {
+        return false;
+    }
+    index--;
+    $("#img01").attr("data-index", index);
+    $("#img01").attr("src", ImageList[index].ImagePath);
+}
+
+function NextImage() {
+    var basepath = GetVirtualDirectory();
+    var index = $("#img01").attr("data-index");
+    if (parseInt(index) == (ImageList.length - 1)) {
+        return false;
+    }
+    index++;
+    $("#img01").attr("data-index", index);
+    $("#img01").attr("src", ImageList[index].ImagePath);
 }
 
 function ShowPrevImg()
@@ -914,7 +944,7 @@ function LoadCasts(ReligionId)
 {
     $('#CasteId').empty();
     var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'POST',
@@ -932,12 +962,12 @@ function LoadCasts(ReligionId)
                 items1 += "<option value=\"" + item.CastId + "\">" + item.CastName + "</option>";
             });
             $("#CasteId").append(items1);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             $("#CasteId").val(1);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert('Error during process: \n' + xhr.responseText);
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         }
     });
 }
@@ -985,8 +1015,8 @@ function UpdateUserData() {
             District: $("#District").val(),
         };
 
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     model = JSON.stringify(model);
     family = JSON.stringify(family);
     JobDetails = JSON.stringify(JobDetails);
@@ -1018,10 +1048,10 @@ function UpdateUserData() {
                 });
                 objShowCustomAlert.ShowCustomAlertBox();
             }
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         }
     });
 }
@@ -1142,8 +1172,8 @@ function bindUserSearchResult(students)
 }
 
 function SendSMS(UserId) {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     var url = GetVirtualDirectory() + '/PendingUsers/SendSMS';
     url = url + "?UserId=" + UserId;//$("#smsapi").val() + "&mobiles=" + MobileNo + "&message=Please complete your profile to find your match&sender= VARMALAVIVAH&route=4&country=91";
     $.ajax({
@@ -1160,7 +1190,7 @@ function SendSMS(UserId) {
                 Type: "alert",
             });
             objShowCustomAlert.ShowCustomAlertBox();
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (data) {
             var objShowCustomAlert = new ShowCustomAlert({
@@ -1169,7 +1199,7 @@ function SendSMS(UserId) {
                 Type: "alert",
             });
             objShowCustomAlert.ShowCustomAlertBox();
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         }
     });
 }
@@ -1181,15 +1211,15 @@ function RemoveUser(UserId)
         Message: "Are you sure you want to remove this user.",
         Type: "confirm",
         OnOKClick: function () {
-            var spinner = new Spinner().spin();
-            document.getElementById("contentdiv").appendChild(spinner.el);
+            //var spinner = new Spinner().spin();
+            //document.getElementById("contentdiv").appendChild(spinner.el);
             $.ajax({
                 cache: false,
                 type: 'POST',
                 url: "../UserProfile/RemoveUser",
                 data: { UserId: UserId },
                 success: function (data) {
-                    document.getElementById("contentdiv").removeChild(spinner.el);
+                    //document.getElementById("contentdiv").removeChild(spinner.el);
                     if (data.Status == true) {
                         var objShowCustomAlert = new ShowCustomAlert({
                             Title: "",
@@ -1280,15 +1310,15 @@ function Step2() {
 
 function ExpressInterest(UserId)
 {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     $.ajax({
         cache: false,
         type: 'POST',
         url: "../UserProfile/ExpressInterest",
         data: { UserId: UserId },
         success: function (data) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             var objShowCustomAlert = new ShowCustomAlert({
                 Title: "",
                 Message: "Your request has been send.",
@@ -1300,7 +1330,7 @@ function ExpressInterest(UserId)
             objShowCustomAlert.ShowCustomAlertBox();
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             alert('Error during process: \n' + xhr.responseText);
         }
     });
@@ -1410,15 +1440,34 @@ function ValidateStep1()
             objShowCustomAlert.ShowCustomAlertBox();
             valid = false;
         }
+        
+    }
+    if (valid==true) {
         Pincode = $("#Pincode").val();
-        if (Pincode.length!=6) {
-            var objShowCustomAlert = new ShowCustomAlert({
-                Title: "",
-                Message: $("#hdnbranding").val() == "SINDHI" ? "Pincode length should be 6" : "पत्ता भरा.",
-                Type: "alert",
-            });
-            objShowCustomAlert.ShowCustomAlertBox();
-            valid = false;
+        if (Pincode != "") {
+            if (Pincode.length != 6) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Pincode length should be 6" : "पत्ता भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+    if (valid == true) {
+        var ReferenceContact = $("#ReferenceContact").val();
+        if (ReferenceContact != "") {
+            if (ReferenceContact.length != 10) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Reference Mobile No Should be 10 digit." : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
         }
     }
     return valid;
@@ -1440,6 +1489,21 @@ function ValidateStep2()
             });
             objShowCustomAlert.ShowCustomAlertBox();
             valid = false;
+        }
+    }
+
+    if (valid == true) {
+        var weight = $("#weight").val();
+        if (weight != "") {
+            if (weight.length > 3) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Please fill valid w" : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
         }
     }
 
@@ -1497,6 +1561,97 @@ function ValidateStep3()
             valid = false;
         }
     }
+    if (valid == true) {
+        var txtFatherMobileNo = $("#txtFatherMobileNo").val();
+        if (txtFatherMobileNo != "") {
+            if (txtFatherMobileNo.length!=10) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Father Mobile No Should be 10 digit." : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+
+    if (valid == true) {
+        var txtNoofBrothers = $("#txtNoofBrothers").val();
+        if (txtNoofBrothers != "") {
+            if (txtNoofBrothers.length>1) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Please mention no of brothers less than 10." : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+
+    if (valid == true) {
+        var txtNoofSisters = $("#txtNoofSisters").val();
+        if (txtNoofSisters != "") {
+            if (txtNoofSisters.length != 1) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Please mention no of sisters less than 10." : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+
+    if (valid == true) {
+        var txtNoofBrothers = $("#txtNoofBrothers").val();
+        var txtNoofMBrothers = $("#txtNoofMBrothers").val();
+        if (txtNoofBrothers != "") {
+            if (parseInt(txtNoofBrothers) <parseInt(txtNoofMBrothers)) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "No of married brothers should be less than or equal to no of brothers" : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+
+    if (valid == true) {
+        var txtNoofSisters = $("#txtNoofSisters").val();
+        var txtNoofMSisters=$("#txtNoofMSisters").val();
+        if (txtNoofSisters != "") {
+            if (parseInt(txtNoofSisters) < parseInt(txtNoofMSisters)) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "No of married sisters should be less than or equal to no of sisterss" : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
+
+    if (valid == true) {
+        var txtUContactNo = $("#txtUContactNo").val();
+        if (txtUContactNo != "") {
+            if (txtUContactNo.length != 10) {
+                var objShowCustomAlert = new ShowCustomAlert({
+                    Title: "",
+                    Message: $("#hdnbranding").val() == "SINDHI" ? "Uncle Mobile No Should be 10 digit." : "आईचे नाव भरा.",
+                    Type: "alert",
+                });
+                objShowCustomAlert.ShowCustomAlertBox();
+                valid = false;
+            }
+        }
+    }
     
     return valid;
 }
@@ -1550,23 +1705,22 @@ function ApproveFinal()
         objShowCustomAlert.ShowCustomAlertBox();
         return false;
     }
-    var ApprovedImage = false;
-    var ApprovedImageWithContact = false;
+    var ApprovedImage = 0;
+    var ApprovedImageWithContact = 0;
     if (Approvaltype==1) {
-        ApprovedImage = true;
+        ApprovedImage = 1;
     }
     if(Approvaltype==2) {
-        ApprovedImageWithContact = true;
+        ApprovedImageWithContact = 1;
     }
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    ShowLoader();
     $.ajax({
         cache: false,
         type: 'POST',
         url: "../UserProfile/ApproveRequestSPMO",
         data: { VisitorId: VisitorId, ApprovedImage: ApprovedImage, ApprovedImageWithContact: ApprovedImageWithContact },
         success: function (data) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             var objShowCustomAlert = new ShowCustomAlert({
                 Title: "",
                 Message: "Request has been approved.",
@@ -1578,7 +1732,7 @@ function ApproveFinal()
             objShowCustomAlert.ShowCustomAlertBox();
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
             alert('Error during process: \n' + xhr.responseText);
         }
     });
@@ -1610,8 +1764,7 @@ function UploadSPMO(UserId) {
         objShowCustomAlert.ShowCustomAlertBox();
     }
     else {
-        var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").appendChild(spinner.el);
+        ShowLoader();
         for (var i = 0; i < files.length; i++) {
             data.append(files[i].name, files[i]);
         }
@@ -1625,10 +1778,10 @@ function UploadSPMO(UserId) {
                 if (response == true) {
                     var objShowCustomAlert = new ShowCustomAlert({
                         Title: "",
-                        Message: $("#hdnbranding").val() == "SINDHI" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+                        Message: "Image uploaded successfully.",
                         Type: "alert",
                         OnOKClick: function () {
-                            window.location.reload();
+                            window.location = "../UserProfile/Index";
                         }
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
@@ -1636,16 +1789,15 @@ function UploadSPMO(UserId) {
                 else {
                     var objShowCustomAlert = new ShowCustomAlert({
                         Title: "",
-                        Message: $("#hdnbranding").val() == "SINDHI" ? "Your profile will be activated within 48 hours." : "फोटो दाखल केला.",
+                        Message: "Image uploaded successfully.",
                         Type: "alert",
                         OnOKClick: function () {
-                            window.location = "../Home/Index";
+                            window.location = "../UserProfile/Index";
                         }
                     });
                     objShowCustomAlert.ShowCustomAlertBox();
                 }
-                //var spinner = new Spinner().spin();
-                document.getElementById("contentdiv").removeChild(spinner.el);
+                HideLoader();
             },
             error: function (er) {
                 alert(er.responseText);
@@ -1658,8 +1810,8 @@ function Upload(UserId) {
     if (UserId===undefined) {
         UserId = 0;
     }
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     var data = new FormData();
     var files = null;
     if (UserId>0) {
@@ -1681,7 +1833,7 @@ function Upload(UserId) {
             if (response == true) {
                 var objShowCustomAlert = new ShowCustomAlert({
                     Title: "",
-                    Message: $("#hdnbranding").val() == "SINDHI" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+                    Message: "Image uploaded successfully.",
                     Type: "alert",
                     OnOKClick: function () {
                         window.location.reload();
@@ -1690,7 +1842,7 @@ function Upload(UserId) {
                 objShowCustomAlert.ShowCustomAlertBox();
             }
             //var spinner = new Spinner().spin();
-            document.getElementById("contentdiv").removeChild(spinner.el);
+            //document.getElementById("contentdiv").removeChild(spinner.el);
         },
         error: function (er) {
             alert(er.responseText);
@@ -1700,8 +1852,7 @@ function Upload(UserId) {
 
 function UploadA()
 {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    ShowLoader();
     var data = new FormData();
     var files = $("#AdhaarImage").get(0).files;
     if (files.length > 0) {
@@ -1716,25 +1867,24 @@ function UploadA()
     success: function (response) {
         var objShowCustomAlert = new ShowCustomAlert({
             Title: "",
-            Message: $("#hdnbranding").val() == "SINDHI" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+            Message: "Image uploaded successfully.",
             Type: "alert",
         });
         objShowCustomAlert.ShowCustomAlertBox();
         $("#AdhaarImagehidden").val(response)
-        //var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").removeChild(spinner.el);
+        HideLoader();
     },
     error: function (er) {
         alert(er.responseText);
         //var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").removeChild(spinner.el);
+        //document.getElementById("contentdiv").removeChild(spinner.el);
     }
 });
 }
 
 function UploadB() {
-    var spinner = new Spinner().spin();
-    document.getElementById("contentdiv").appendChild(spinner.el);
+    //var spinner = new Spinner().spin();
+    //document.getElementById("contentdiv").appendChild(spinner.el);
     var data = new FormData();
     var files = $("#PANImage").get(0).files;
     if (files.length > 0) {
@@ -1749,18 +1899,18 @@ function UploadB() {
     success: function (response) {
         var objShowCustomAlert = new ShowCustomAlert({
             Title: "",
-            Message: $("#hdnbranding").val() == "SINDHI" ? "Image uploaded successfully." : "फोटो दाखल केला.",
+            Message: "Image uploaded successfully.",
             Type: "alert",
         });
         objShowCustomAlert.ShowCustomAlertBox();
         $("#AdhaarImagehidden").val(response)
         //var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").removeChild(spinner.el);
+        //document.getElementById("contentdiv").removeChild(spinner.el);
     },
     error: function (er) {
         alert(er.responseText);
         //var spinner = new Spinner().spin();
-        document.getElementById("contentdiv").removeChild(spinner.el);
+        //document.getElementById("contentdiv").removeChild(spinner.el);
 
     }
 });

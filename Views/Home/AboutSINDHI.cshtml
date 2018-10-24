@@ -1,12 +1,12 @@
 ﻿@{
     ViewBag.Title = "About";
-    Layout = "~/Views/Shared/_LayoutPageSindhi.cshtml";
+    Layout = "~/Views/Shared/_LayoutSPMO.cshtml";
 }
-<div class="grid_3">
+<div class="grid_3" style="padding:0px;">
     <div class="container">
         <div class="breadcrumb1">
             <ul>
-                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <a href="@Url.Action("Index","Home")"><i class="fa fa-home home_1"></i></a>
                 <span class="divider">&nbsp;|&nbsp;</span>
                 <li class="current-page">About</li>
             </ul>
@@ -52,136 +52,184 @@
         </div>
     </div>
 </div>
-<div class="about_middle">
+
+<div class="about_bottom" style="padding:2em 0">
     <div class="container">
-        <h2>Happy Clients</h2>
-        <div class="about_middle-grid1">
-            <div class="col-sm-6 testi_grid list-item-0">
-                <blockquote class="testi_grid_blockquote">
-                    <figure class="featured-thumbnail">
-                        <img src="@Url.Content("~/Content/SPMO/SINDHI/images/a1.jpg")" class="img-responsive" alt="" />
-                    </figure>
-                    <div>
-                        <a href="#">Aenean nonummy hendrerit mau phasellu porta. Fusce suscipit varius mi sed. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla dui.…</a>
-                        <div class="clearfix"></div>
-                    </div>
-                </blockquote>
-                <small class="testi-meta"><span class="user">Eiusmod tempor incididunt</span></small>
-            </div>
-            <div class="col-sm-6 testi_grid list-item-1">
-                <blockquote class="testi_grid_blockquote">
-                    <figure class="featured-thumbnail">
-                        <img src="@Url.Content("~/Content/SPMO/SINDHI/images/a2.jpg")" class="img-responsive" alt="" />
-                    </figure>
-                    <div>
-                        <a href="#">Aenean nonummy hendrerit mau phasellu porta. Fusce suscipit varius mi sed. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla dui.…</a>
-                        <div class="clearfix"></div>
-                    </div>
-                </blockquote>
-                <small class="testi-meta1"><span class="user">Sint occaecat </span></small>
-            </div>
-            <div class="clearfix"> </div>
-        </div>
-        <div class="about_middle-grid2">
-            <div class="col-sm-6 testi_grid list-item-0">
-                <blockquote class="testi_grid_blockquote">
-                    <figure class="featured-thumbnail">
-                        <img src="@Url.Content("~/Content/SPMO/SINDHI/images/a1.jpg")" class="img-responsive" alt="" />
-                    </figure>
-                    <div>
-                        <a href="#">Aenean nonummy hendrerit mau phasellu porta. Fusce suscipit varius mi sed. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla dui.…</a>
-                        <div class="clearfix"></div>
-                    </div>
-                </blockquote>
-                <small class="testi-meta"><span class="user">Eiusmod tempor incididunt</span></small>
-            </div>
-            <div class="col-sm-6 testi_grid list-item-1">
-                <blockquote class="testi_grid_blockquote">
-                    <figure class="featured-thumbnail">
-                        <img src="@Url.Content("~/Content/SPMO/SINDHI/images/a2.jpg")" class="img-responsive" alt="" />
-                    </figure>
-                    <div>
-                        <a href="#">Aenean nonummy hendrerit mau phasellu porta. Fusce suscipit varius mi sed. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla dui.…</a>
-                        <div class="clearfix"></div>
-                    </div>
-                </blockquote>
-                <small class="testi-meta1"><span class="user">Sint occaecat </span></small>
-            </div>
-            <div class="clearfix"> </div>
-        </div>
-    </div>
-</div>
-<div class="about_bottom">
-    <div class="container">
-        <h3>Honourable Directors</h3>
+        <h3>Our Inspirations</h3>
         <div class="col-md-12">
-            <div class="col-md-3 about_grid1" style="left: 50%;transform: translate(-50%, -8%);position: relative;">
+            <div class="col-md-3 about_grid1">
                 <ul class="posts-grid our-team">
                     <li class="list-item-1">
                         <figure class="thumbnail_1 thumbnail">
-                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Founder.jpg")" class="img-responsive" alt="" /></a>
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/GobindramPherwani.jpg")" class="img-responsive inspirationimg" alt="" /></a>
                         </figure>
                         <div class="desc">
-                            <h4><a href="#">Founder</a></h4>
-                            <p>Late Shri Naraiendas Khubchandani Founder</p>
+                            <div style="text-align:center;color:maroon;font-size:18px"></div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Late Shri Gobindram Pherwani</div>
                         </div>
                     </li>
                 </ul>
             </div>
+            <div class="col-md-3 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/LeelaramTahilani.jpg")" class="img-responsive inspirationimg" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px"></div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Leelaram Tahilani</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Founder.jpg")" class="img-responsive inspirationimg" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px"></div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Late Shri Naraindas Khubchandani</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/LaxmanVasvani.jpg")" class="img-responsive inspirationimg" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px"></div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Laxman Vasvani</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
         </div>
+        <br />
+        
+    </div>
+</div>
+<div class="grid-3">
+    <div class="container">
+        <div class="headerdiv">Honourable Director's</div>
+        <div class="col-md-12">
+            <div class="col-md-1 about_grid1">
+            </div>
+            <div class="col-md-2 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/President.jpg")" class="img-responsive" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px">President</div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Parmanand  Jhamtani</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-2 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Vice_President.jpg")" class="img-responsive" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px">Vice President</div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Smt Kala Bhagia</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-2 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Gen_Secretary.jpg")" class="img-responsive" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px">Secretary</div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Jawahar Kotwani</div>
+                        </div>
+                    </li>
+                </ul>
 
-        <div class="col-md-3 about_grid1">
-            <ul class="posts-grid our-team">
-                <li class="list-item-1">
-                    <figure class="thumbnail_1 thumbnail">
-                        <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/President.jpg")" class="img-responsive" alt="" /></a>
-                    </figure>
-                    <div class="desc">
-                        <h4><a href="#">President</a></h4>
-                        <p>Shri Parmanand  Jhamtani</p>
-                    </div>
-                </li>
-            </ul>
+            </div>
+            <div class="col-md-2 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/JS_KAhuja.jpg")" class="img-responsive" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px">Jt. Secretary</div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Kanayalal Ahuja</div>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="col-md-2 about_grid1">
+                <ul class="posts-grid our-team">
+                    <li class="list-item-1">
+                        <figure class="thumbnail_1 thumbnail">
+                            <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Treasurer.jpg")" class="img-responsive" alt="" /></a>
+                        </figure>
+                        <div class="desc">
+                            <div style="text-align:center;color:maroon;font-size:18px">Treasurer</div>
+                            <div style="text-align:center;color:maroon;font-size:18px">Shri Kumar Motwani</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-1 about_grid1">
+            </div>
+            <div class="clearfix"> </div>
         </div>
-        <div class="col-md-3 about_grid1">
-            <ul class="posts-grid our-team">
-                <li class="list-item-1">
-                    <figure class="thumbnail_1 thumbnail">
-                        <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Vice_President.jpg")" class="img-responsive" alt="" /></a>
-                    </figure>
-                    <div class="desc">
-                        <h4><a href="#">Vice President</a></h4>
-                        <p>Smt Kala Bhagia</p>
-                    </div>
-                </li>
-            </ul>
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Sr. No.
+                        </th>
+                        <th>
+                            Member Name
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>SMT. ANITA JETHANI</td></tr>
+                    <tr><td>2</td><td>SHRI ASHOK PUNJABI</td></tr>
+                    <tr><td>3</td><td>SHRI. BHARAT KUKREJA</td></tr>
+                    <tr><td>4</td><td>SMT. CHANDA KUKREJA</td></tr>
+                    <tr><td>5</td><td>SMT.CHANDER JESWANI</td></tr>
+                    <tr><td>6</td><td>SHRI HARENDRA TULSANI</td></tr>
+                    <tr><td>7</td><td>SHRI HIRO PAHUJA</td></tr>
+                    <tr><td>8</td><td>SHRI JANKI RAMCHANDANI</td></tr>
+                    <tr><td>9</td><td>SHRI JOHNY THADANI</td></tr>
+                    <tr><td>10</td><td>SHRI MANISHA KARAMCHANDANI</td></tr>
+                    <tr><td>11</td><td>SHRI MANOHAR JETHWANI</td></tr>
+                    <tr><td>12</td><td>SHRI MOHINI VASWANI</td></tr>
+                    <tr><td>13</td><td>SHRI MOTI CHUGWANI</td></tr>
+                    <tr><td>14</td><td>SHRI PADMA PARWANI</td></tr>
+                    <tr><td>15</td><td>SHRI RAJU KHUBCHANDANI</td></tr>
+                    <tr><td>16</td><td>SHRI RAMESH MIRANI</td></tr>
+                    <tr><td>17</td><td>SMT. RAMESH MOTWANI</td></tr>
+                    <tr><td>18</td><td>SMT.SAVITRI CHETWANI</td></tr>
+                    <tr><td>19</td><td>SMT.SHAKU BHATIA</td></tr>
+                    <tr><td>20</td><td>SHRI SHOBHA DAKHNEJA</td></tr>
+                    <tr><td>21</td><td>SHRI SHYAM TILOKCHANDANI</td></tr>
+                    <tr><td>22</td><td>SMT.SRICHAND NAGRANI</td></tr>
+                    <tr><td>23</td><td>SHRI SURENDER MANGHWANI</td></tr>
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-3 about_grid1">
-            <ul class="posts-grid our-team">
-                <li class="list-item-1">
-                    <figure class="thumbnail_1 thumbnail">
-                        <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Gen_Secretary.jpg")" class="img-responsive" alt="" /></a>
-                    </figure>
-                    <div class="desc">
-                        <h4><a href="#">Gen. Secretary</a></h4>
-                        <p>Shri Jawahar Kotwani</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-3 about_grid1">
-            <ul class="posts-grid our-team">
-                <li class="list-item-1">
-                    <figure class="thumbnail_1 thumbnail">
-                        <a href="#"><img src="@Url.Content("~/Content/SPMO/SINDHI/images/Directors/Treasurer.jpg")" class="img-responsive" alt="" /></a>
-                    </figure>
-                    <div class="desc">
-                        <h4><a href="#">Treasurer</a></h4>
-                        <p>Shri Kumar Motwani</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="clearfix"> </div>
     </div>
 </div>
